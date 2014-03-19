@@ -18,3 +18,8 @@ wm-theme:
 bash:
 	#copy to home
 	cp -f $(BASHRC) ~/$(BASHRC)
+
+uninstall: 
+	#remove all
+	-rm -rf ~/$(WM-THEME-DIR)
+	-rm -f ~/$(BASHRC)
