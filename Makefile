@@ -1,21 +1,21 @@
-NUMIX-NO-TITLE = .local/share/themes/numix-no-title
+NUMIX = .local/share/themes/numix-no-title
 BASHRC = .bashrc
 VIMRC = .vimrc
 HERBSTLUFT = .config/herbstluftwm
 
 install: all
 
-all:  bash vim numix-no-title herbstluft
+all:  bash vim numix-no-title herbstluftwm
 
 numix-no-title: 
 	#create wm theme dir if not exist
-	mkdir -p  ~/$(NUMIX-NO-TILE)
+	mkdir -p  ~/$(NUMIX)
 
 	#remove content if existing
-	-rm -rf ~/$(NUMIX-NO-TILE)/*
+	-rm -rf ~/$(NUMIX)/*
 
 	#copy new contents in
-	cp -rf $(NUMIX-NO-TILE)/* ~/$(NUMIX-NO-TITLE)/
+	cp -rf $(NUMIX)/* ~/$(NUMIX)/
 
 herbstluftwm:
 	#create herbstluftwm if not exist
