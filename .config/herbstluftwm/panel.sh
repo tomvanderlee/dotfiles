@@ -11,11 +11,20 @@ fi
 x=${geometry[0]}
 y=${geometry[1]}
 panel_width=${geometry[2]}
-panel_height=24
+
+panel_height=$2
+light=$3
+llight=$4
+accent=$5
+ldark=$6
+dark=$7
+
 font="-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*"
-bgcolor=$(hc get frame_border_normal_color)
-selbg=$(hc get window_border_active_color)
-selfg='#101010'
+selected_bg=$accent
+normal_bg=$dark
+selected_txt=$dark
+normal_txt=$light
+inactive_txt=$llight
 
 ########################################################################################
 # Try to find textwidth binary.
@@ -65,11 +74,24 @@ hc pad $monitor $panel_height
     # e.g.
     #   date    ^fg(#efefef)18:33^fg(#909090), 2013-10-^fg(#efefef)29
 
-    #mpc idleloop player &
     while true ; do
-        # "date" output is checked once a second, but an event is only
-        # generated if the output changed compared to the previous run.
-        date +$'date\t^fg(#efefef)%H:%M:%S^fg(#909090), %Y-%m-^fg(#efefef)%d'
+		# Network
+				
+
+		# Battery
+		IFS=' ' read -a batinfo <<< $(acpi -b)
+		charge=$(echo ${batinfo[3]} | tr -d '%,')
+		if [ $charge -lt 15 ] ;	then
+			bat_color=$accent
+		else
+			bat_color=$normal_txt
+		fi
+		state=$(echo ${batinfo[2]} | tr -d ',')
+		remaining=$(echo ${batinfo[4]})
+		echo -e "battery\t^fg($normal_txt)$state: ^fg($bat_color)$charge^fg($normal_txt)% ^fg($inactive_txt)($remaining)"
+		
+		# Time
+        echo -e $(date +$"date\t^fg($normal_txt)%H:%M:%S^fg($inactive_txt), %d-%m-%Y")
         sleep 1 || break
     done > >(uniq_linebuffered) &
     childpid=$!
@@ -80,6 +102,7 @@ hc pad $monitor $panel_height
     IFS=$'\t' read -ra tags <<< "$(hc tag_status $monitor)"
     visible=true
     date=""
+	battery=""
     windowtitle=""
     while true ; do
 
@@ -88,24 +111,24 @@ hc pad $monitor $panel_height
         # and then waits for the next event to happen.
 
         bordercolor="#26221C"
-        separator="^bg()^fg($selbg)|"
+        separator="^bg()^fg($accent)|"
         # draw tags
         for i in "${tags[@]}" ; do
             case ${i:0:1} in
                 '#')
-                    echo -n "^bg($selbg)^fg($selfg)"
+                    echo -n "^bg($selected_bg)^fg($selected_txt)"
                     ;;
                 '+')
-                    echo -n "^bg(#9CA668)^fg(#141414)"
+                    echo -n "^bg($accent)^fg($normal_bg)"
                     ;;
                 ':')
-                    echo -n "^bg()^fg(#ffffff)"
+                    echo -n "^bg()^fg($normal_txt)"
                     ;;
                 '!')
-                    echo -n "^bg(#FF0675)^fg(#141414)"
+                    echo -n "^bg($normal_txt)^fg($normal_bg)"
                     ;;
                 *)
-                    echo -n "^bg()^fg(#ababab)"
+                    echo -n "^bg()^fg($inactive_txt)"
                     ;;
             esac
             if [ ! -z "$dzen2_svn" ] ; then
@@ -122,10 +145,10 @@ hc pad $monitor $panel_height
         echo -n "$separator"
         echo -n "^bg()^fg() ${windowtitle//^/^^}"
         # small adjustments
-        right="$separator^bg() $date $separator"
+        right="$battery $separator^bg() $date "
         right_text_only=$(echo -n "$right" | sed 's.\^[^(]*([^)]*)..g')
         # get width of right aligned text.. and add some space..
-        width=$($textwidth "$font" "$right_text_only    ")
+        width=$($textwidth "$font" "$right_text_only")
         echo -n "^pa($(($panel_width - $width)))$right"
         echo
 
@@ -145,6 +168,9 @@ hc pad $monitor $panel_height
                 #echo "resetting tags" >&2
                 IFS=$'\t' read -ra tags <<< "$(hc tag_status $monitor)"
                 ;;
+			battery)
+				battery="${cmd[@]:1}"
+				;;
             date)
                 #echo "resetting date" >&2
                 date="${cmd[@]:1}"
@@ -186,4 +212,4 @@ hc pad $monitor $panel_height
 
 } 2> /dev/null | dzen2 -w $panel_width -x $x -y $y -fn "$font" -h $panel_height \
     -e 'button3=;button4=exec:herbstclient use_index -1;button5=exec:herbstclient use_index +1' \
-    -ta l -bg "$bgcolor" -fg '#efefef'
+    -ta l -bg "$normal_bg" -fg "$normal_txt"
