@@ -20,6 +20,7 @@ ldark=$6
 dark=$7
 
 font="-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*"
+#font=""
 selected_bg=$accent
 normal_bg=$dark
 selected_txt=$dark
@@ -76,8 +77,18 @@ hc pad $monitor $panel_height
 
     while true ; do
 		# Network
+		IFS=' ' read -a wlaninfo <<< $(iwconfig wlp3s0)
+		for item in ${wlaninfo[@]} ; do
+			case $item in
+				ESSID*)
+					ssid=$(echo $item | cut -d '"' -f2) ;;
+				Quality*)
+					quality=$(echo $item | cut -d '=' -f2) ;;
+			esac
+		done
+		quality_p=$(echo "$(echo $quality | cut -d '/' -f1) * 100 / $(echo $quality | cut -d '/' -f2)" | bc)
+		echo -e "wireless\t^fg($normal_txt)Wlan: $quality_p% ^fg($inactive_txt)($ssid)"
 				
-
 		# Battery
 		IFS=' ' read -a batinfo <<< $(acpi -b)
 		charge=$(echo ${batinfo[3]} | tr -d '%,')
@@ -91,7 +102,7 @@ hc pad $monitor $panel_height
 		echo -e "battery\t^fg($normal_txt)$state: ^fg($bat_color)$charge^fg($normal_txt)% ^fg($inactive_txt)($remaining)"
 		
 		# Time
-        echo -e $(date +$"date\t^fg($normal_txt)%H:%M:%S^fg($inactive_txt), %d-%m-%Y")
+        echo -e $(date +$"date\t^fg($normal_txt)%H:%M:%S^fg($inactive_txt) (%d-%m-%Y)")
         sleep 1 || break
     done > >(uniq_linebuffered) &
     childpid=$!
@@ -103,6 +114,7 @@ hc pad $monitor $panel_height
     visible=true
     date=""
 	battery=""
+	wireless=""
     windowtitle=""
     while true ; do
 
@@ -145,7 +157,7 @@ hc pad $monitor $panel_height
         echo -n "$separator"
         echo -n "^bg()^fg() ${windowtitle//^/^^}"
         # small adjustments
-        right="$battery $separator^bg() $date "
+        right="$wireless $separator^bg() $battery $separator^bg() $date "
         right_text_only=$(echo -n "$right" | sed 's.\^[^(]*([^)]*)..g')
         # get width of right aligned text.. and add some space..
         width=$($textwidth "$font" "$right_text_only")
@@ -168,6 +180,9 @@ hc pad $monitor $panel_height
                 #echo "resetting tags" >&2
                 IFS=$'\t' read -ra tags <<< "$(hc tag_status $monitor)"
                 ;;
+			wireless)
+				wireless="${cmd[@]:1}"
+				;;
 			battery)
 				battery="${cmd[@]:1}"
 				;;
