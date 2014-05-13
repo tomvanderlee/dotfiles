@@ -32,7 +32,7 @@ Mod=Mod4   # Use the super key as the main modifier
 hc keybind $Mod-Shift-q quit
 hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-c close
-hc keybind $Mod-Return spawn xfce4-terminal
+hc keybind $Mod-Return spawn xterm
 hc keybind $Mod-grave spawn dmenu_run -h $PANEL_HEIGHT -p "Run:" -nb $DARK -nf $LIGHT -sb $ACCENT -sf $DARK
 
 # basic movement
@@ -172,8 +172,7 @@ herbstclient set tree_style '╾│ ├└╼─┐'
 #Start panel in all monitors
 start_panel() {
 	for monitor in $(herbstclient list_monitors | cut -d: -f1) ; do
-		"$1" $monitor $PANEL_HEIGHT $LIGHT $LLIGHT $ACCENT $LDARK $DARK
- $2&
+		"$1" $monitor $PANEL_HEIGHT $LIGHT $LLIGHT $ACCENT $LDARK $DARK $2&
 	done
 }
 
@@ -200,3 +199,6 @@ then
 else
 	start_compton
 fi
+
+#Load .Xresources
+xrdb -load ~/.Xresources

@@ -2,10 +2,12 @@ NUMIX = .local/share/themes/numix-no-title
 BASHRC = .bashrc
 VIMRC = .vimrc
 HERBSTLUFT = .config/herbstluftwm
+XRESOURCES = .Xresources
+
 
 install: all
 
-all:  bash vim numix-no-title herbstluftwm
+all:  bash vim xresources numix-no-title herbstluftwm
 
 numix-no-title: 
 	#create wm theme dir if not exist
@@ -35,9 +37,14 @@ vim:
 	#copy vimrc to home
 	cp -f $(VIMRC) ~
 
+xresources:
+	#copy Xresources to home
+	cp -f $(XRESOURCES) ~
+
 uninstall: 
 	#remove all
 	-rm -rf ~/$(WM-THEME-DIR)
 	-rm -rf ~/$(HERBSTLUFT)
 	-rm -f ~/$(BASHRC)
 	-rm -f ~/$(VIMRC)
+	-rm -f ~/$(XRESOURCES)
