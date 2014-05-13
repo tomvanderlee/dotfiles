@@ -77,16 +77,14 @@ hc pad $monitor $panel_height
 
     while true ; do
 		# Network
-		IFS=' ' read -a wlaninfo <<< $(iwconfig wlp3s0)
-		for item in ${wlaninfo[@]} ; do
-			case $item in
-				ESSID*)
-					ssid=$(echo $item | cut -d '"' -f2) ;;
-				Quality*)
-					quality=$(echo $item | cut -d '=' -f2) ;;
-			esac
-		done
-		quality_p=$(echo "$(echo $quality | cut -d '/' -f1) * 100 / $(echo $quality | cut -d '/' -f2)" | bc)
+		iwconfig=$(iwconfig wlp3s0)
+		ssid_regex=".*ESSID:\"\(.*\)\".*"
+		quality_regex=".*Link Quality=\([0-9]*\)\/\([0-9]*\).*"
+		ssid=$(echo $iwconfig | sed "s/$ssid_regex/\1/")
+		IFS=',' read -a quality_info <<< $(echo $iwconfig | sed "s/$quality_regex/\1,\2/")
+		cur_qual=${quality_info[0]}
+		max_qual=${quality_info[1]}
+		quality_p=$(echo "$cur_qual*100/$max_qual" | bc)
 		echo -e "wireless\t^fg($normal_txt)Wlan: $quality_p% ^fg($inactive_txt)($ssid)"
 				
 		# Battery

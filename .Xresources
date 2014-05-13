@@ -1,0 +1,41 @@
+! Font and Fontsize
+*faceName: Droid Sans Mono
+*faceSize: 11
+
+!  Colors
+*background: #2d2d2d
+*foreground: #f9f9f9
+
+! Darks
+*color0: #2d2d2d
+*color8: #333333
+
+! Reds 
+*color1: #690a03
+*color9: #d64937
+
+! Greens
+*color2: #13a43b
+*color10: #6dfb2d
+
+! Yellows
+*color3: #f5a711
+*color11: #ffdc00
+
+! Blues
+*color4: #0f6cc9
+*color12: #32abd8
+
+! Magentas
+*color5: #93116b
+*color13: #c61f93
+
+! Cyanes
+*color6: #3cb691
+*color14: #53b4bd
+
+!Whites
+*color7: #d9d9d9
+*color15: #f9f9f9
+
+XTerm*selectToClipboard: true
