@@ -77,47 +77,56 @@ hc pad $monitor $panel_height
 
     while true ; do
 		# Volume
-		volumes=$(\
-			amixer get Master | \
-			grep Front\
-		)
-		vol=$(\
-			echo $volumes | \
-			sed "s/.*\[\([0-9]*\)%\].*/\1/"\
-		)
-		if [ -z $vol ] ; then
-			echo -e "volume\t^fg($normax_txt)Audio off"
-		elif [ $vol -le 0 ] ; then
-			echo -e "volume\t^fg($normal_txt)Volume muted"
+		if pgrep pulseaudio > /dev/null ; then
+			volumes=$(\
+				amixer get Master | \
+				grep Front\
+			)
+			vol=$(\
+				echo $volumes | \
+				sed "s/.*\[\([0-9]*\)%\].*/\1/"\
+			)
+			if [ -z $vol ] ; then
+				echo -e "volume\toff"
+			elif [ $vol -le 0 ] ; then
+				echo -e "volume\t^fg($normal_txt)Volume muted"
+			else
+				echo -e "volume\t^fg($normal_txt)Volume: $vol%"
+			fi
 		else
-			echo -e "volume\t^fg($normal_txt)Volume: $vol%"
+			echo -e "volume\toff"
 		fi
 
 		# Network
 		iwconfig=$(iwconfig wlp3s0)
-		ssid=$(\
-			echo $iwconfig | \
-			sed "s/.*ESSID:\(\".*\"\).*/\1/" | \
-			sed "s/.*\(off\/any\).*/\"\1\"/" | \
-			sed "s/.*\"\(.*\)\".*/\1/"\
-		)
-		if [ $ssid = "off/any" ] ; then
-			echo -e "wireless\t^fg($normal_txt)Wlan: No connection"
-		else	
-			IFS=',' read -a quality_info <<< $(\ 
+		if [ -z $iwconfig ] ; then
+			echo -e "wireless\toff"
+		else
+			ssid=$(\
 				echo $iwconfig | \
-				sed "s/.*Link Quality=\([0-9]*\)\/\([0-9]*\).*/\1,\2/"\ 
+				sed "s/.*ESSID:\(\".*\"\).*/\1/" | \
+				sed "s/.*\(off\/any\).*/\"\1\"/" | \
+				sed "s/.*\"\(.*\)\".*/\1/"\
 			)
-			cur_qual=${quality_info[0]}
-			max_qual=${quality_info[1]}
-			quality_p=$(echo "$cur_qual*100/$max_qual" | bc)
-			echo -e "wireless\t^fg($normal_txt)Wlan: $quality_p% ^fg($inactive_txt)($ssid)"
+			if [ $ssid = "off/any" ] ; then
+				ifconf=$
+				echo -e "wireless\t^fg($normal_txt)Wlan: No connection"
+			else	
+				IFS=',' read -a quality_info <<< $(\ 
+					echo $iwconfig | \
+					sed "s/.*Link Quality=\([0-9]*\)\/\([0-9]*\).*/\1,\2/"\ 
+				)
+				cur_qual=${quality_info[0]}
+				max_qual=${quality_info[1]}
+				quality_p=$(echo "$cur_qual*100/$max_qual" | bc)
+				echo -e "wireless\t^fg($normal_txt)Wlan: $quality_p% ^fg($inactive_txt)($ssid)"
+			fi
 		fi
 			
 		# Battery
 		IFS=' ' read -a batinfo <<< $(acpi -b)
 		if [ -z $batinfo ] ; then
-			echo -e "battery\t^fg($normax_txt)No battery"
+			echo -e "battery\toff"
 		else 
 		charge=$(echo ${batinfo[3]} | tr -d '%,')
 			if [ $charge -lt 15 ] ;	then
@@ -187,7 +196,7 @@ hc pad $monitor $panel_height
         echo -n "$separator"
         echo -n "^bg()^fg() ${windowtitle//^/^^}"
         # small adjustments
-        right="$volume $separator^bg() $wireless $separator^bg() $battery $separator^bg() $date "
+        right="$volume$wireless$battery$date "
         right_text_only=$(echo -n "$right" | sed 's.\^[^(]*([^)]*)..g')
         # get width of right aligned text.. and add some space..
         width=$($textwidth "$font" "$right_text_only")
@@ -212,12 +221,27 @@ hc pad $monitor $panel_height
                 ;;
 			volume)
 				volume="${cmd[@]:1}"
+				if [ $volume == "off" ] ; then
+					volume=""
+				else
+					volume="$volume $separator^bg() "
+				fi
 				;;
 			wireless)
 				wireless="${cmd[@]:1}"
+				if [ $wireless = "off" ] ; then
+					wireless=""
+				else
+					wireless="$wireless $separator^bg() "
+				fi
 				;;
 			battery)
 				battery="${cmd[@]:1}"
+				if [ $battery == "off" ] ; then
+					battery=""
+				else
+					battery="$battery $separator^bg() "
+				fi
 				;;
             date)
                 #echo "resetting date" >&2
