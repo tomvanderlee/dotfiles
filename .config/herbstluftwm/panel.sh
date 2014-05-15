@@ -76,29 +76,58 @@ hc pad $monitor $panel_height
     #   date    ^fg(#efefef)18:33^fg(#909090), 2013-10-^fg(#efefef)29
 
     while true ; do
+		# Volume
+		volumes=$(\
+			amixer get Master | \
+			grep Front\
+		)
+		vol=$(\
+			echo $volumes | \
+			sed "s/.*\[\([0-9]*\)%\].*/\1/"\
+		)
+		if [ -z $vol ] ; then
+			echo -e "volume\t^fg($normax_txt)Audio off"
+		else
+			echo -e "volume\t^fg($normal_txt)Volume: $vol%"
+		fi
+
 		# Network
 		iwconfig=$(iwconfig wlp3s0)
-		ssid_regex=".*ESSID:\"\(.*\)\".*"
-		quality_regex=".*Link Quality=\([0-9]*\)\/\([0-9]*\).*"
-		ssid=$(echo $iwconfig | sed "s/$ssid_regex/\1/")
-		IFS=',' read -a quality_info <<< $(echo $iwconfig | sed "s/$quality_regex/\1,\2/")
-		cur_qual=${quality_info[0]}
-		max_qual=${quality_info[1]}
-		quality_p=$(echo "$cur_qual*100/$max_qual" | bc)
-		echo -e "wireless\t^fg($normal_txt)Wlan: $quality_p% ^fg($inactive_txt)($ssid)"
-				
+		ssid=$(\
+			echo $iwconfig | \
+			sed "s/.*ESSID:\(\".*\"\).*/\1/" | \
+			sed "s/.*\(off\/any\).*/\"\1\"/" | \
+			sed "s/.*\"\(.*\)\".*/\1/"\
+		)
+		if [ $ssid = "off/any" ] ; then
+			echo -e "wireless\t^fg($normal_txt)Wlan: No connection"
+		else	
+			IFS=',' read -a quality_info <<< $(\ 
+				echo $iwconfig | \
+				sed "s/.*Link Quality=\([0-9]*\)\/\([0-9]*\).*/\1,\2/"\ 
+			)
+			cur_qual=${quality_info[0]}
+			max_qual=${quality_info[1]}
+			quality_p=$(echo "$cur_qual*100/$max_qual" | bc)
+			echo -e "wireless\t^fg($normal_txt)Wlan: $quality_p% ^fg($inactive_txt)($ssid)"
+		fi
+			
 		# Battery
 		IFS=' ' read -a batinfo <<< $(acpi -b)
+		if [ -z $batinfo ] ; then
+			echo -e "battery\t^fg($normax_txt)No battery"
+		else 
 		charge=$(echo ${batinfo[3]} | tr -d '%,')
-		if [ $charge -lt 15 ] ;	then
-			bat_color=$accent
-		else
-			bat_color=$normal_txt
+			if [ $charge -lt 15 ] ;	then
+				bat_color=$accent
+			else
+				bat_color=$normal_txt
+			fi
+			state=$(echo ${batinfo[2]} | tr -d ',')
+			remaining=$(echo ${batinfo[4]})
+			echo -e "battery\t^fg($normal_txt)$state: ^fg($bat_color)$charge^fg($normal_txt)% ^fg($inactive_txt)($remaining)"
 		fi
-		state=$(echo ${batinfo[2]} | tr -d ',')
-		remaining=$(echo ${batinfo[4]})
-		echo -e "battery\t^fg($normal_txt)$state: ^fg($bat_color)$charge^fg($normal_txt)% ^fg($inactive_txt)($remaining)"
-		
+
 		# Time
         echo -e $(date +$"date\t^fg($normal_txt)%H:%M:%S^fg($inactive_txt) (%d-%m-%Y)")
         sleep 1 || break
@@ -111,6 +140,7 @@ hc pad $monitor $panel_height
     IFS=$'\t' read -ra tags <<< "$(hc tag_status $monitor)"
     visible=true
     date=""
+	volume=""
 	battery=""
 	wireless=""
     windowtitle=""
@@ -155,7 +185,7 @@ hc pad $monitor $panel_height
         echo -n "$separator"
         echo -n "^bg()^fg() ${windowtitle//^/^^}"
         # small adjustments
-        right="$wireless $separator^bg() $battery $separator^bg() $date "
+        right="$volume $separator^bg() $wireless $separator^bg() $battery $separator^bg() $date "
         right_text_only=$(echo -n "$right" | sed 's.\^[^(]*([^)]*)..g')
         # get width of right aligned text.. and add some space..
         width=$($textwidth "$font" "$right_text_only")
@@ -178,6 +208,9 @@ hc pad $monitor $panel_height
                 #echo "resetting tags" >&2
                 IFS=$'\t' read -ra tags <<< "$(hc tag_status $monitor)"
                 ;;
+			volume)
+				volume="${cmd[@]:1}"
+				;;
 			wireless)
 				wireless="${cmd[@]:1}"
 				;;

@@ -34,6 +34,8 @@ hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-c close
 hc keybind $Mod-Return spawn xterm
 hc keybind $Mod-grave spawn dmenu_run -h $PANEL_HEIGHT -p "Run:" -nb $DARK -nf $LIGHT -sb $ACCENT -sf $DARK
+hc keybind XF86AudioLowerVolume spawn amixer set Master 5%-
+hc keybind XF86AudioRaiseVolume spawn amixer set Master 5%+
 
 # basic movement
 # focusing clients
@@ -202,3 +204,12 @@ fi
 
 #Load .Xresources
 xrdb -load ~/.Xresources
+
+#Start pulseaudio
+if pgrep pulseaudio >> /dev/null
+then
+	kill $(pgrep pulseaudio)
+	pulseaudio --start
+else
+	pulseaudio --start
+fi
