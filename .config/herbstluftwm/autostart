@@ -2,15 +2,27 @@
 
 # this is a simple config for herbstluftwm
 
+#get colors from .Xresources
+get_xcolor(){
+	xresources=$(\
+		cat ~/.Xresources\
+	)
+	color=$(\
+		echo $xresources | \
+		sed "s/.*\*color$1: \(#[0-9A-Fa-f]*\).*/\1/"\
+	)
+	echo $color
+}
+
 #Wallpaper
 WALLPAPER=/home/tom/Pictures/ThDLxEW.jpg
 
 #Numix color palette
-LIGHT='#f9f9f9'
-LLIGHT='#dedede'
-ACCENT='#d64937'
-LDARK='#333333'
-DARK='#2d2d2d'
+LIGHT=$(get_xcolor 15)
+LLIGHT=$(get_xcolor 7)
+ACCENT=$(get_xcolor 9)
+LDARK=$(get_xcolor 8)
+DARK=$(get_xcolor 0)
 
 #Panel
 PANEL_HEIGHT=24
