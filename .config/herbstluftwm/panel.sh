@@ -87,6 +87,8 @@ hc pad $monitor $panel_height
 		)
 		if [ -z $vol ] ; then
 			echo -e "volume\t^fg($normax_txt)Audio off"
+		elif [ $vol -le 0 ] ; then
+			echo -e "volume\t^fg($normal_txt)Volume muted"
 		else
 			echo -e "volume\t^fg($normal_txt)Volume: $vol%"
 		fi
