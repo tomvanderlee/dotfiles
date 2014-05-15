@@ -15,6 +15,7 @@ The makefile has multiple recepies:
  - herbstluftwm: Installs my herbstluftwm dotfiles
  - bash: Installs my bashrc file
  - vim: Installs my vimrc file
+ - xresources: Installs my xresources file
  - install: Does all of the above
  - uninstall: uninstall all my makefiles
 
