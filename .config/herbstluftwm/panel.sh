@@ -12,12 +12,17 @@ x=${geometry[0]}
 y=${geometry[1]}
 panel_width=${geometry[2]}
 
+add_alpha_channel(){
+	echo "$1" | \
+	sed "s/.*#\([0-9a-fA-F]*\).*/#ff\1/"
+}
+
 panel_height=$2
-light=$3
-llight=$4
-accent=$5
-ldark=$6
-dark=$7
+light=$(add_alpha_channel $3)
+llight=$(add_alpha_channel $4)
+accent=$(add_alpha_channel $5)
+ldark=$(add_alpha_channel $6)
+dark=$(add_alpha_channel $7)
 
 font="-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*"
 #font=""
@@ -27,29 +32,8 @@ selected_txt=$dark
 normal_txt=$light
 inactive_txt=$llight
 
-########################################################################################
-# Try to find textwidth binary.
-# In e.g. Ubuntu, this is named dzen2-textwidth.
-if which textwidth &> /dev/null ; then
-    textwidth="textwidth";
-elif which dzen2-textwidth &> /dev/null ; then
-    textwidth="dzen2-textwidth";
-else
-    echo "This script requires the textwidth tool of the dzen2 project."
-    exit 1
-fi
+hc pad $monitor $panel_height
 
-########################################################################################
-# true if we are using the svn version of dzen2
-# depending on version/distribution, this seems to have version strings like
-# "dzen-" or "dzen-x.x.x-svn"
-if dzen2 -v 2>&1 | head -n 1 | grep -q '^dzen-\([^,]*-svn\|\),'; then
-    dzen2_svn="true"
-else
-    dzen2_svn=""
-fi
-
-########################################################################################
 if awk -Wv 2>/dev/null | head -1 | grep -q '^mawk'; then
     # mawk needs "-W interactive" to line-buffer stdout correctly
     # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=593504
@@ -64,13 +48,8 @@ else
     }
 fi
 
-########################################################################################
-hc pad $monitor $panel_height
-
-########################################################################################
 {
     ### Event generator ###
-    # based on different input data (mpc, date, hlwm hooks, ...) this generates events, formed like this:
     #   <eventname>\t<data> [...]
     # e.g.
     #   date    ^fg(#efefef)18:33^fg(#909090), 2013-10-^fg(#efefef)29
@@ -89,9 +68,9 @@ hc pad $monitor $panel_height
 			if [ -z $vol ] ; then
 				echo -e "volume\toff"
 			elif [ $vol -le 0 ] ; then
-				echo -e "volume\t^fg($normal_txt)Volume muted"
+				echo -e "volume\t%{F$normal_txt}Volume muted"
 			else
-				echo -e "volume\t^fg($normal_txt)Volume: $vol%"
+				echo -e "volume\t%{F$normal_txt}Volume: $vol%%%{F-}"
 			fi
 		else
 			echo -e "volume\toff"
@@ -110,7 +89,7 @@ hc pad $monitor $panel_height
 			)
 			if [ $ssid = "off/any" ] ; then
 				ifconf=$
-				echo -e "wireless\t^fg($normal_txt)Wlan: No connection"
+				echo -e "wireless\t%{F$normal_txt}Wlan: No connection%{F-}"
 			else	
 				IFS=',' read -a quality_info <<< $(\ 
 					echo $iwconfig | \
@@ -119,7 +98,7 @@ hc pad $monitor $panel_height
 				cur_qual=${quality_info[0]}
 				max_qual=${quality_info[1]}
 				quality_p=$(echo "$cur_qual*100/$max_qual" | bc)
-				echo -e "wireless\t^fg($normal_txt)Wlan: $quality_p% ^fg($inactive_txt)($ssid)"
+				echo -e "wireless\t%{F$normal_txt}Wlan: $quality_p%% %{F$inactive_txt}($ssid)%{F-}"
 			fi
 		fi
 			
@@ -136,11 +115,11 @@ hc pad $monitor $panel_height
 			fi
 			state=$(echo ${batinfo[2]} | tr -d ',')
 			remaining=$(echo ${batinfo[4]})
-			echo -e "battery\t^fg($normal_txt)$state: ^fg($bat_color)$charge^fg($normal_txt)% ^fg($inactive_txt)($remaining)"
+			echo -e "battery\t%{F$normal_txt}$state: %{F$bat_color}$charge%{F$normal_txt}%% %{F$inactive_txt}($remaining)%{F-}"
 		fi
 
 		# Time
-        echo -e $(date +$"date\t^fg($normal_txt)%H:%M:%S^fg($inactive_txt) (%d-%m-%Y)")
+        echo -e $(date +$"date\t%{F$normal_txt}%H:%M:%S %{F$inactive_txt}(%d-%m-%Y)%{F-}")
         sleep 1 || break
     done > >(uniq_linebuffered) &
     childpid=$!
@@ -156,64 +135,38 @@ hc pad $monitor $panel_height
 	wireless=""
     windowtitle=""
     while true ; do
-
-        ### Output ######################################################################
-        # This part prints dzen data based on the _previous_ data handling run,
-        # and then waits for the next event to happen.
-
-        bordercolor="#26221C"
-        separator="^bg()^fg($accent)|"
+        separator="%{F$accent}|%{F-}"
         # draw tags
         for i in "${tags[@]}" ; do
             case ${i:0:1} in
                 '#')
-                    echo -n "^bg($selected_bg)^fg($selected_txt)"
+                    echo -n "%{U$accent+u}%{B-}%{F$normal_txt}"
                     ;;
                 '+')
-                    echo -n "^bg($accent)^fg($normal_bg)"
+                    echo -n "%{B$accent}%{F$normal_bg}"
                     ;;
                 ':')
-                    echo -n "^bg()^fg($normal_txt)"
+                    echo -n "%{B-}%{F$normal_txt}"
                     ;;
                 '!')
-                    echo -n "^bg($normal_txt)^fg($normal_bg)"
+                    echo -n "%{B$normal_txt}%{F$normal_bg}"
                     ;;
                 *)
-                    echo -n "^bg()^fg($inactive_txt)"
+                    echo -n "%{B-}%{F$inactive_txt}"
                     ;;
             esac
-            if [ ! -z "$dzen2_svn" ] ; then
-                # clickable tags if using SVN dzen
-                echo -n "^ca(1,\"${herbstclient_command[@]:-herbstclient}\" "
-                echo -n "focus_monitor \"$monitor\" && "
-                echo -n "\"${herbstclient_command[@]:-herbstclient}\" "
-                echo -n "use \"${i:1}\") ${i:1} ^ca()"
-            else
-                # non-clickable tags if using older dzen
-                echo -n " ${i:1} "
-            fi
+            echo -n " ${i:1} %{F-}%{B-}%{U-u}"
         done
         echo -n "$separator"
-        echo -n "^bg()^fg() ${windowtitle//^/^^}"
-        # small adjustments
+        echo -n "%{B-}%{F-} ${windowtitle//^/^^}"
+        
+		#Right part of panel
         right="$volume$wireless$battery$date "
-        right_text_only=$(echo -n "$right" | sed 's.\^[^(]*([^)]*)..g')
-        # get width of right aligned text.. and add some space..
-        width=$($textwidth "$font" "$right_text_only")
-        echo -n "^pa($(($panel_width - $width)))$right"
+        echo -n "%{r}$right"
         echo
-
-        ### Data handling ###
-        # This part handles the events generated in the event loop, and sets
-        # internal variables based on them. The event and its arguments are
-        # read into the array cmd, then action is taken depending on the event
-        # name.
-        # "Special" events (quit_panel/togglehidepanel/reload) are also handled
-        # here.
 
         # wait for next event
         IFS=$'\t' read -ra cmd || break
-        # find out event origin
         case "${cmd[0]}" in
             tag*)
                 #echo "resetting tags" >&2
@@ -224,7 +177,7 @@ hc pad $monitor $panel_height
 				if [ $volume == "off" ] ; then
 					volume=""
 				else
-					volume="$volume $separator^bg() "
+					volume="$volume $separator%{B-} "
 				fi
 				;;
 			wireless)
@@ -232,7 +185,7 @@ hc pad $monitor $panel_height
 				if [ $wireless = "off" ] ; then
 					wireless=""
 				else
-					wireless="$wireless $separator^bg() "
+					wireless="$wireless $separator%{B-} "
 				fi
 				;;
 			battery)
@@ -240,48 +193,17 @@ hc pad $monitor $panel_height
 				if [ $battery == "off" ] ; then
 					battery=""
 				else
-					battery="$battery $separator^bg() "
+					battery="$battery $separator%{B-} "
 				fi
 				;;
             date)
                 #echo "resetting date" >&2
                 date="${cmd[@]:1}"
                 ;;
-            quit_panel)
-                exit
-                ;;
-            togglehidepanel)
-                currentmonidx=$(hc list_monitors | sed -n '/\[FOCUS\]$/s/:.*//p')
-                if [ "${cmd[1]}" -ne "$monitor" ] ; then
-                    continue
-                fi
-                if [ "${cmd[1]}" = "current" ] && [ "$currentmonidx" -ne "$monitor" ] ; then
-                    continue
-                fi
-                echo "^togglehide()"
-                if $visible ; then
-                    visible=false
-                    hc pad $monitor 0
-                else
-                    visible=true
-                    hc pad $monitor $panel_height
-                fi
-                ;;
-            reload)
-                exit
-                ;;
             focus_changed|window_title_changed)
                 windowtitle="${cmd[@]:2}"
                 ;;
-            #player)
-            #    ;;
         esac
     done
-
-    ### dzen2 ###
-    # After the data is gathered and processed, the output of the previous block
-    # gets piped to dzen2.
-
-} 2> /dev/null | dzen2 -w $panel_width -x $x -y $y -fn "$font" -h $panel_height \
-    -e 'button3=;button4=exec:herbstclient use_index -1;button5=exec:herbstclient use_index +1' \
-    -ta l -bg "$normal_bg" -fg "$normal_txt"
+} 2> /dev/null | bar -g $panel_width\x$panel_height\+$x+$y -f "$font" \
+    -u 2 -B "$normal_bg" -F "$normal_txt"
