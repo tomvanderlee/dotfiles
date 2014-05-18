@@ -155,7 +155,7 @@ fi
                     echo -n "%{B-}%{F$inactive_txt}"
                     ;;
             esac
-            echo -n " ${i:1} %{F-}%{B-}%{U-u}"
+            echo -n "%{A:herbstclient use ${i:1}:} ${i:1} %{A}%{F-}%{B-}%{U-u}"
         done
         echo -n "$separator"
         echo -n "%{B-}%{F-} ${windowtitle//^/^^}"
@@ -205,5 +205,7 @@ fi
                 ;;
         esac
     done
-} 2> /dev/null | bar -g $panel_width\x$panel_height\+$x+$y -f "$font" \
-    -u 2 -B "$normal_bg" -F "$normal_txt"
+} 2> /dev/null | \
+	bar -g $panel_width\x$panel_height\+$x+$y -f "$font" \
+    -u 2 -B "$normal_bg" -F "$normal_txt" | \
+	while read line; do eval "$line"; done
