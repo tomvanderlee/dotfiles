@@ -107,7 +107,7 @@ fi
 		if [ -z $batinfo ] ; then
 			echo -e "battery\toff"
 		else 
-		charge=$(echo ${batinfo[3]} | tr -d '%,')
+			charge=$(echo ${batinfo[3]} | tr -d '%,')
 			if [ $charge -lt 15 ] ;	then
 				bat_color=$accent
 			else
@@ -155,7 +155,7 @@ fi
                     echo -n "%{B-}%{F$inactive_txt}"
                     ;;
             esac
-            echo -n "%{A:herbstclient use ${i:1}:} ${i:1} %{A}%{F-}%{B-}%{U-u}"
+            echo -n "%{A:tag,${i:1}:} ${i:1} %{A}%{F-}%{B-}%{U-u}"
         done
         echo -n "$separator"
         echo -n "%{B-}%{F-} ${windowtitle//^/^^}"
@@ -206,6 +206,23 @@ fi
         esac
     done
 } 2> /dev/null | \
-	bar -g $panel_width\x$panel_height\+$x+$y -f "$font" \
-    -u 2 -B "$normal_bg" -F "$normal_txt" | \
-	while read line; do eval "$line"; done
+	bar -g $panel_width\x$panel_height\+$x+$y \
+	-f "$font" \
+    -u 2 \
+	-B "$normal_bg" \
+	-F "$normal_txt" | \
+{
+	#Handle clickable areas
+	while read line; do
+		IFS=',' read -a c <<< $(echo $line)
+		case "${c[0]}" in
+			tag)
+				herbstclient use "${c[1]}"
+				echo "herbstclient use \"${c[1]}\""	
+				;;
+			*)
+				echo "${c[0]}: not valid command"
+				;;
+		esac
+	done
+}
