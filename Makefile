@@ -1,7 +1,11 @@
-NUMIX = .local/share/themes/numix-no-title
+PWD=$(shell pwd)
+
+THEMES_DIR = .local/share/themes
+CONFIG_DIR = .config
+NUMIX = numix-no-title
 BASHRC = .bashrc
 VIMRC = .vimrc
-HERBSTLUFT = .config/herbstluftwm
+HERBSTLUFT = herbstluftwm
 XRESOURCES = .Xresources
 
 
@@ -9,42 +13,25 @@ install: all
 
 all:  bash vim xresources numix-no-title herbstluftwm
 
-numix-no-title: 
-	#create wm theme dir if not exist
-	mkdir -p  ~/$(NUMIX)
-
-	#remove content if existing
-	-rm -rf ~/$(NUMIX)/*
-
-	#copy new contents in
-	cp -rf $(NUMIX)/* ~/$(NUMIX)/
+numix-no-title:
+	ln -sf $(PWD)/$(THEMES_DIR)/$(NUMIX) ~/$(THEMES_DIR)
 
 herbstluftwm:
-	#create herbstluftwm if not exist
-	mkdir -p ~/$(HERBSTLUFT)
-
-	#remove content if existing
-	-rm -rf ~/$(HERBSTLUFT)/*
-
-	#copy new contents in 
-	cp -rf $(HERBSTLUFT)/* ~/$(HERBSTLUFT)/
+	ln -sf $(PWD)/$(CONFIG_DIR)/$(HERBSTLUFT) ~/$(CONFIG_DIR)
 
 bash:
-	#copy bashrc to home
-	cp -f $(BASHRC) ~
+	ln -sf $(PWD)/$(BASHRC) ~
 
 vim:
-	#copy vimrc to home
-	cp -f $(VIMRC) ~
+	ln -sf $(PWD)/$(VIMRC) ~
 
 xresources:
-	#copy Xresources to home
-	cp -f $(XRESOURCES) ~
+	ln -sf $(PWD)/$(XRESOURCES) ~
 
-uninstall: 
+uninstall:
 	#remove all
-	-rm -rf ~/$(WM-THEME-DIR)
-	-rm -rf ~/$(HERBSTLUFT)
-	-rm -f ~/$(BASHRC)
-	-rm -f ~/$(VIMRC)
-	-rm -f ~/$(XRESOURCES)
+	-rm ~/$(THEMES_DIR)/$(NUMIX)
+	-rm ~/$(CONFIG_DIR)/$(HERBSTLUFT)
+	-rm ~/$(BASHRC)
+	-rm ~/$(VIMRC)
+	-rm ~/$(XRESOURCES)
