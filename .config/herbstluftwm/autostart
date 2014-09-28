@@ -231,7 +231,7 @@ fi
 if pgrep xscreensaver >> /dev/null
 then
 	kill $(pgrep xscreensaver)
-	xscreensaver&
+	xscreensaver -no-splash&
 else
-	xscreensaver&
+	xscreensaver -no-splash&
 fi
