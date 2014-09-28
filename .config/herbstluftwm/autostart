@@ -226,3 +226,12 @@ then
 else
 	pulseaudio --start
 fi
+
+#Start xscreensaver
+if pgrep xscreensaver >> /dev/null
+then
+	kill $(pgrep xscreensaver)
+	xscreensaver&
+else
+	xscreensaver&
+fi
