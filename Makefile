@@ -4,6 +4,7 @@ THEMES_DIR = .local/share/themes
 CONFIG_DIR = .config
 NUMIX = numix-no-title
 BASHRC = .bashrc
+COMPTON = .compton
 VIMRC = .vimrc
 HERBSTLUFT = herbstluftwm
 XRESOURCES = .Xresources
@@ -11,7 +12,7 @@ XRESOURCES = .Xresources
 
 install: all
 
-all:  bash vim xresources numix-no-title herbstluftwm
+all:  bash compton vim xresources numix-no-title herbstluftwm
 
 numix-no-title:
 	ln -sf $(PWD)/$(THEMES_DIR)/$(NUMIX) ~/$(THEMES_DIR)
@@ -21,6 +22,9 @@ herbstluftwm:
 
 bash:
 	ln -sf $(PWD)/$(BASHRC) ~
+
+compton:
+	ln -sf $(PWD)/$(COMPTON) ~
 
 vim:
 	ln -sf $(PWD)/$(VIMRC) ~
@@ -32,6 +36,7 @@ uninstall:
 	#remove all
 	-rm ~/$(THEMES_DIR)/$(NUMIX)
 	-rm ~/$(CONFIG_DIR)/$(HERBSTLUFT)
+	-rm ~/$(COMPTON) 
 	-rm ~/$(BASHRC)
 	-rm ~/$(VIMRC)
 	-rm ~/$(XRESOURCES)

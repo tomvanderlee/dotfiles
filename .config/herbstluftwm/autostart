@@ -206,7 +206,7 @@ fi
 feh --bg-fill $WALLPAPER
 
 #Start compton if not running
-start_compton(){ compton -c -z & }
+start_compton(){ compton --config ~/.compton & }
 if pgrep compton >> /dev/null
 then
 	kill $(pgrep compton)
@@ -235,3 +235,4 @@ then
 else
 	xscreensaver -no-splash&
 fi
+

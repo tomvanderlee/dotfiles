@@ -109,7 +109,7 @@ fi
 				bat_color=$normal_txt
 			fi
 			state=$(cat /sys/class/power_supply/BAT1/status)
-			echo -e "battery\t%{F$normal_txt}$state: %{F$bat_color}$charge%{F$normal_txt}%% %{F-}"
+			echo -e "battery\t%{F$normal_txt}$state: %{F$bat_color}$charge%{F$normal_txt}%%%{F-}"
 		else
 			echo -e "battery\toff"
 		fi
