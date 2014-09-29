@@ -1,28 +1,23 @@
 #!/bin/bash
 
-hc() { "${herbstclient_command[@]:-herbstclient}" "$@" ;}
-monitor=${1:-0}
-geometry=( $(herbstclient monitor_rect "$monitor") )
-if [ -z "$geometry" ] ;then
-    echo "Invalid monitor $monitor"
-    exit 1
-fi
-# geometry has the format W H X Y
-x=${geometry[0]}
-y=${geometry[1]}
-panel_width=${geometry[2]}
+hc() {
+	"${herbstclient_command[@]:-herbstclient}" "$@" ;
+}
 
 add_alpha_channel(){
 	echo "$1" | \
 	sed "s/.*#\([0-9a-fA-F]*\).*/#ff\1/"
 }
 
+monitor=${1:-0}
 panel_height=$2
-light=$(add_alpha_channel $3)
-llight=$(add_alpha_channel $4)
-accent=$(add_alpha_channel $5)
-ldark=$(add_alpha_channel $6)
-dark=$(add_alpha_channel $7)
+padding=$3
+
+light=$(add_alpha_channel $4)
+llight=$(add_alpha_channel $5)
+accent=$(add_alpha_channel $6)
+ldark=$(add_alpha_channel $7)
+dark=$(add_alpha_channel $8)
 
 font="-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*"
 #font=""
@@ -32,7 +27,17 @@ selected_txt=$dark
 normal_txt=$light
 inactive_txt=$llight
 
-hc pad $monitor $panel_height
+geometry=( $(herbstclient monitor_rect "$monitor") )
+if [ -z "$geometry" ] ;then
+    echo "Invalid monitor $monitor"
+    exit 1
+fi
+# geometry has the format W H X Y
+x=$(echo "${geometry[0]} + $padding" | bc)
+y=$(echo "${geometry[1]} + $padding" | bc)
+panel_width=$(echo "${geometry[2]} - (2 * $padding)" | bc)
+
+hc pad $monitor $(echo "$panel_height + $padding" | bc)
 
 if awk -Wv 2>/dev/null | head -1 | grep -q '^mawk'; then
     # mawk needs "-W interactive" to line-buffer stdout correctly
@@ -79,7 +84,7 @@ fi
 		# Network
 		iwconfig=$(iwconfig wlp3s0)
 		if [ -z $iwconfig ] ; then
-			echo -e "wireless\toff"
+			echo -e "net\toff"
 		else
 			ssid=$(\
 				echo $iwconfig | \
@@ -89,33 +94,24 @@ fi
 			)
 			if [ $ssid = "off/any" ] ; then
 				ifconf=$
-				echo -e "wireless\t%{F$normal_txt}Wlan: No connection%{F-}"
-			else	
-				IFS=',' read -a quality_info <<< $(\ 
-					echo $iwconfig | \
-					sed "s/.*Link Quality=\([0-9]*\)\/\([0-9]*\).*/\1,\2/"\ 
-				)
-				cur_qual=${quality_info[0]}
-				max_qual=${quality_info[1]}
-				quality_p=$(echo "$cur_qual*100/$max_qual" | bc)
-				echo -e "wireless\t%{F$normal_txt}Wlan: $quality_p%% %{F$inactive_txt}($ssid)%{F-}"
+				echo -e "net\t%{F$normal_txt}Net: No connection%{F-}"
+			else
+				echo -e "net\t%{F$normal_txt}Net: $ssid%{F-}"
 			fi
 		fi
-			
+
 		# Battery
-		IFS=' ' read -a batinfo <<< $(acpi -b)
-		if [ -z $batinfo ] ; then
-			echo -e "battery\toff"
-		else 
-			charge=$(echo ${batinfo[3]} | tr -d '%,')
+		if $(test -e /sys/class/power_supply/BAT1) ; then
+			charge=$(cat /sys/class/power_supply/BAT1/capacity)
 			if [ $charge -lt 15 ] ;	then
 				bat_color=$accent
 			else
 				bat_color=$normal_txt
 			fi
-			state=$(echo ${batinfo[2]} | tr -d ',')
-			remaining=$(echo ${batinfo[4]})
-			echo -e "battery\t%{F$normal_txt}$state: %{F$bat_color}$charge%{F$normal_txt}%% %{F$inactive_txt}($remaining)%{F-}"
+			state=$(cat /sys/class/power_supply/BAT1/status)
+			echo -e "battery\t%{F$normal_txt}$state: %{F$bat_color}$charge%{F$normal_txt}%% %{F-}"
+		else
+			echo -e "battery\toff"
 		fi
 
 		# Time
@@ -132,7 +128,7 @@ fi
     date=""
 	volume=""
 	battery=""
-	wireless=""
+	net=""
     windowtitle=""
     while true ; do
         separator="%{F$accent}|%{F-}"
@@ -159,9 +155,9 @@ fi
         done
         echo -n "$separator"
         echo -n "%{B-}%{F-} ${windowtitle//^/^^}"
-        
+
 		#Right part of panel
-        right="$volume$wireless$battery$date "
+        right="$volume$net$battery$date "
         echo -n "%{r}$right"
         echo
 
@@ -180,12 +176,12 @@ fi
 					volume="$volume $separator%{B-} "
 				fi
 				;;
-			wireless)
-				wireless="${cmd[@]:1}"
-				if [ $wireless = "off" ] ; then
-					wireless=""
+			net)
+				net="${cmd[@]:1}"
+				if [ $net = "off" ] ; then
+					net=""
 				else
-					wireless="$wireless $separator%{B-} "
+					net="$net $separator%{B-} "
 				fi
 				;;
 			battery)

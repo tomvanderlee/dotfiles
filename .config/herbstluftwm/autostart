@@ -2,6 +2,10 @@
 
 # this is a simple config for herbstluftwm
 
+hc() {
+    herbstclient "$@"
+}
+
 #get colors from .Xresources
 get_xcolor(){
 	xresources=$(\
@@ -15,25 +19,22 @@ get_xcolor(){
 }
 
 #Wallpaper
-WALLPAPER=/home/tom/Pictures/ThDLxEW.jpg
+WALLPAPER=/home/tom/Pictures/rocks.jpg
 
 #Numix color palette
 LIGHT=$(get_xcolor 15)
 LLIGHT=$(get_xcolor 7)
-ACCENT=$(get_xcolor 9)
+ACCENT=$(get_xcolor 12)
 LDARK=$(get_xcolor 8)
 DARK=$(get_xcolor 0)
 
-#Panel
-PANEL_HEIGHT=24
-
-hc() {
-    herbstclient "$@"
-}
+#Panel and padding
+padding=20
+monitor_width=$(hc list_monitors | sed 's/^[0-9]: \([0-9]*\)x.*$/\1/')
+panel_height=24
+panel_width=$(echo "$monitor_width - (2 * $padding)" | bc)
 
 hc emir_hook reload
-
-xsetroot -solid $ACCENT
 
 # remove all existing keybindings
 hc keyunbind --all
@@ -45,7 +46,7 @@ hc keybind $Mod-Shift-q quit
 hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-c close
 hc keybind $Mod-Return spawn xterm
-hc keybind $Mod-grave spawn dmenu_run -h $PANEL_HEIGHT -p "Run:" -nb $DARK -nf $LIGHT -sb $ACCENT -sf $DARK
+hc keybind $Mod-grave spawn dmenu_run -h $panel_height -w $panel_width -x $padding -y $padding -p "Run:" -nb $DARK -nf $LIGHT -sb $ACCENT -sf $DARK
 hc keybind XF86AudioLowerVolume spawn amixer set Master 5%-
 hc keybind XF86AudioRaiseVolume spawn amixer set Master 5%+
 
@@ -94,7 +95,7 @@ tag_keys=( {1..9} 0 )
 
 # Selecting workspaces
 hc keybind Alt-Control-Left 	use_index -1
-hc keybind Alt-Control-Right 	use_index +1 
+hc keybind Alt-Control-Right 	use_index +1
 hc rename default "${tag_names[0]}" || true
 for i in ${!tag_names[@]} ; do
     hc add "${tag_names[$i]}"
@@ -156,7 +157,7 @@ hc attr theme.active.inner_color $DARK
 hc attr theme.active.outer_color $DARK
 hc attr theme.background_color $DARK
 
-hc set window_gap 20
+hc set window_gap $padding
 hc set frame_padding 0
 hc set smart_window_surroundings 0
 hc set smart_frame_surroundings 1
@@ -186,7 +187,7 @@ herbstclient set tree_style '╾│ ├└╼─┐'
 #Start panel in all monitors
 start_panel() {
 	for monitor in $(herbstclient list_monitors | cut -d: -f1) ; do
-		"$1" $monitor $PANEL_HEIGHT $LIGHT $LLIGHT $ACCENT $LDARK $DARK $2&
+		"$1" $monitor $panel_height $padding $LIGHT $LLIGHT $ACCENT $LDARK $DARK $2&
 	done
 }
 
@@ -202,7 +203,7 @@ else
 fi
 
 #Wallpaper
-feh --bg-scale $WALLPAPER
+feh --bg-fill $WALLPAPER
 
 #Start compton if not running
 start_compton(){ compton -c -z & }
@@ -224,4 +225,13 @@ then
 	pulseaudio --start
 else
 	pulseaudio --start
+fi
+
+#Start xscreensaver
+if pgrep xscreensaver >> /dev/null
+then
+	kill $(pgrep xscreensaver)
+	xscreensaver -no-splash&
+else
+	xscreensaver -no-splash&
 fi
