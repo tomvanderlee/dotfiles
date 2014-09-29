@@ -19,7 +19,7 @@ get_xcolor(){
 }
 
 #Wallpaper
-WALLPAPER=/home/tom/Pictures/web16002.jpg
+WALLPAPER=/home/tom/Pictures/rocks.jpg
 
 #Numix color palette
 LIGHT=$(get_xcolor 15)
