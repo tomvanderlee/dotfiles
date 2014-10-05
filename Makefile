@@ -15,10 +15,12 @@ install: all
 all:  bash compton vim xresources numix-no-title herbstluftwm
 
 numix-no-title:
-	ln -sf $(PWD)/$(THEMES_DIR)/$(NUMIX) ~/$(THEMES_DIR)
+	mkdir -p ~/$(THEMES_DIR)
+	ln -sf $(PWD)/$(THEMES_DIR)/$(NUMIX) ~/$(THEMES_DIR)/
 
 herbstluftwm:
-	ln -sf $(PWD)/$(CONFIG_DIR)/$(HERBSTLUFT) ~/$(CONFIG_DIR)
+	mkdir -p ~/$(CONFIG_DIR)
+	ln -sf $(PWD)/$(CONFIG_DIR)/$(HERBSTLUFT) ~/$(CONFIG_DIR)/
 
 bash:
 	ln -sf $(PWD)/$(BASHRC) ~
