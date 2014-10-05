@@ -36,7 +36,7 @@ uninstall:
 	#remove all
 	-rm ~/$(THEMES_DIR)/$(NUMIX)
 	-rm ~/$(CONFIG_DIR)/$(HERBSTLUFT)
-	-rm ~/$(COMPTON) 
+	-rm ~/$(COMPTON)
 	-rm ~/$(BASHRC)
 	-rm ~/$(VIMRC)
 	-rm ~/$(XRESOURCES)
