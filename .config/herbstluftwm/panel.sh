@@ -13,11 +13,11 @@ monitor=${1:-0}
 panel_height=$2
 padding=$3
 
-light=$(add_alpha_channel $4)
-llight=$(add_alpha_channel $5)
-accent=$(add_alpha_channel $6)
-ldark=$(add_alpha_channel $7)
-dark=$(add_alpha_channel $8)
+light=$(add_alpha_channel $WM_LIGHT)
+llight=$(add_alpha_channel $WM_LLIGHT)
+accent=$(add_alpha_channel $WM_ACCENT)
+ldark=$(add_alpha_channel $WM_LDARK)
+dark=$(add_alpha_channel $WM_DARK)
 
 font="-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*"
 #font=""
@@ -36,6 +36,7 @@ fi
 x=$(echo "${geometry[0]} + $padding" | bc)
 y=$(echo "${geometry[1]} + $padding" | bc)
 panel_width=$(echo "${geometry[2]} - (2 * $padding)" | bc)
+bar_opts="-g ${panel_width}x${panel_height}+${x}+${y} -f ${font} -u 2 -B ${normal_bg} -F ${normal_txt}"
 
 hc pad $monitor $(echo "$panel_height + $padding" | bc)
 
@@ -102,14 +103,14 @@ fi
 
 		# Battery
 		if $(test -e /sys/class/power_supply/BAT1) ; then
-			charge=$(cat /sys/class/power_supply/BAT1/capacity)
-			if [ $charge -lt 15 ] ;	then
+			bat_lvl=$(cat /sys/class/power_supply/BAT1/capacity)
+			if [ $bat_lvl -lt 15 ] ;	then
 				bat_color=$accent
 			else
 				bat_color=$normal_txt
 			fi
 			state=$(cat /sys/class/power_supply/BAT1/status)
-			echo -e "battery\t%{F$normal_txt}$state: %{F$bat_color}$charge%{F$normal_txt}%%%{F-}"
+			echo -e "battery\t%{F$normal_txt}$state: %{F$bat_color}$bat_lvl%{F$normal_txt}%%%{F-}"
 		else
 			echo -e "battery\toff"
 		fi
@@ -201,20 +202,14 @@ fi
                 ;;
         esac
     done
-} 2> /dev/null | \
-	bar -g $panel_width\x$panel_height\+$x+$y \
-	-f "$font" \
-    -u 2 \
-	-B "$normal_bg" \
-	-F "$normal_txt" | \
-{
+} 2> /dev/null | bar $bar_opts | {
 	#Handle clickable areas
 	while read line; do
 		IFS=',' read -a c <<< $(echo $line)
 		case "${c[0]}" in
 			tag)
 				herbstclient use "${c[1]}"
-				echo "herbstclient use \"${c[1]}\""	
+				echo "herbstclient use \"${c[1]}\""
 				;;
 			*)
 				echo "${c[0]}: not valid command"
