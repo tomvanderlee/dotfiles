@@ -9,4 +9,5 @@ alias ls='ls --color=auto'
 #PS1='[\u@\h \W]\$ '
 PS1='[\d][\t]\u on \h\n\w => '
 
+source liquidprompt
 archey

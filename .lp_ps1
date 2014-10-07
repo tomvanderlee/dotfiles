@@ -1,0 +1,30 @@
+
+#######################################
+# LIQUID PROMPT DEFAULT TEMPLATE FILE #
+#######################################
+
+# Available features:
+# LP_BATT battery
+# LP_LOAD load
+# LP_JOBS screen sessions/running jobs/suspended jobs
+# LP_USER user
+# LP_HOST hostname
+# LP_PERM a colon ":"
+# LP_PWD current working directory
+# LP_PROXY HTTP proxy
+# LP_VCS the content of the current repository
+# LP_ERR last error code
+# LP_MARK prompt mark
+# LP_TIME current time
+# LP_RUNTIME runtime of last command
+# LP_PS1_PREFIX user-defined general-purpose prefix (default set a generic prompt as the window title)
+
+# Remember that most features come with their corresponding colors,
+# see the README.
+
+LP_PS1="[\d][\t]\u on \h\n\w${LP_VCS}${LP_MARK}"
+
+LP_TITLE=$(_lp_title $PS1)
+PS1="${LP_TITLE}${PS1}"
+
+# vim: set et sts=4 sw=4 tw=120 ft=sh:
