@@ -15,12 +15,12 @@ get_x_color() {
 hlwm_scripts="$HOME/.config/herbstluftwm"
 
 #wallpaper
-wallpaper=/home/tom/Pictures/rocks.jpg
+wallpaper=/home/tom/Pictures/fall1.jpg
 
 #Numix color palette
 export WM_LIGHT=$(get_x_color 15)
 export WM_LLIGHT=$(get_x_color 7)
-export WM_ACCENT=$(get_x_color 12)
+export WM_ACCENT=$(get_x_color 9)
 export WM_LDARK=$(get_x_color 8)
 export WM_DARK=$(get_x_color 0)
 
