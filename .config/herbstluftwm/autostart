@@ -199,4 +199,5 @@ $hlwm_scripts/start.sh compton --config ~/.compton
 $hlwm_scripts/start.sh xrdb -load ~/.Xresources
 $hlwm_scripts/start.sh pulseaudio --start
 $hlwm_scripts/start.sh xscreensaver -no-splash
+$hlwm_scripts/start.sh dropboxd
 $hlwm_scripts/start.sh $hlwm_scripts/notify.sh $monitor_w $window_p $panel_h $hlwm_scripts/popup.sh

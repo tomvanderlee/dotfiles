@@ -8,7 +8,7 @@ HERBSTLUFT = herbstluftwm
 
 BASHRC = .bashrc
 COMPTON = .compton
-LIQUIDPROMPT = liquidpromptrc
+LIQUIDPROMPT = .liquidpromptrc
 LP_PS1 = .lp_ps1
 VIMRC = .vimrc
 XRESOURCES = .Xresources
