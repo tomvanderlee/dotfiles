@@ -194,7 +194,7 @@ else
 	start_panel $panel
 fi
 
-$hlwm_scripts/start.sh "xautolock -locker $hlwm_scripts/lock.sh"
+$hlwm_scripts/start.sh "xautolock -time 5 -locker $hlwm_scripts/lock.sh"
 $hlwm_scripts/start.sh "feh --bg-fill $wallpaper"
 $hlwm_scripts/start.sh "compton --config $HOME/.compton"
 $hlwm_scripts/start.sh "xrdb -load $HOME/.Xresources"
