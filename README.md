@@ -10,7 +10,7 @@ You can
  - copy the files to your home directory
 
 or 
- - You can run make install to stow all dotfiles to your home directory (recommanded)
+ - You can run make install to stow all dotfiles to your home directory (recommended)
 
 The makefile has two recepies:
  - install: Installs all my dotfiles to your $HOME
