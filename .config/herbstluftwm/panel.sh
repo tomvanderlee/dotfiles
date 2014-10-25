@@ -65,7 +65,7 @@ fi
 		if pgrep pulseaudio > /dev/null ; then
 			volumes=$(\
 				amixer get Master | \
-				grep Front\
+				grep "Mono: Playback"\
 			)
 			vol=$(\
 				echo $volumes | \
