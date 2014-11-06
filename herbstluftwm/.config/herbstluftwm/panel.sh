@@ -62,24 +62,20 @@ fi
 
     while true ; do
 		# Volume
-		if pgrep pulseaudio > /dev/null ; then
-			volumes=$(\
-				amixer get Master | \
-				grep "Mono: Playback"\
-			)
-			vol=$(\
-				echo $volumes | \
-				sed "s/.*\[\([0-9]*\)%\].*/\1/"\
-			)
-			if [ -z $vol ] ; then
-				echo -e "volume\toff"
-			elif [ $vol -le 0 ] ; then
-				echo -e "volume\t%{F$normal_txt}Volume muted"
-			else
-				echo -e "volume\t%{F$normal_txt}Volume: $vol%%%{F-}"
-			fi
-		else
+		volumes=$(\
+			amixer get -c 2 get Speaker | \
+			grep "Front Right: Playback"\
+		)
+		vol=$(\
+			echo $volumes | \
+			sed "s/.*\[\([0-9]*\)%\].*/\1/"\
+		)
+		if [ -z $vol ] ; then
 			echo -e "volume\toff"
+		elif [ $vol -le 0 ] ; then
+			echo -e "volume\t%{F$normal_txt}Volume muted"
+		else
+			echo -e "volume\t%{F$normal_txt}Volume: $vol%%%{F-}"
 		fi
 
 		# Network
