@@ -48,8 +48,8 @@ hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-c close
 hc keybind $Mod-Return spawn xterm
 hc keybind $Mod-grave spawn dmenu_run $dmenu_opts
-hc keybind XF86AudioLowerVolume spawn amixer -c 2 set Speaker 5%-
-hc keybind XF86AudioRaiseVolume spawn amixer -c 2 set Speaker 5%+
+hc keybind XF86AudioLowerVolume spawn amixer set Master 1%-
+hc keybind XF86AudioRaiseVolume spawn amixer set Master 1%+
 
 echo "env DISPLAY=:0 /usr/bin/dmenu_run $dmenu_opts"
 
@@ -201,10 +201,11 @@ else
 	start_panel $panel
 fi
 
+pulseaudio --start
+
 $hlwm_scripts/start.sh "xautolock -time 5 -locker $hlwm_scripts/lock.sh"
 $hlwm_scripts/start.sh "feh --bg-fill $wallpaper"
 $hlwm_scripts/start.sh "compton --config $HOME/.compton"
 $hlwm_scripts/start.sh "xrdb -load $HOME/.Xresources"
-$hlwm_scripts/start.sh "pulseaudio --start"
 $hlwm_scripts/start.sh "dropboxd"
 $hlwm_scripts/start.sh "$hlwm_scripts/notify.sh $monitor_w $window_p $panel_h $hlwm_scripts/popup.sh"

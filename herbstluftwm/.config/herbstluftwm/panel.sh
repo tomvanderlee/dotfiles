@@ -61,21 +61,33 @@ fi
     #   date    ^fg(#efefef)18:33^fg(#909090), 2013-10-^fg(#efefef)29
 
     while true ; do
-		# Volume
-		volumes=$(\
-			amixer get -c 2 get Speaker | \
-			grep "Front Right: Playback"\
-		)
-		vol=$(\
-			echo $volumes | \
-			sed "s/.*\[\([0-9]*\)%\].*/\1/"\
-		)
-		if [ -z $vol ] ; then
-			echo -e "volume\toff"
-		elif [ $vol -le 0 ] ; then
-			echo -e "volume\t%{F$normal_txt}Volume muted"
+		# Music
+		player_status=$(playerctl status)
+		if [ $player_status = "Playing" ]; then
+			player_artist=$(playerctl metadata artist)
+			player_title=$(playerctl metadata title)
+			echo -e "music\tPlaying: $player_title - $player_artist"	
 		else
-			echo -e "volume\t%{F$normal_txt}Volume: $vol%%%{F-}"
+			echo -e "music\toff"		
+		fi
+
+		# Volume
+		if pgrep pulseaudio >> /dev/null ; then
+			volumes=$(\
+				amixer get Master | \
+				grep "Front Right: Playback"\
+			)
+			vol=$(\
+				echo $volumes | \
+				sed "s/.*\[\([0-9]*\)%\].*/\1/"\
+			)
+			if [ -z $vol ] ; then
+				echo -e "volume\toff"
+			else
+				echo -e "volume\t%{F$normal_txt}Vol: $vol%%%{F-}"
+			fi
+		else		
+			echo -e "volume\toff"
 		fi
 
 		# Network
@@ -154,7 +166,7 @@ fi
         echo -n "%{B-}%{F-} ${windowtitle//^/^^}"
 
 		#Right part of panel
-        right="$volume$net$battery$date "
+        right="$music$volume$net$battery$date "
         echo -n "%{r}$right"
         echo
 
@@ -165,6 +177,14 @@ fi
                 #echo "resetting tags" >&2
                 IFS=$'\t' read -ra tags <<< "$(hc tag_status $monitor)"
                 ;;
+			music)
+				music="${cmd[@]:1}"
+				if [ $music == "off" ] ; then
+					music=""
+				else
+					music="$music $separator%{B-} "
+				fi
+				;;
 			volume)
 				volume="${cmd[@]:1}"
 				if [ $volume == "off" ] ; then
