@@ -91,22 +91,36 @@ fi
 		fi
 
 		# Network
-		iwconfig=$(iwconfig wlp3s0)
-		if [ -z $iwconfig ] ; then
-			echo -e "net\toff"
-		else
+		read lo int1 int2 <<< `ip link | sed -n 's/^[0-9]: \(.*\):.*$/\1/p'`
+		if iwconfig $int1 >/dev/null 2>&1; then
+			wifi=$int1
+			eth=$int2
+		else 
+			wifi=$int2
+			eth=$int1
+		fi
+		
+		ip link show $eth | grep 'state UP' >/dev/null && int=$eth || int=$wifi	
+
+		if [ $int == "wlp3s0" ] ; then
+			iwconfig=$(iwconfig $int)
 			ssid=$(\
 				echo $iwconfig | \
 				sed "s/.*ESSID:\(\".*\"\).*/\1/" | \
 				sed "s/.*\(off\/any\).*/\"\1\"/" | \
 				sed "s/.*\"\(.*\)\".*/\1/"\
 			)
-			if [ $ssid = "off/any" ] ; then
-				ifconf=$
-				echo -e "net\t%{F$normal_txt}Net: No connection%{F-}"
-			else
-				echo -e "net\t%{F$normal_txt}Net: $ssid%{F-}"
+
+			if [ $ssid != "off/any" ] ; then
+				echo -e "net\tNet: $ssid"
+			else 
+				echo -e "net\toff"
 			fi
+
+		elif [ $int == "enp2s0" ] ; then
+			echo -e "net\tNet: ethernet"	
+		else
+			echo -e "net\toff"
 		fi
 
 		# Battery
