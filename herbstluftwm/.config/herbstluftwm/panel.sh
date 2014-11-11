@@ -159,31 +159,33 @@ fi
         for i in "${tags[@]}" ; do
             case ${i:0:1} in
                 '#')
-                    echo -n "%{U$accent+u}%{B-}%{F$normal_txt}"
+                    echo -n "%{U$accent+u}%{F$normal_txt}"
                     ;;
                 '+')
-                    echo -n "%{B$accent}%{F$normal_bg}"
+                    echo -n "%{U$normal_txt+u}%{F$normal_txt}"
                     ;;
                 ':')
-                    echo -n "%{B-}%{F$normal_txt}"
+                    echo -n "%{F$normal_txt}"
                     ;;
                 '!')
-                    echo -n "%{B$normal_txt}%{F$normal_bg}"
+                    echo -n "%{B$accent}%{U$accent+u}%{F$normal_bg}"
                     ;;
                 *)
-                    echo -n "%{B-}%{F$inactive_txt}"
+                    echo -n "%{F$inactive_txt}"
                     ;;
             esac
-            echo -n "%{A:tag,${i:1}:} ${i:1} %{A}%{F-}%{B-}%{U-u}"
+            echo -n "%{A:tag,${i:1}:} ${i:1} %{A}%{F-}%{U-u}%{B-}"
         done
-        echo -n "$separator"
-        echo -n "%{B-}%{F-} ${windowtitle//^/^^}"
+        echo -n "$separator%{F-}%{B-} "
+        echo -n "${windowtitle//^/^^}"
 
 		#Right part of panel
         right="$music$volume$net$battery$date "
         echo -n "%{r}$right"
-        echo
 
+		#DO NOT REMOVE THIS ECHO
+		echo
+		
         # wait for next event
         IFS=$'\t' read -ra cmd || break
         case "${cmd[0]}" in
