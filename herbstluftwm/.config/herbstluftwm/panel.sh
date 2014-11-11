@@ -20,7 +20,7 @@ ldark=$(add_alpha_channel $WM_LDARK)
 dark=$(add_alpha_channel $WM_DARK)
 
 font="-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*"
-#font=""
+font2="-*-stlarch-medium-*-*-*-10-*-*-*-*-*-*-*"
 selected_bg=$accent
 normal_bg=$dark
 selected_txt=$dark
@@ -36,7 +36,7 @@ fi
 x=$(echo "${geometry[0]} + $padding" | bc)
 y=$(echo "${geometry[1]} + $padding" | bc)
 panel_width=$(echo "${geometry[2]} - (2 * $padding)" | bc)
-bar_opts="-g ${panel_width}x${panel_height}+${x}+${y} -f ${font} -u 2 -B ${normal_bg} -F ${normal_txt}"
+bar_opts="-g ${panel_width}x${panel_height}+${x}+${y} -f $font,$font2 -u 2 -B $normal_bg -F $normal_txt"
 
 hc pad $monitor $(echo "$panel_height + $padding" | bc)
 
@@ -77,7 +77,7 @@ fi
 				scrolling=$current
 			fi
 
-			echo -e "music\tPlaying: ${scrolling:0:24}"	
+			echo -e "music\t\ue05c ${scrolling:0:24}"	
 		else
 			echo -e "music\toff"		
 		fi
@@ -95,7 +95,7 @@ fi
 			if [ -z $vol ] ; then
 				echo -e "volume\toff"
 			else
-				echo -e "volume\t%{F$normal_txt}Vol: $vol%%%{F-}"
+				echo -e "volume\t%{F$normal_txt}\ue05d $vol%%%{F-}"
 			fi
 		else		
 			echo -e "volume\toff"
@@ -123,13 +123,13 @@ fi
 			)
 
 			if [ $ssid != "off/any" ] ; then
-				echo -e "net\tNet: $ssid"
+				echo -e "net\t\ue0f3 $ssid"
 			else 
 				echo -e "net\toff"
 			fi
 
 		elif [ $int == "enp2s0" ] ; then
-			echo -e "net\tNet: ethernet"	
+			echo -e "net\t\ue0af ethernet"	
 		else
 			echo -e "net\toff"
 		fi
@@ -143,7 +143,7 @@ fi
 				bat_color=$normal_txt
 			fi
 			state=$(cat /sys/class/power_supply/BAT1/status)
-			echo -e "battery\t%{F$normal_txt}$state: %{F$bat_color}$bat_lvl%{F$normal_txt}%%%{F-}"
+			echo -e "battery\t%{F$normal_txt}\be03b %{F$bat_color}$bat_lvl%{F$normal_txt}%%%{F-}"
 		else
 			echo -e "battery\toff"
 		fi
