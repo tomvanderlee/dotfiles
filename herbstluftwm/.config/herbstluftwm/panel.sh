@@ -66,7 +66,18 @@ fi
 		if [ $player_status = "Playing" ]; then
 			player_artist=$(playerctl metadata artist)
 			player_title=$(playerctl metadata title)
-			echo -e "music\tPlaying: $player_title - $player_artist"	
+			playing="$player_title - $player_artist"
+
+			if [ "$current" != "$playing" ] ; then
+				current=$playing
+				scrolling=$current
+			elif [ ${#scrolling} -gt "24" ] ; then
+				scrolling=${scrolling:1}
+			else
+				scrolling=$current
+			fi
+
+			echo -e "music\tPlaying: ${scrolling:0:24}"	
 		else
 			echo -e "music\toff"		
 		fi
