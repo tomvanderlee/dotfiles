@@ -51,8 +51,6 @@ hc keybind $Mod-grave spawn dmenu_run $dmenu_opts
 hc keybind XF86AudioLowerVolume spawn amixer set Master 1%-
 hc keybind XF86AudioRaiseVolume spawn amixer set Master 1%+
 
-echo "env DISPLAY=:0 /usr/bin/dmenu_run $dmenu_opts"
-
 # basic movement
 # focusing clients
 hc keybind $Mod-Left  focus left
@@ -207,5 +205,7 @@ $hlwm_scripts/start.sh "xautolock -time 5 -locker $hlwm_scripts/lock.sh"
 $hlwm_scripts/start.sh "feh --bg-fill $wallpaper"
 $hlwm_scripts/start.sh "compton --config $HOME/.compton"
 $hlwm_scripts/start.sh "xrdb -load $HOME/.Xresources"
+$hlwm_scripts/start.sh "xset +fp /usr/share/fonts/local"
+$hlwm_scripts/start.sh "xset fp rehash"
 $hlwm_scripts/start.sh "dropboxd"
 $hlwm_scripts/start.sh "$hlwm_scripts/notify.sh $monitor_w $window_p $panel_h $hlwm_scripts/popup.sh"
