@@ -4,28 +4,10 @@ hc() {
 	"${herbstclient_command[@]:-herbstclient}" "$@" ;
 }
 
-add_alpha_channel(){
-	echo "$1" | \
-	sed "s/.*#\([0-9a-fA-F]*\).*/#ff\1/"
-}
+dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+source "$dir/theme"
 
 monitor=${1:-0}
-panel_height=$2
-padding=$3
-
-light=$(add_alpha_channel $WM_LIGHT)
-llight=$(add_alpha_channel $WM_LLIGHT)
-accent=$(add_alpha_channel $WM_ACCENT)
-ldark=$(add_alpha_channel $WM_LDARK)
-dark=$(add_alpha_channel $WM_DARK)
-
-font="-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*"
-font2="-*-stlarch-medium-*-*-*-10-*-*-*-*-*-*-*"
-selected_bg=$accent
-normal_bg=$dark
-selected_txt=$dark
-normal_txt=$light
-inactive_txt=$llight
 
 geometry=( $(herbstclient monitor_rect "$monitor") )
 if [ -z "$geometry" ] ;then
@@ -33,12 +15,12 @@ if [ -z "$geometry" ] ;then
     exit 1
 fi
 # geometry has the format W H X Y
-x=$(echo "${geometry[0]} + $padding" | bc)
-y=$(echo "${geometry[1]} + $padding" | bc)
-panel_width=$(echo "${geometry[2]} - (2 * $padding)" | bc)
-bar_opts="-g ${panel_width}x${panel_height}+${x}+${y} -f $font,$font2 -u 2 -B $normal_bg -F $normal_txt"
+x=$(echo "${geometry[0]} + $window_p" | bc)
+y=$(echo "${geometry[1]} + $window_p" | bc)
+panel_width=$(echo "${geometry[2]} - (2 * $window_p)" | bc)
+bar_opts="-g ${panel_width}x${panel_h}+${x}+${y} -f $font,$font_sec -u 2 -B $acolor_bg -F $acolor_fg"
 
-hc pad $monitor $(echo "$panel_height + $padding" | bc)
+hc pad $monitor $(echo "$panel_h + $window_p" | bc)
 
 if awk -Wv 2>/dev/null | head -1 | grep -q '^mawk'; then
     # mawk needs "-W interactive" to line-buffer stdout correctly
@@ -77,9 +59,9 @@ fi
 				scrolling=$current
 			fi
 
-			echo -e "music\t\ue05c ${scrolling:0:24}"	
+			echo -e "music\t\ue05c ${scrolling:0:24}"
 		else
-			echo -e "music\toff"		
+			echo -e "music\toff"
 		fi
 
 		# Volume
@@ -95,9 +77,9 @@ fi
 			if [ -z $vol ] ; then
 				echo -e "volume\toff"
 			else
-				echo -e "volume\t%{F$normal_txt}\ue05d $vol%%%{F-}"
+				echo -e "volume\t%{F$acolor_fg}\ue05d $vol%%%{F-}"
 			fi
-		else		
+		else
 			echo -e "volume\toff"
 		fi
 
@@ -106,12 +88,12 @@ fi
 		if iwconfig $int1 >/dev/null 2>&1; then
 			wifi=$int1
 			eth=$int2
-		else 
+		else
 			wifi=$int2
 			eth=$int1
 		fi
-		
-		ip link show $eth | grep 'state UP' >/dev/null && int=$eth || int=$wifi	
+
+		ip link show $eth | grep 'state UP' >/dev/null && int=$eth || int=$wifi
 
 		if [ $int == "wlp3s0" ] ; then
 			iwconfig=$(iwconfig $int)
@@ -124,12 +106,12 @@ fi
 
 			if [ $ssid != "off/any" ] ; then
 				echo -e "net\t\ue0f3 $ssid"
-			else 
+			else
 				echo -e "net\toff"
 			fi
 
 		elif [ $int == "enp2s0" ] ; then
-			echo -e "net\t\ue0af ethernet"	
+			echo -e "net\t\ue0af ethernet"
 		else
 			echo -e "net\toff"
 		fi
@@ -138,18 +120,18 @@ fi
 		if $(test -e /sys/class/power_supply/BAT1) ; then
 			bat_lvl=$(cat /sys/class/power_supply/BAT1/capacity)
 			if [ $bat_lvl -lt 15 ] ;	then
-				bat_color=$accent
+				bat_color=$acolor_accent
 			else
-				bat_color=$normal_txt
+				bat_color=$acolor_fg
 			fi
 			state=$(cat /sys/class/power_supply/BAT1/status)
-			echo -e "battery\t%{F$normal_txt}\ue03b %{F$bat_color}$bat_lvl%{F$normal_txt}%%%{F-}"
+			echo -e "battery\t%{F$acolor_fg}\ue03b %{F$bat_color}$bat_lvl%{F$acolor_fg}%%%{F-}"
 		else
 			echo -e "battery\toff"
 		fi
 
 		# Time
-        echo -e $(date +$"date\t%{F$normal_txt}%H:%M:%S %{F$inactive_txt}(%d-%m-%Y)%{F-}")
+        echo -e $(date +$"date\t%{F$acolor_fg}%H:%M:%S %{F$acolor_fg}(%d-%m-%Y)%{F-}")
         sleep 1 || break
     done > >(uniq_linebuffered) &
     childpid=$!
@@ -165,24 +147,24 @@ fi
 	net=""
     windowtitle=""
     while true ; do
-        separator="%{F$accent}|%{F-}"
+        separator="%{F$acolor_accent}|%{F-}"
         # draw tags
         for i in "${tags[@]}" ; do
             case ${i:0:1} in
                 '#')
-                    echo -n "%{U$accent+u}%{F$normal_txt}"
+                    echo -n "%{U$acolor_accent+u}%{F$acolor_fg}"
                     ;;
                 '+')
-                    echo -n "%{U$normal_txt+u}%{F$normal_txt}"
+                    echo -n "%{U$acolor_fg+u}%{F$acolor_fg}"
                     ;;
                 ':')
-                    echo -n "%{F$normal_txt}"
+                    echo -n "%{F$acolor_fg}"
                     ;;
                 '!')
-                    echo -n "%{B$accent}%{U$accent+u}%{F$normal_bg}"
+                    echo -n "%{B$acolor_accent}%{U$acolor_accent+u}%{F$acolor_bg}"
                     ;;
                 *)
-                    echo -n "%{F$inactive_txt}"
+                    echo -n "%{F$acolor_fg}"
                     ;;
             esac
             echo -n "%{A:tag,${i:1}:} ${i:1} %{A}%{F-}%{U-u}%{B-}"
@@ -196,7 +178,7 @@ fi
 
 		#DO NOT REMOVE THIS ECHO
 		echo
-		
+
         # wait for next event
         IFS=$'\t' read -ra cmd || break
         case "${cmd[0]}" in
