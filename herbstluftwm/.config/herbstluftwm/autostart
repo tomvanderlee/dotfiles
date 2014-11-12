@@ -6,36 +6,17 @@ hc() {
     herbstclient "$@"
 }
 
-get_x_color() {
-    xresources=$(cat ~/.Xresources)
-    color=$(echo $xresources | sed "s/.*\*color$1: \(#[0-9A-Fa-f]*\).*/\1/")
-    echo $color
-}
-
-hlwm_scripts="$HOME/.config/herbstluftwm"
-
-#wallpaper
-wallpaper="/home/tom/Pictures/fall1.jpg"
-
-#Numix color palette
-export WM_LIGHT=$(get_x_color 15)
-export WM_LLIGHT=$(get_x_color 7)
-export WM_ACCENT=$(get_x_color 9)
-export WM_LDARK=$(get_x_color 8)
-export WM_DARK=$(get_x_color 0)
+dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+source "$dir/theme"
 
 #Detect monitors
 hc set auto_detect_monitors 1
 hc detect_monitors
 
 #Panel and window_p
-window_p=20
 monitor_w=($(hc list_monitors | sed 's/^[0-9]: \([0-9]*\)x.*$/\1/'))
-panel_h=24
 panel_w=$(echo "$monitor_w - (2 * $window_p)" | bc)
-dmenu_opts="-h $panel_h -w $panel_w -x $window_p -y $window_p -p Run: -nb $WM_DARK -nf $WM_LIGHT -sb $WM_ACCENT -sf $WM_DARK"
-
-hc emir_hook reload
+dmenu_opts="-h $panel_h -w $panel_w -x $window_p -y $window_p -p Run: -nb $color_bg -nf $color_fg -sb $color_accent -sf $color_bg"
 
 # remove all existing keybindings
 hc keyunbind --all
@@ -135,10 +116,6 @@ hc set focus_follows_mouse 1
 # theme
 hc attr theme.tiling.reset 1
 hc attr theme.floating.reset 1
-hc set frame_border_active_color $WM_LDARK
-hc set frame_border_normal_color $WM_DARK
-hc set frame_bg_normal_color $WM_LDARK
-hc set frame_bg_active_color $WM_DARK
 hc set frame_border_width 0
 hc set always_show_frame 0
 hc set frame_bg_transparent 1
@@ -147,18 +124,18 @@ hc set frame_active_opacity 0
 hc set frame_transparent_width 0
 hc set frame_gap 0
 
-hc attr theme.active.color $WM_ACCENT
-hc attr theme.normal.color $WM_DARK
+hc attr theme.active.color $color_accent
+hc attr theme.normal.color $color_bg
 hc attr theme.urgent.color orange
 hc attr theme.inner_width 1
-hc attr theme.inner_color $WM_DARK
+hc attr theme.inner_color $color_bg
 hc attr theme.border_width 3
 hc attr theme.floating.border_width 4
 hc attr theme.floating.outer_width 1
-hc attr theme.floating.outer_color $WM_DARK
-hc attr theme.active.inner_color $WM_DARK
-hc attr theme.active.outer_color $WM_DARK
-hc attr theme.background_color $WM_DARK
+hc attr theme.floating.outer_color $color_bg
+hc attr theme.active.inner_color $color_bg
+hc attr theme.active.outer_color $color_bg
+hc attr theme.background_color $color_bg
 
 hc set window_gap $window_p
 hc set frame_padding 0
@@ -185,12 +162,12 @@ herbstclient set tree_style '╾│ ├└╼─┐'
 #Start panel in all monitors
 start_panel() {
 	for monitor in $(herbstclient list_monitors | cut -d: -f1) ; do
-		"$1" $monitor $panel_h $window_p &
+		"$1" $monitor&
 	done
 }
 
 # find the panel
-panel=$hlwm_scripts/panel.sh
+panel=$dir/panel.sh
 [ -x "$panel" ] || panel=/etc/xdg/herbstluftwm/panel.sh
 if pgrep panel.sh >> /dev/null
 then
@@ -202,11 +179,11 @@ fi
 
 pulseaudio --start
 
-$hlwm_scripts/start.sh "xautolock -time 5 -locker $hlwm_scripts/lock.sh"
-$hlwm_scripts/start.sh "feh --bg-fill $wallpaper"
-$hlwm_scripts/start.sh "compton --config $HOME/.compton"
-$hlwm_scripts/start.sh "xrdb -load $HOME/.Xresources"
-$hlwm_scripts/start.sh "xset +fp /usr/share/fonts/local"
-$hlwm_scripts/start.sh "xset fp rehash"
-$hlwm_scripts/start.sh "dropboxd"
-$hlwm_scripts/start.sh "$hlwm_scripts/notify.sh $monitor_w $window_p $panel_h $hlwm_scripts/popup.sh"
+$dir/start.sh "xautolock -time 5 -locker $dir/lock.sh"
+$dir/start.sh "feh --bg-fill $wallpaper"
+$dir/start.sh "compton --config $HOME/.compton"
+$dir/start.sh "xrdb -load $HOME/.Xresources"
+$dir/start.sh "xset +fp /usr/share/fonts/local"
+$dir/start.sh "xset fp rehash"
+$dir/start.sh "dropboxd"
+#$dir/start.sh "$dir/notify.sh $monitor_w $window_p $panel_h $dir/popup.sh"
