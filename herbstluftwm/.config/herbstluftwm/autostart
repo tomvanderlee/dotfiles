@@ -6,8 +6,9 @@ hc() {
     herbstclient "$@"
 }
 
+#Include the theming script
 dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-source "$dir/theme"
+source "$dir/theme.sh"
 
 #Detect monitors
 hc set auto_detect_monitors 1
@@ -186,4 +187,4 @@ $dir/start.sh "xrdb -load $HOME/.Xresources"
 $dir/start.sh "xset +fp /usr/share/fonts/local"
 $dir/start.sh "xset fp rehash"
 $dir/start.sh "dropboxd"
-#$dir/start.sh "$dir/notify.sh $monitor_w $window_p $panel_h $dir/popup.sh"
+#$dir/start.sh "$dir/notify.sh $dir/popup.sh"

@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Get color from ~/.Xresources
 get_x_color() {
     xresources=$(cat ~/.Xresources)

@@ -7,29 +7,20 @@ help () {
     echo -e "Options:"
     echo -e "  -m MESSAGE\t\tSpecifies message to be displayed"
     echo -e "  -t TIMEOUT\t\tAmount of time in seconds the popup is displayed"
+    echo -e "  -u LEVEL\t\tUrgency level (info or high)"
 }
 
-add_alpha_channel(){
-    echo "$1" | \
-    sed "s/.*#\([0-9a-fA-F]*\).*/#ff\1/"
-}
+dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+source "$dir/theme.sh"
 
 timeout=10
 message=""
-x=0
-y=0
-width=120
-height=90
 urgency="info"
 
 while getopts ":m:t:x:y:w:h:u:" opt; do
     case $opt in
         m) message=$OPTARG ;;
         t) timeout=$OPTARG ;;
-        x) x=$OPTARG ;;
-        y) y=$OPTARG ;;
-        w) width=$OPTARG ;;
-        h) height=$OPTARG ;;
         u) urgency=$OPTARG ;;
     esac
 done
@@ -37,13 +28,8 @@ done
 if test ! $message; then
     help
 else
-    light=$(add_alpha_channel $WM_LIGHT)
-    llight=$(add_alpha_channel $WM_LLIGHT)
-    accent=$(add_alpha_channel $WM_ACCENT)
-    ldark=$(add_alpha_channel $WM_LDARK)
-    dark=$(add_alpha_channel $WM_DARK)
-    font="-*-fixed-medium-*-*-*-$(echo "$height - 10" | bc)-*-*-*-*-*-*-*"
-    bar_opts="-f ${font} -B $dark -F $light -g ${width}x${height}+${x}+${y} -u 2"
+
+    bar_opts="-f $font,$font_sec -B $acolor_bg -F $acolor_fg -g ${popup_width}x${height}+${popup_x}+${popup_y} -u 2"
 
     t=$(date +%T)
 
@@ -54,7 +40,7 @@ else
     fi
 
     {
-        echo "%{F$accent} $prefix %{F$light}$message %{F$llight}($t)%{F-}"
+        echo "%{F$acolor_accent} $prefix %{F$acolor_fg}$message %{F$acolor_fg}($t)%{F-}"
         sleep $timeout
     } | bar $bar_opts
 fi
