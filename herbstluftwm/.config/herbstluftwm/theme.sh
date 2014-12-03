@@ -12,7 +12,7 @@ add_alpha_channel(){
 }
 
 # Wallpaper
-wallpaper="/home/tom/Pictures/fall1.jpg"
+wallpaper="/home/tom/Pictures/ice.jpg"
 
 # Padding
 window_p=20
@@ -24,7 +24,7 @@ font_sec="-*-stlarch-medium-*-*-*-10-*-*-*-*-*-*-*"
 
 # Colors
 color_fg=$(get_x_color 15)
-color_accent=$(get_x_color 9)
+color_accent=$(get_x_color 12)
 color_bg=$(get_x_color 0)
 
 # Alpha Colors for use with bar
