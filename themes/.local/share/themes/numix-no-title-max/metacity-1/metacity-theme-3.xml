@@ -22,18 +22,16 @@
 <constant name="C_icons_unfocused_pressed" value="gtk:custom(wm_icons_focused_pressed,shade/gtk:bg[SELECTED]/0.8)" />
 
 <!-- ::: GEOMETRY ::: -->
-<frame_geometry name="normal" has_title="true" title_scale="medium" rounded_top_left="1" rounded_top_right="1">
+<frame_geometry name="normal" title_scale="medium" rounded_top_left="1" rounded_top_right="1">
 	<distance name="left_width" value="1" />
 	<distance name="right_width" value="1" />
 	<distance name="bottom_height" value="1" />
-	<distance name="left_titlebar_edge" value="0" />
-	<distance name="right_titlebar_edge" value="0" />
+	<distance name="left_titlebar_edge" value="4" />
+	<distance name="right_titlebar_edge" value="4" />
 	<distance name="title_vertical_pad" value="0" />
 	<aspect_ratio name="button" value="1.0" />
-	<border name="title_border" left="0" right="0" top="1"
-bottom="0" />
-	<border name="button_border" left="0" right="0" top="0"
-bottom="0" />
+	<border name="title_border" left="8" right="8" top="4" bottom="4" />
+	<border name="button_border" left="0" right="0" top="0" bottom="0" />
 </frame_geometry>
 
 <frame_geometry name="normal_unfocused" title_scale="medium" rounded_top_left="1" rounded_top_right="1" parent="normal" />
@@ -42,6 +40,7 @@ bottom="0" />
 	<distance name="left_width" value="0" />
 	<distance name="right_width" value="0" />
 	<distance name="bottom_height" value="0" />
+	<border name="title_border" left="0" right="0" top="0" bottom="0" />
 	<border name="button_border" left="0" right="0" top="0"
 bottom="0" />
 </frame_geometry>
