@@ -6,15 +6,8 @@ Recently I've been discovering tiling window managers and that customizeing my d
 This means I've got a "lot" of dotfiles I want to share across my machines and with everyone who is interested.
 
 ###How to install
-You can
- - copy the files to your home directory
 
-or 
- - You can run make install to stow all dotfiles to your home directory (recommended)
+1. Clone this repository and cd into it
+2. Run `./dotfiles.sh --sync` to sync all the dotfiles to your $HOME
 
-The makefile has two recepies:
- - install: Installs all my dotfiles to your $HOME
- - uninstall: Uninstalls all my dotfiles
-
-The makefile depends on GNU Stow.
-
+Thanks to [jbernard](https://github.com/jbernard) for making dotfile management easy!

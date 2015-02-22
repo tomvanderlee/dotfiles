@@ -1,0 +1,13 @@
+[dotfiles]
+repository = ~/dotfiles
+
+packages = ['config',
+            'themes']
+
+ignore = [
+    '.git',
+    '.gitignore',
+    '.gitmodules',
+    'dotfiles*',
+    '*.swp',
+    'README.md']
