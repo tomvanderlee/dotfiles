@@ -25,7 +25,7 @@ man() {
 }
 
 alias ls='ls --color=auto'
-alias jblive='vlc rtmp://videocdn-us.geocdn.scaleengine.net/jblive/live/jblive.stream 2> /dev/null &' 
+alias jblive='mpv rtmp://videocdn-us.geocdn.scaleengine.net/jblive/live/jblive.stream 2> /dev/null &' 
 
 
 export PS1='[\d][\t]\u on \h\n\w => '
