@@ -24,6 +24,10 @@ man() {
     man "$@"
 }
 
+vim() {
+	(cd $@ && /usr/bin/vim) || /usr/bin/vim $@
+}
+
 alias ls='ls --color=auto'
 alias jblive='vlc rtmp://videocdn-us.geocdn.scaleengine.net/jblive/live/jblive.stream 2> /dev/null &' 
 
