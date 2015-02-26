@@ -5,6 +5,9 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+alias ls='ls --color=auto'
+alias jblive='mpv rtmp://videocdn-us.geocdn.scaleengine.net/jblive/live/jblive.stream 2> /dev/null &' 
+
 cd() {
 	builtin cd "$@" && ls -A	
 }
@@ -25,12 +28,15 @@ man() {
 }
 
 vim() {
-	(cd $@ && /usr/bin/vim) || /usr/bin/vim $@
+	if [[ -z $@ ]]; then
+		/usr/bin/vim
+	elif [[ -d $@ ]]; then
+		dir=$(pwd)
+		cd $@ && /usr/bin/vim && cd $dir
+	else
+		/usr/bin/vim $@
+	fi
 }
-
-alias ls='ls --color=auto'
-alias jblive='mpv rtmp://videocdn-us.geocdn.scaleengine.net/jblive/live/jblive.stream 2> /dev/null &' 
-
 
 export PS1='[\d][\t]\u on \h\n\w => '
 export GOPATH="$HOME/programming/go"

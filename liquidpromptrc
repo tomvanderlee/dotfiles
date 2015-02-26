@@ -113,7 +113,7 @@ LP_RUNTIME_THRESHOLD=2
 LP_ENABLE_VIRTUALENV=1
 
 # Show average system temperature
-LP_ENABLE_TEMP=1
+LP_ENABLE_TEMP=0
 
 # When showing time, use an analog clock instead of numeric values.
 # The analog clock is "accurate" to the nearest half hour.
