@@ -36,7 +36,8 @@ vim() {
 
 export PS1='[\d][\t]\u on \h\n\w => '
 export GOPATH="$HOME/programming/go"
-export PATH="$PATH:$GOPATH/bin"
+export GEM_HOME="$(ruby -e 'print Gem.user_dir')/bin"
+export PATH="$PATH:$GEM_HOME:$GOPATH/bin"
 export EDITOR="vim"
 
 source liquidprompt
