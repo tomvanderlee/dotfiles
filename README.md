@@ -8,6 +8,6 @@ This means I've got a "lot" of dotfiles I want to share across my machines and w
 ###How to install
 
 1. Clone this repository and cd into it
-2. Run `./dotfiles.sh --sync` to sync all the dotfiles to your $HOME
+2. Run `stow [dir]` to symlink the dotfile to your home
 
-Thanks to [jbernard](https://github.com/jbernard) for making dotfile management easy!
+
