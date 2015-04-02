@@ -8,10 +8,6 @@
 alias ls='ls --color=auto'
 alias jblive='mpv rtmp://videocdn-us.geocdn.scaleengine.net/jblive/live/jblive.stream 2> /dev/null &' 
 
-pacaur() {
-	env pacman_program="pacaur" /usr/bin/pacmatic "$@"
-}
-
 man() {
 	env LESS_TERMCAP_mb=$'\E[01;31m' \
 	LESS_TERMCAP_md=$'\E[01;38;5;74m' \
