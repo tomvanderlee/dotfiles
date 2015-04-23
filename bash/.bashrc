@@ -35,6 +35,7 @@ export GOPATH="$HOME/programming/go"
 export GEM_HOME="$(ruby -e 'print Gem.user_dir')/bin"
 export PATH="$PATH:$GEM_HOME:$GOPATH/bin"
 export EDITOR="vim"
+export TERM="xterm-256color"
 
 source liquidprompt
 archey3
