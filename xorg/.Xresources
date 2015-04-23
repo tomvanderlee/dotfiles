@@ -41,3 +41,4 @@
 *color15: #f9f9f9
 
 XTerm*selectToClipboard: true
+XTerm*metaSendsEscape: true
