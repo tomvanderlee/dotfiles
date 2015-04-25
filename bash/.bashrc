@@ -8,6 +8,10 @@
 export PS1='[\d][\t]\u on \h\n\w => '
 export TERM="xterm-256color"
 
+export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.local/usr/bin"
+export PATH="$PATH:$HOME/.local/usr/local/bin"
+
 alias ls='ls --color=auto'
 
 man() {
