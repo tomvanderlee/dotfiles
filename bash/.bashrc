@@ -12,7 +12,18 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.local/usr/bin"
 export PATH="$PATH:$HOME/.local/usr/local/bin"
 
-alias ls='ls --color=auto'
+case "$(uname)" in
+	Linux)
+		alias ls="ls --color=auto"
+		$usr="/usr"
+		;;
+	FreeBSD)
+		alias ls="ls -G"
+		$usr="/usr/local"
+		;;
+	*)
+		;;
+esac
 
 man() {
 	env LESS_TERMCAP_mb=$'\E[01;31m' \
@@ -31,12 +42,12 @@ exists() {
 
 vim() {
 	if [[ -z $@ ]]; then
-		/usr/bin/vim
+		$usr/bin/vim
 	elif [[ -d $@ ]]; then
 		dir=$(pwd)
-		cd $@ && /usr/bin/vim && cd $dir
+		cd $@ && $usr/bin/vim && cd $dir
 	else
-		/usr/bin/vim $@
+		$usr/bin/vim $@
 	fi
 }
 
