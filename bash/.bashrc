@@ -15,11 +15,11 @@ export PATH="$PATH:$HOME/.local/usr/local/bin"
 case "$(uname)" in
 	Linux)
 		alias ls="ls --color=auto"
-		$usr="/usr"
+		usr="/usr"
 		;;
 	FreeBSD)
 		alias ls="ls -G"
-		$usr="/usr/local"
+		usr="/usr/local"
 		;;
 	*)
 		;;
