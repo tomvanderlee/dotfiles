@@ -71,6 +71,12 @@ if exists gem; then
 	export PATH="$PATH:$GEM_HOME"
 fi
 
+if exists ezjail-admin; then
+	chjl() {
+		sudo ezjail-admin console $@.tomvanderlee.com
+	}
+fi
+
 if exists liquidprompt; then
 	source liquidprompt
 fi
