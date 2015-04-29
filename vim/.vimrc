@@ -1,6 +1,6 @@
 execute pathogen#infect()
 
-let mapleader=";"
+let mapleader=" "
 
 syntax on
 filetype plugin indent on
