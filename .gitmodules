@@ -19,3 +19,6 @@
 [submodule "vim/.vim/bundle/vim-nerdtree-tabs"]
 	path = vim/.vim/bundle/vim-nerdtree-tabs
 	url = https://github.com/jistr/vim-nerdtree-tabs.git
+[submodule "vim/.vim/bundle/Benokai"]
+	path = vim/.vim/bundle/Benokai
+	url = https://github.com/benjaminwhite/Benokai.git

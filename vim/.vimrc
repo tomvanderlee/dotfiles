@@ -5,6 +5,10 @@ let mapleader=";"
 syntax on
 filetype plugin indent on
 
+if &t_Co == 256
+	colorscheme Benokai
+endif
+
 set number
 set hlsearch
 set list
