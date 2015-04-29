@@ -30,6 +30,11 @@ function! AppendModeline()
 endfunction
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
+map <C-J> <C-W>j
+map <C-K> <C-W>k
+map <C-H> <C-W>h
+map <C-L> <C-W>l
+
 noremap  <Up> ""
 noremap! <Up> <Esc>
 noremap  <Down> ""
