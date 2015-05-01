@@ -6,7 +6,6 @@
 [[ $- != *i* ]] && return
 
 export PS1='[\d][\t]\u on \h\n\w => '
-export TERM="xterm-256color"
 
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.local/usr/bin"
@@ -40,16 +39,6 @@ exists() {
 	hash $@ 2> /dev/null
 }
 
-vim() {
-	if [[ -z $@ ]]; then
-		$usr/bin/vim
-	elif [[ -d $@ ]]; then
-		dir=$(pwd)
-		cd $@ && $usr/bin/vim && cd $dir
-	else
-		$usr/bin/vim $@
-	fi
-}
 
 if exists mpv; then
 	alias jblive='mpv rtmp://videocdn-us.geocdn.scaleengine.net/jblive/live/jblive.stream'
@@ -59,6 +48,16 @@ fi
 
 if exists vim; then
 	export EDITOR="vim"
+	vim() {
+		if [[ -z $@ ]]; then
+			$usr/bin/vim
+		elif [[ -d $@ ]]; then
+			dir=$(pwd)
+			cd $@ && $usr/bin/vim && cd $dir
+		else
+			$usr/bin/vim $@
+		fi
+	}
 fi
 
 if exists go; then

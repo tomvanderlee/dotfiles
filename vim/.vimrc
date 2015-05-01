@@ -43,3 +43,5 @@ noremap  <Left> ""
 noremap! <Left> <Esc>
 noremap  <Right> ""
 noremap! <Right> <Esc>
+
+" vim: set ts=8 sw=8 tw=78 noet :

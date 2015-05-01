@@ -1,8 +1,8 @@
 !*dpi: 145
 
 ! Font and Fontsize
-*faceName: Droid Sans Mono
-*faceSize: 11
+*faceName: Monospace
+*faceSize: 10
 
 !  Colors
 *background: #2d2d2d
@@ -36,9 +36,10 @@
 *color6: #3cb691
 *color14: #53b4bd
 
-!Whites
+! Whites
 *color7: #d9d9d9
 *color15: #f9f9f9
 
+XTerm*termName: xterm-256color
 XTerm*selectToClipboard: true
 XTerm*metaSendsEscape: true
