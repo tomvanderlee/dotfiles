@@ -13,10 +13,12 @@ set number
 set hlsearch
 set list
 set modeline
+set relativenumber
 
 set background=dark
 set foldmethod=indent
 set listchars=trail:·,tab:▸\ ,eol:¬
+set scrolloff=1
 
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
