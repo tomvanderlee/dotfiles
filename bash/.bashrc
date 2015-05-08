@@ -71,8 +71,8 @@ if exists gem; then
 fi
 
 if exists ezjail-admin; then
-	chjl() {
-		sudo ezjail-admin console $@.tomvanderlee.com
+	jl() {
+		sudo ezjail-admin $1 $2\.tomvanderlee.com
 	}
 fi
 
