@@ -39,7 +39,6 @@ exists() {
 	hash $@ 2> /dev/null
 }
 
-
 if exists mpv; then
 	alias jblive='mpv rtmp://videocdn-us.geocdn.scaleengine.net/jblive/live/jblive.stream'
 elif exists vlc; then
@@ -73,6 +72,16 @@ fi
 if exists ezjail-admin; then
 	jl() {
 		sudo ezjail-admin $1 $2\.tomvanderlee.com
+	}
+fi
+
+if exists pfctl; then
+	showbanned ()
+	{
+		for table in $(sudo pfctl -s Tables 2> /dev/null); do
+			echo "$table";
+			sudo pfctl -t $table -T show 2> /dev/null;
+		done
 	}
 fi
 
