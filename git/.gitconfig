@@ -4,5 +4,3 @@
 	glog = log --graph --oneline --decorate --all
 	sup = "!f() { git branch --set-upstream-to=$@; }; f"
 	ca = commit -am
-[push]
-	default = simple
