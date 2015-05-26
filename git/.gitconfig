@@ -1,0 +1,4 @@
+[user]
+	name = Tom van der Lee
+[alias]
+	glog = log --graph --oneline --decorate --all
