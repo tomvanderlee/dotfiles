@@ -85,6 +85,10 @@ if exists pfctl; then
 	}
 fi
 
+if exists pacman && ! exists pacaur; then
+	alias pacaur="sudo pacman"
+fi
+
 if exists liquidprompt; then
 	source liquidprompt
 fi
