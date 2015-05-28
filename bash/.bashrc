@@ -78,9 +78,9 @@ fi
 if exists pfctl; then
 	showbanned ()
 	{
-		for table in $(sudo pfctl -s Tables 2> /dev/null); do
-			echo "$table";
-			sudo pfctl -t $table -T show 2> /dev/null;
+		for table in "fail2ban"; do
+			banned=$(sudo pfctl -t $table -T show 2> /dev/null)
+			echo -e "$table\n$banned"
 		done
 	}
 fi
