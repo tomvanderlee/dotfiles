@@ -1,10 +1,10 @@
 alsa-utils
-bar-aint-recursive
 bc
 compton
 dmenu2
 feh
 i3lock
+lemonbar-git
 playerctl
 pulseaudio
 pulseaudio-alsa

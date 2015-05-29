@@ -143,7 +143,7 @@ fi
                 ;;
         esac
     done
-} 2> /dev/null | bar $bar_opts | {
+} 2> /dev/null | lemonbar $bar_opts | {
 	#Handle clickable areas
 	while read line; do
 		IFS=',' read -a c <<< $(echo $line)
