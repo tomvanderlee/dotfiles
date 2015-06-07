@@ -9,6 +9,15 @@ if &t_Co == 256
 	colorscheme Benokai
 endif
 
+" On arch linux install the following:
+" otf-powerline-symbols-git
+" powerline-fonts-git
+let g:airline_powerline_fonts = 1
+if !exists('g:airline_symbols')
+	  let g:airline_symbols = {}
+endif
+let g:airline_symbols.space = "\ua0"
+
 set number
 set hlsearch
 set list

@@ -22,3 +22,6 @@
 [submodule "vim/.vim/bundle/Benokai"]
 	path = vim/.vim/bundle/Benokai
 	url = https://github.com/benjaminwhite/Benokai.git
+[submodule "vim/.vim/bundle/vim-airline"]
+	path = vim/.vim/bundle/vim-airline
+	url = https://github.com/bling/vim-airline
