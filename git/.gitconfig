@@ -5,3 +5,4 @@
 	sup = "!f() { git branch --set-upstream-to=$@; }; f"
 	ca = commit -am
 	st = status -s
+	siu = "!f() { git submodule init && git submodule update; }; f"
