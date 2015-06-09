@@ -13,6 +13,7 @@ if &t_Co == 256
 endif
 
 " Some vim settings
+set number
 set relativenumber
 set hlsearch
 set list
