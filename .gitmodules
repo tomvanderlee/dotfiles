@@ -22,3 +22,9 @@
 [submodule "vim/.vim/bundle/vim-airline"]
 	path = vim/.vim/bundle/vim-airline
 	url = https://github.com/bling/vim-airline
+[submodule "vim/.vim/bundle/ctrlp"]
+	path = vim/.vim/bundle/ctrlp
+	url = https://github.com/ctrlpvim/ctrlp.vim
+[submodule "vim/.vim/bundle/vim-signify"]
+	path = vim/.vim/bundle/vim-signify
+	url = https://github.com/mhinz/vim-signify
