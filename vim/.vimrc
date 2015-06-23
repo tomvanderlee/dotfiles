@@ -23,11 +23,14 @@ set foldmethod=indent
 set listchars=trail:·,tab:▸\ ,eol:¬
 set scrolloff=1
 
+" Save as sudo
+cnoremap w!! w !sudo tee > /dev/null %
+
 " Switch windows with <C-W>[direction]
-map <C-J> <C-W>j
-map <C-K> <C-W>k
-map <C-H> <C-W>h
-map <C-L> <C-W>l
+noremap <C-J> <C-W>j
+noremap <C-K> <C-W>k
+noremap <C-H> <C-W>h
+noremap <C-L> <C-W>l
 
 " Never use the arrow keys
 noremap  <Up> ""
