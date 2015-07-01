@@ -2,6 +2,12 @@ execute pathogen#infect()
 
 """ DEFAULT VIM SETTINGS
 
+" Reload vimrc on save
+augroup reload_vimrc " {
+	autocmd!
+	autocmd BufWritePost $MYVIMRC source $MYVIMRC
+augroup END " }
+
 let mapleader=" "
 
 syntax on
