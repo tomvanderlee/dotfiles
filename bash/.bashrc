@@ -11,6 +11,8 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.local/usr/bin"
 export PATH="$PATH:$HOME/.local/usr/local/bin"
 
+alias :q="exit"
+
 case "$(uname)" in
 	Linux)
 		alias ls="ls --color=auto"
