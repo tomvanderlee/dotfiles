@@ -91,6 +91,10 @@ if exists pacman && ! exists pacaur; then
 	alias pacaur="sudo pacman"
 fi
 
+if exists less; then
+	export PAGER="less"
+fi
+
 if exists liquidprompt; then
 	source liquidprompt
 fi
