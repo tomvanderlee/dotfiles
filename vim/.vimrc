@@ -28,6 +28,7 @@ set background=dark
 set foldmethod=indent
 set listchars=trail:·,tab:▸\ ,eol:¬
 set scrolloff=1
+set backspace=indent,eol,start
 
 " Save as sudo
 cnoremap w!! w !sudo tee > /dev/null %
