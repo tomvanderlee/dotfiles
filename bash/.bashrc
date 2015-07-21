@@ -80,7 +80,7 @@ fi
 if exists pfctl; then
 	showbanned ()
 	{
-		for table in "fail2ban"; do
+		for table in "fail2ban" "permaban"; do
 			banned=$(sudo pfctl -t $table -T show 2> /dev/null)
 			echo -e "$table\n$banned"
 		done
