@@ -41,6 +41,10 @@ exists() {
 	hash $@ 2> /dev/null
 }
 
+if exists complete && exists sudo; then
+	complete -cf sudo
+fi
+
 if exists mpv; then
 	alias jblive='mpv rtmp://videocdn-us.geocdn.scaleengine.net/jblive/live/jblive.stream'
 elif exists vlc; then
@@ -71,13 +75,13 @@ if exists gem; then
 	export PATH="$PATH:$GEM_HOME"
 fi
 
-if exists ezjail-admin; then
+if exists ezjail-admin && exists sudo; then
 	jl() {
 		sudo ezjail-admin $1 $2\.tomvanderlee.com
 	}
 fi
 
-if exists pfctl; then
+if exists pfctl && exists sudo; then
 	showbanned ()
 	{
 		for table in "fail2ban" "permaban"; do
@@ -87,7 +91,7 @@ if exists pfctl; then
 	}
 fi
 
-if exists pacman && ! exists pacaur; then
+if (exists pacman && !exists pacaur) && exists sudo; then
 	alias pacaur="sudo pacman"
 fi
 
