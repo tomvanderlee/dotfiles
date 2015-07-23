@@ -1,0 +1,71 @@
+2015-07-23 09:00:01		Plugins loaded: alias, aspell, charset, exec, fifo, irc, logger, lua, perl, python, relay, ruby, script, tcl, trigger, xfer
+2015-07-23 09:00:04	=!=	You can not write text in this buffer
+2015-07-23 09:00:06	=!=	You can not write text in this buffer
+2015-07-23 09:00:07	=!=	You can not write text in this buffer
+2015-07-23 09:01:40	=!=	You can not write text in this buffer
+2015-07-23 09:01:46	=!=	Error with command "/plugin vim" (help on command: /help plugin)
+2015-07-23 09:01:51		[core]  /plugin  list|listfull [<name>]
+2015-07-23 09:01:51		                 load <filename> [<arguments>]
+2015-07-23 09:01:51		                 autoload [<arguments>]
+2015-07-23 09:01:51		                 reload [<name> [<arguments>]]
+2015-07-23 09:01:51		                 unload [<name>]
+2015-07-23 09:01:51		list/load/unload plugins
+2015-07-23 09:01:51		     list: list loaded plugins
+2015-07-23 09:01:51		 listfull: list loaded plugins (verbose)
+2015-07-23 09:01:51		     load: load a plugin
+2015-07-23 09:01:51		 autoload: autoload plugins in system or user directory
+2015-07-23 09:01:51		   reload: reload a plugin (if no name given, unload all plugins, then autoload plugins)
+2015-07-23 09:01:51		   unload: unload a plugin (if no name given, unload all plugins)
+2015-07-23 09:01:51		 filename: plugin (file) to load
+2015-07-23 09:01:51		     name: a plugin name
+2015-07-23 09:01:51		arguments: arguments given to plugin on load
+2015-07-23 09:01:51		Without argument, this command lists loaded plugins.
+2015-07-23 09:02:02		Plugins loaded:
+2015-07-23 09:02:02		  alias: Alias commands
+2015-07-23 09:02:02		  exec: Execution of external commands in WeeChat
+2015-07-23 09:02:02		  fifo: FIFO pipe for remote control
+2015-07-23 09:02:02		  irc: IRC (Internet Relay Chat) protocol
+2015-07-23 09:02:02		  logger: Log buffers to files
+2015-07-23 09:02:02		  relay: Relay WeeChat data to remote application (irc/weechat protocols)
+2015-07-23 09:02:02		  script: Scripts manager
+2015-07-23 09:02:02		  trigger: Text replacement and command execution on events triggered by WeeChat/plugins
+2015-07-23 09:02:02		  xfer: DCC file transfer and direct chat
+2015-07-23 09:02:02		  aspell: Spell checker for input (with Aspell)
+2015-07-23 09:02:02		  charset: Charset conversions
+2015-07-23 09:02:02		  lua: Support of lua scripts
+2015-07-23 09:02:02		  perl: Support of perl scripts
+2015-07-23 09:02:02		  python: Support of python scripts
+2015-07-23 09:02:02		  ruby: Support of ruby scripts
+2015-07-23 09:02:02		  tcl: Support of tcl scripts
+2015-07-23 09:02:08		  python: Support of python scripts
+2015-07-23 09:02:26	=!=	Error: unable to load plugin "vim": Shared object "vim" not found, required by "weechat"
+2015-07-23 09:02:26	=!=	If you're trying to load a script and not a C plugin, try command to load scripts (/perl, /python, ...)
+2015-07-23 09:03:26	=!=	You can not write text in this buffer
+2015-07-23 09:03:27	=!=	You can not write text in this buffer
+2015-07-23 09:03:34	=!=	You can not write text in this buffer
+2015-07-23 09:10:05		[vimode.py] Problematic keybindings detected:
+2015-07-23 09:10:05		[vimode.py]     meta-jmeta-f -> /buffer -
+2015-07-23 09:10:05		[vimode.py]     meta-jmeta-l -> /buffer +
+2015-07-23 09:10:05		[vimode.py]     meta-jmeta-r -> /server raw
+2015-07-23 09:10:05		[vimode.py]     meta-jmeta-s -> /server jump
+2015-07-23 09:10:05		[vimode.py]     meta-wmeta-meta2-A -> /window up
+2015-07-23 09:10:05		[vimode.py]     meta-wmeta-meta2-B -> /window down
+2015-07-23 09:10:05		[vimode.py]     meta-wmeta-meta2-C -> /window right
+2015-07-23 09:10:05		[vimode.py]     meta-wmeta-meta2-D -> /window left
+2015-07-23 09:10:05		[vimode.py]     meta-wmeta2-1;3A -> /window up
+2015-07-23 09:10:05		[vimode.py]     meta-wmeta2-1;3B -> /window down
+2015-07-23 09:10:05		[vimode.py]     meta-wmeta2-1;3C -> /window right
+2015-07-23 09:10:05		[vimode.py]     meta-wmeta2-1;3D -> /window left
+2015-07-23 09:10:05		[vimode.py]     meta-wmeta-b -> /window balance
+2015-07-23 09:10:05		[vimode.py]     meta-wmeta-s -> /window swap
+2015-07-23 09:10:05		[vimode.py] These keybindings may conflict with vimode.
+2015-07-23 09:10:05		[vimode.py] You can remove problematic key bindings and add recommended ones by using /vimode bind_keys, or only list them with /vimode bind_keys --list
+2015-07-23 09:10:05		[vimode.py] For help, see: https://github.com/GermainZ/weechat-vimode/blob/master/FAQ#problematic-key-bindings.md
+2015-07-23 09:10:05		[vimode.py] To force disable warnings, you can set plugins.var.python.vimode.no_warn to 'on'
+2015-07-23 09:10:05		python scripts loaded: vimode
+2015-07-23 09:10:05		Plugins loaded: alias, aspell, charset, exec, fifo, irc, logger, lua, perl, python, relay, ruby, script, tcl, trigger, xfer
+2015-07-23 09:10:20	=!=	Error: WeeChat main buffer can't be closed
+2015-07-23 09:10:22	=!=	Error: WeeChat main buffer can't be closed
+2015-07-23 09:10:33	=!=	irc: unable to create temporary server "irc.freenode.net" because the creation of temporary servers with command /connect is currently disabled
+2015-07-23 09:10:33	=!=	irc: if you want to create a standard server, use the command "/server add" (see /help server); if you really want to create a temporary server (NOT SAVED), turn on the option irc.look.temporary_servers
+2015-07-23 09:10:48		python: scripts unloaded

@@ -28,3 +28,6 @@
 [submodule "vim/.vim/bundle/vim-signify"]
 	path = vim/.vim/bundle/vim-signify
 	url = https://github.com/mhinz/vim-signify
+[submodule "weechat/.weechat/downloads/weechat-vimode"]
+	path = weechat/.weechat/downloads/weechat-vimode
+	url = https://github.com/GermainZ/weechat-vimode
