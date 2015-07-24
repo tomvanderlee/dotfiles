@@ -86,7 +86,14 @@ if exists pfctl && exists sudo; then
 	{
 		for table in "fail2ban" "permaban"; do
 			banned=$(sudo pfctl -t $table -T show 2> /dev/null)
-			echo -e "$table\n$banned"
+
+			if [ -z "$banned" ]; then
+				nrBanned="0"
+			else
+				nrBanned=$(echo "$banned" | wc -l | awk '{ print $1 }')
+			fi
+
+			echo -e "$table ($nrBanned)\n$banned"
 		done
 	}
 fi
