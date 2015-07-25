@@ -98,7 +98,7 @@ if exists pfctl && exists sudo; then
 	}
 fi
 
-if (exists pacman && !exists pacaur) && exists sudo; then
+if (exists pacman && ! exists pacaur) && exists sudo; then
 	alias pacaur="sudo pacman"
 fi
 
