@@ -1,7 +1,7 @@
-!*dpi: 145
+*dpi: 96
 
 ! Font and Fontsize
-*faceName: Monospace
+*faceName: DeJaVu Sans Mono for Powerline, Book
 *faceSize: 10
 
 !  Colors
@@ -43,3 +43,4 @@
 XTerm*termName: xterm-256color
 XTerm*selectToClipboard: true
 XTerm*metaSendsEscape: true
+XTerm*background: #2F343B
