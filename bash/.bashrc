@@ -5,7 +5,7 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-export PS1='[\d][\t]\u on \h\n\w => '
+export PS1='[\d][\t]\u on \h\n\w $ '
 
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.local/usr/bin"
