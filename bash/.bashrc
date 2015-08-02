@@ -110,11 +110,15 @@ fi
 
 if exists pip; then
 	pip() {
-		if [[ "$1" == "upgrade" ]]; then
+		if [[ "$1" == "upgrade" ]] || [[ "$1" == "update" ]]; then
 			outdated=$($usr/bin/pip list --outdated | awk '{ print $1 }')
 			for pkg in $outdated; do
 				$usr/bin/pip install $pkg --upgrade
 			done
+
+			if [[ -z "$outdated" ]]; then
+				echo "No updates found"
+			fi
 		else
 			$usr/bin/pip $@
 		fi
