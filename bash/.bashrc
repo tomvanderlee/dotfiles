@@ -23,6 +23,8 @@ case "$(uname)" in
 		usr="/usr/local"
 		;;
 	*)
+		alias ls="ls --color=auto"
+		usr="/usr"
 		;;
 esac
 
@@ -104,6 +106,19 @@ fi
 
 if exists less; then
 	export PAGER="less"
+fi
+
+if exists pip; then
+	pip() {
+		if [[ "$1" == "upgrade" ]]; then
+			outdated=$($usr/bin/pip list --outdated | awk '{ print $1 }')
+			for pkg in $outdated; do
+				$usr/bin/pip install $pkg --upgrade
+			done
+		else
+			$usr/bin/pip $@
+		fi
+	}
 fi
 
 if exists liquidprompt; then
