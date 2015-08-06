@@ -43,6 +43,50 @@ exists() {
 	hash $@ 2> /dev/null
 }
 
+is_function() {
+	function=$(type $@ 2> /dev/null | awk '/is a function/ { print "1" }')
+	if [ -n "$function" ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+is_alias() {
+	alias=$(type $1 2> /dev/null | awk '/is aliased to/ { print "1" }')
+	if [ -n "$alias" ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+if exists sudo; then
+	sudo() {
+		# Allow functions and aliasses to be executed with sudo
+		if is_function $1 2> /dev/null; then
+			tmpfile="/tmp/$(date +%s).sh"
+
+			echo "#!$usr/bin/env bash" > "$tmpfile"
+			type $1 | grep -v "is a function" >> "$tmpfile"
+			echo "$@" >> "$tmpfile"
+
+			chmod +x "$tmpfile"
+
+			$usr/bin/sudo "$tmpfile"
+
+			rm "$tmpfile"
+		elif is_alias $1 2> /dev/null; then
+			alias=$(type $1 2> /dev/null |
+				sed -n "s/^$1\ is\ aliased\ to\ \`\(.*\)'$/\1/p")
+
+			$usr/bin/sudo "$alias"
+		else
+			$usr/bin/sudo "$@"
+		fi
+	}
+fi
+
 if exists complete && exists sudo; then
 	complete -cf sudo
 fi
