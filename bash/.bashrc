@@ -67,7 +67,8 @@ if exists sudo; then
 		if is_function $1 2> /dev/null; then
 			tmpfile="/tmp/$(date +%s).sh"
 
-			echo "#!$usr/bin/env bash" > "$tmpfile"
+			echo "#!$usr/bin/bash" > "$tmpfile"
+			echo "usr=$usr" >> "$tmpfile"
 			type $1 | grep -v "is a function" >> "$tmpfile"
 			echo "$@" >> "$tmpfile"
 
