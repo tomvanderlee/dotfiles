@@ -31,3 +31,6 @@
 [submodule "weechat/.weechat/downloads/weechat-vimode"]
 	path = weechat/.weechat/downloads/weechat-vimode
 	url = https://github.com/GermainZ/weechat-vimode
+[submodule "vim/.vim/bundle/quick-scope"]
+	path = vim/.vim/bundle/quick-scope
+	url = https://github.com/unblevable/quick-scope
