@@ -32,6 +32,9 @@ set backspace=indent,eol,start
 set cursorline
 set cursorcolumn
 
+" Disable ex mode
+nnoremap Q <Nop>
+
 " Save as sudo
 cnoremap w!! w !sudo tee > /dev/null %
 
