@@ -1,7 +1,9 @@
+#!/usr/bin/env bash
+
 # Get color from ~/.Xresources
 get_x_color() {
     xresources=$(cat ~/.Xresources)
-    color=$(echo $xresources | sed "s/.*\*color$1: \(#[0-9A-Fa-f]*\).*/\1/")
+    color=$(echo $xresources | sed "s/.*\*color$1: \(\#[0-9A-Fa-f]*\).*/\1/")
     echo $color
 }
 
