@@ -7,3 +7,5 @@
 	st = status -s
 	siu = "!f() { git submodule init && git submodule update; }; f"
 	ls = ls-files
+[push]
+	default = matching
