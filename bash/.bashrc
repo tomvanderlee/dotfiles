@@ -5,14 +5,18 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# Default PS1
 export PS1='[\d][\t]\u on \h\n\w $ '
 
+# Additional local paths
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.local/usr/bin"
 export PATH="$PATH:$HOME/.local/usr/local/bin"
 
+# Quit the shell like in vim
 alias :q="exit"
 
+# Keep OS compatibility
 case "$(uname)" in
 	Linux)
 		alias ls="ls --color=auto"
@@ -28,6 +32,7 @@ case "$(uname)" in
 		;;
 esac
 
+# Colorfull manpages
 man() {
 	env LESS_TERMCAP_mb=$'\E[01;31m' \
 	LESS_TERMCAP_md=$'\E[01;38;5;74m' \
@@ -39,6 +44,7 @@ man() {
 	man "$@"
 }
 
+# Helpfull functions
 exists() {
 	hash $@ 2> /dev/null
 }
@@ -61,6 +67,7 @@ is_alias() {
 	fi
 }
 
+# Execute functions and aliasses with sudo
 if exists sudo; then
 	sudo() {
 		# Allow functions and aliasses to be executed with sudo
@@ -88,16 +95,19 @@ if exists sudo; then
 	}
 fi
 
+# Set autocomplete for sudo
 if exists complete && exists sudo; then
 	complete -cf sudo
 fi
 
+# Jupiterbroadcasting live stream
 if exists mpv; then
 	alias jblive='mpv rtmp://videocdn-us.geocdn.scaleengine.net/jblive/live/jblive.stream'
 elif exists vlc; then
 	alias jblive='vlc rtmp://videocdn-us.geocdn.scaleengine.net/jblive/live/jblive.stream'
 fi
 
+# Set the default editor
 if exists nvim; then
 	export EDITOR="nvim"
 elif exists vim; then
@@ -117,6 +127,7 @@ vim() {
 	fi
 }
 
+# Programming language specifics
 if exists go; then
 	export GOPATH="$HOME/programming/go"
 	export PATH="$PATH:$GOPATH/bin"
@@ -127,12 +138,14 @@ if exists gem; then
 	export PATH="$PATH:$GEM_HOME"
 fi
 
+# Ezjail shortcuts
 if exists ezjail-admin && exists sudo; then
 	jl() {
 		sudo ezjail-admin $1 $2\.tomvanderlee.com
 	}
 fi
 
+# Showbanned ipadresses
 if exists pfctl && exists sudo; then
 	showbanned ()
 	{
@@ -150,14 +163,17 @@ if exists pfctl && exists sudo; then
 	}
 fi
 
+# Always use pacaur even if it is not installed
 if (exists pacman && ! exists pacaur) && exists sudo; then
 	alias pacaur="sudo pacman"
 fi
 
+# Set the default pager
 if exists less; then
 	export PAGER="less"
 fi
 
+# Pip upgrade script
 if exists pip; then
 	pip() {
 		if [[ "$1" == "upgrade" ]] || [[ "$1" == "update" ]]; then
@@ -175,10 +191,12 @@ if exists pip; then
 	}
 fi
 
+# Fancy bash prompt
 if exists liquidprompt; then
 	source liquidprompt
 fi
 
+# Fancy system info
 if exists archey3; then
 	archey3
 elif exists screenfetch; then
