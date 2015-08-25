@@ -67,34 +67,6 @@ is_alias() {
 	fi
 }
 
-# Execute functions and aliasses with sudo
-if exists sudo; then
-	sudo() {
-		# Allow functions and aliasses to be executed with sudo
-		if is_function $1 2> /dev/null; then
-			tmpfile="/tmp/$(date +%s).sh"
-
-			echo "#!$usr/bin/bash" > "$tmpfile"
-			echo "usr=$usr" >> "$tmpfile"
-			type $1 | grep -v "is a function" >> "$tmpfile"
-			echo "$@" >> "$tmpfile"
-
-			chmod +x "$tmpfile"
-
-			$usr/bin/sudo "$tmpfile"
-
-			rm "$tmpfile"
-		elif is_alias $1 2> /dev/null; then
-			alias=$(type $1 2> /dev/null |
-				sed -n "s/^$1\ is\ aliased\ to\ \`\(.*\)'$/\1/p")
-
-			$usr/bin/sudo "$alias"
-		else
-			$usr/bin/sudo "$@"
-		fi
-	}
-fi
-
 # Set autocomplete for sudo
 if exists complete && exists sudo; then
 	complete -cf sudo
