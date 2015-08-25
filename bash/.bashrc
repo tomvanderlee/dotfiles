@@ -98,19 +98,24 @@ elif exists vlc; then
 	alias jblive='vlc rtmp://videocdn-us.geocdn.scaleengine.net/jblive/live/jblive.stream'
 fi
 
-if exists vim; then
+if exists nvim; then
+	export EDITOR="nvim"
+elif exists vim; then
 	export EDITOR="vim"
-	vim() {
-		if [[ -z $@ ]]; then
-			$usr/bin/vim
-		elif [[ -d $@ ]]; then
-			dir=$(pwd)
-			cd $@ && $usr/bin/vim && cd $dir
-		else
-			$usr/bin/vim $@
-		fi
-	}
+elif exists vi; then
+	export EDITOR="vi"
 fi
+
+vim() {
+	if [[ -z $@ ]]; then
+		$EDITOR
+	elif [[ -d $@ ]]; then
+		dir=$(pwd)
+		cd $@ && $EDITOR && cd $dir
+	else
+		$EDITOR $@
+	fi
+}
 
 if exists go; then
 	export GOPATH="$HOME/programming/go"
