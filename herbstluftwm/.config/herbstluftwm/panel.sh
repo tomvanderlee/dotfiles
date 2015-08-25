@@ -1,11 +1,12 @@
 #!/bin/bash
 
+dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
 hc() {
 	"${herbstclient_command[@]:-herbstclient}" "$@" ;
 }
 
-dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-source "$dir/theme.sh"
+source "$dir/theme"
 source "$dir/panel_indicators.sh"
 
 monitor=${1:-0}

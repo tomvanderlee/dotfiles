@@ -2,13 +2,16 @@
 
 # this is a simple config for herbstluftwm
 
+# The current directory
+dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+# Herbstclient shortcut
 hc() {
     herbstclient "$@"
 }
 
 #Include the theming script
-dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-source "$dir/theme.sh"
+source "$dir/theme"
 
 #Detect monitors
 hc set auto_detect_monitors 1
@@ -20,8 +23,15 @@ panel_w=$(echo "$monitor_w - (2 * $window_p)" | bc)
 dmenu_opts="-h $panel_h -w $panel_w -x $window_p -y $window_p -p Run: -nb $color_bg -nf $color_fg -sb $color_accent -sf $color_bg"
 
 # Tags
-tag_names=( I II III IV V VI VII VIII IX X )
-tag_keys=( {1..9} 0 )
+tag_names=()
+tag_keys=({1..9} 0)
+for key in ${tag_keys[@]}; do
+	if [ $key -eq 0 ]; then key=10; fi
+	key=$(echo "$key - 1" | bc)
+	echo $key
+	name=$(echo "obase=2;$key" | bc | awk '{ printf "%04d", $0 }')
+	tag_names+=($name)
+done;
 
 # Source hlwm-config-files
 source "$dir/hlwm-keybindings"
