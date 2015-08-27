@@ -1,6 +1,7 @@
 #!/bin/bash
+icon_font="-*-stlarch-medium-*-*-*-10-*-*-*-*-*-*-*"
 battery_icon=("\ue113" "\ue114" "\ue115" "\ue116" "\ue042")
-network_icon=("\ue0f1" "\ue0f2" "\ue0f3" "\ue0af")
+network_icon=("\ue0f1" "\ue0f2" "\ue0f3" "%{T2}\ue0af%{T-}")
 music_icon="\ue05c"
 
 music()

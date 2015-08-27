@@ -22,7 +22,6 @@ window_p=20
 # Panel
 panel_h=24
 font="-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*"
-font_sec="-*-stlarch-medium-*-*-*-10-*-*-*-*-*-*-*"
 
 # Colors
 color_fg=$(get_x_color 15)
