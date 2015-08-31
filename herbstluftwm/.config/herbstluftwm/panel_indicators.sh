@@ -88,16 +88,18 @@ network()
         )
 
         if [ $ssid == "off/any" ] ; then
-            echo -e "net\toff"
+            net_status="off"
         else
-            echo -e "net\t${network_icon[0]} $ssid $quality%"
+            net_status="${network_icon[0]} $ssid $quality%"
         fi
 
     elif [ $int == $eth ] ; then
-        echo -e "net\t${network_icon[1]} Ethernet"
+        net_status="${network_icon[1]} Ethernet"
     else
-        echo -e "net\toff"
+        net_status="off"
     fi
+
+    echo -e "net\t$net_status"
 }
 
 battery()
