@@ -163,6 +163,14 @@ if exists pip; then
 	}
 fi
 
+# Start gnome-keyring-daemon
+if exists gnome-keyring-daemon; then
+	if [ -n "$DESKTOP_SESSION" ];then
+		eval $(gnome-keyring-daemon --start)
+		export SSH_AUTH_SOCK
+	fi
+fi
+
 # Fancy bash prompt
 if exists liquidprompt; then
 	source liquidprompt
