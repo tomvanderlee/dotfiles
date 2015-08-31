@@ -1,7 +1,9 @@
+#!/usr/bin/env bash
+
 # Get color from ~/.Xresources
 get_x_color() {
     xresources=$(cat ~/.Xresources)
-    color=$(echo $xresources | sed "s/.*\*color$1: \(#[0-9A-Fa-f]*\).*/\1/")
+    color=$(echo $xresources | sed "s/.*\*color$1: \(\#[0-9A-Fa-f]*\).*/\1/")
     echo $color
 }
 
@@ -18,9 +20,8 @@ wallpaper="$HOME/.config/herbstluftwm/poligons.png"
 window_p=20
 
 # Panel
-panel_h=24
-font="-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*"
-font_sec="-*-stlarch-medium-*-*-*-10-*-*-*-*-*-*-*"
+panel_h=25
+font="DejaVu Sans Mono-10"
 
 # Colors
 color_fg=$(get_x_color 15)
