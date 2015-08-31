@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 source "$HLWM_CONF_DIR/themes/current"
+source "$HLWM_CONF_DIR/panel_indicators.sh"
 
 # Check for valid monitors
 monitor=${1:-0}

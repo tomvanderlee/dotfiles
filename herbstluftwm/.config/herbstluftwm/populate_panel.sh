@@ -24,7 +24,7 @@ fi
     #   date    ^fg(#efefef)18:33^fg(#909090), 2013-10-^fg(#efefef)29
 
     while true ; do
-        music &
+        music
         volume &
         network &
         battery &

@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
+
 icon_font="FontAwesome-10"
-battery_icon=("\ue113" "\ue114" "\ue115" "\ue116" "\ue042")
-network_icon=("\ue0f1" "\ue0f2" "\ue0f3" "\ue0af")
-music_icon="\ue05c"
+
+battery_icon=("\uf244" "\uf243" "\uf242" "\uf241" "\uf240" "\uf1e6")
+network_icon=("\uf1eb" "\uf109")
+music_icon="\uf001"
+volume_icon=("\uf026" "\uf027" "\uf028")
 
 music()
 {
@@ -35,16 +38,21 @@ volume()
         volumes=$(\
             amixer get Master | \
             grep "Front Right: Playback"\
-        )
+            )
         vol=$(\
             echo $volumes | \
             sed "s/.*\[\([0-9]*\)%\].*/\1/"\
-        )
+            )
         if [ -z $vol ] ; then
-            echo -e "volume\toff"
+            vol_status="off"
+        elif [ $vol -eq 0 ]; then
+            vol_status="%{F$acolor_fg}${volume_icon[0]} $vol%%{F-}"
+        elif [$vol -lt 33]; then
+            vol_status="%{F$acolor_fg}${volume_icon[1]} $vol%%{F-}"
         else
-            echo -e "volume\t%{F$acolor_fg}\ue05d $vol%%{F-}"
+            vol_status="%{F$acolor_fg}${volume_icon[2]} $vol%%{F-}"
         fi
+        echo -e "volume\t$vol_status"
     else
         echo -e "volume\toff"
     fi
@@ -67,7 +75,7 @@ network()
     if [ $int == $wifi ] ; then
         iwconfig=$(iwconfig $int)
         ssid=$(
-            echo $iwconfig | \
+        echo $iwconfig | \
             sed "s/.*ESSID:\(\".*\"\).*/\1/" | \
             sed "s/.*\(off\/any\).*/\"\1\"/" | \
             sed "s/.*\"\(.*\)\".*/\1/"
@@ -81,16 +89,12 @@ network()
 
         if [ $ssid == "off/any" ] ; then
             echo -e "net\toff"
-        elif [ $quality -lt 33 ] ; then
-            echo -e "net\t${network_icon[0]} $ssid"
-        elif [ $quality -lt 66 ] ; then
-            echo -e "net\t${network_icon[1]} $ssid"
         else
-            echo -e "net\t${network_icon[2]} $ssid"
+            echo -e "net\t${network_icon[0]} $ssid $quality%"
         fi
 
     elif [ $int == $eth ] ; then
-        echo -e "net\t${network_icon[3]} ethernet"
+        echo -e "net\t${network_icon[1]} Ethernet"
     else
         echo -e "net\toff"
     fi
@@ -98,31 +102,37 @@ network()
 
 battery()
 {
-    # Battery
-    if $(test -e /sys/class/power_supply/BAT1) ; then
+    # Batteries
+    bat_info="off"
+    for bat in $(find /sys/class/power_supply | grep BAT); do
+        nr="${bat: -1}"
+        bat_info=""
 
-        bat_lvl=$(cat /sys/class/power_supply/BAT1/capacity)
-        bat_state=$(cat /sys/class/power_supply/BAT1/status)
+        bat_lvl=$(cat /sys/class/power_supply/BAT0/capacity)
+        bat_state=$(cat /sys/class/power_supply/BAT0/status)
 
         if [ $bat_state == "Charging" ] ; then
-            bat_status="${battery_icon[4]}"
+            bat_status="${battery_icon[5]}"
         elif [ $bat_lvl -lt 10 ] ; then
             bat_status="${F$acolor_accent}${battery_icon[0]}${F-}"
-        elif [ $bat_ -lt 33 ] ; then
+        elif [ $bat_ -lt 25 ] ; then
             bat_status="${battery_icon[1]}"
-        elif [ $bat_lvl -lt 66 ] ; then
+        elif [ $bat_ -lt 50 ] ; then
             bat_status="${battery_icon[2]}"
-        else
+        elif [ $bat_lvl -lt 75 ] ; then
             bat_status="${battery_icon[3]}"
+        else
+            bat_status="${battery_icon[4]}"
         fi
 
-        echo -e "battery\t$bat_status $bat_lvl%%%{F-}"
-    else
-        echo -e "battery\toff"
-    fi
+        bat_info+="$nr: $bat_status $bat_lvl%%{F-}"
+    done
+    echo -e "battery\t$bat_info"
 }
 
 clock()
 {
     echo -e $(date +$"date\t%{F$acolor_fg}%H:%M:%S %{F$acolor_fg}(%d-%m-%Y)%{F-}")
 }
+
+# vim: set ts=4 sw=4 tw=0 et :
