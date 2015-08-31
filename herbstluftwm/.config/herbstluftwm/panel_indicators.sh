@@ -1,7 +1,7 @@
-#!/bin/bash
-icon_font="-*-stlarch-medium-*-*-*-10-*-*-*-*-*-*-*"
+#!/usr/bin/env bash
+icon_font="FontAwesome-10"
 battery_icon=("\ue113" "\ue114" "\ue115" "\ue116" "\ue042")
-network_icon=("\ue0f1" "\ue0f2" "\ue0f3" "%{T2}\ue0af%{T-}")
+network_icon=("\ue0f1" "\ue0f2" "\ue0f3" "\ue0af")
 music_icon="\ue05c"
 
 music()
@@ -43,7 +43,7 @@ volume()
         if [ -z $vol ] ; then
             echo -e "volume\toff"
         else
-            echo -e "volume\t%{F$acolor_fg}\ue05d $vol%%%{F-}"
+            echo -e "volume\t%{F$acolor_fg}\ue05d $vol%%{F-}"
         fi
     else
         echo -e "volume\toff"

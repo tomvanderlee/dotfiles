@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
 
-# this is a simple config for herbstluftwm
-
-# The current directory
-dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-
 # Herbstclient shortcut
 hc() {
     herbstclient "$@"
 }
+export -f hc
+
+# The current directory
+export HLWM_CONF_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 #Include the theming script
-source "$dir/theme"
+source "$HLWM_CONF_DIR/themes/current"
 
 #Detect monitors
 hc set auto_detect_monitors 1
@@ -26,17 +25,16 @@ dmenu_opts="-h $panel_h -w $panel_w -x $window_p -y $window_p -p Run: -nb $color
 tag_names=()
 tag_keys=({1..9} 0)
 for key in ${tag_keys[@]}; do
-	if [ $key -eq 0 ]; then key=10; fi
-	key=$(echo "$key - 1" | bc)
-	echo $key
-	name=$(echo "obase=2;$key" | bc | awk '{ printf "%04d", $0 }')
-	tag_names+=($name)
+    if [ $key -eq 0 ]; then key=10; fi
+    key=$(echo "$key - 1" | bc)
+    name=$(echo "obase=2;$key" | bc | awk '{ printf "%04d", $0 }')
+    tag_names+=($name)
 done;
 
 # Source hlwm-config-files
-source "$dir/hlwm-keybindings"
-source "$dir/hlwm-theming"
-source "$dir/hlwm-rules"
+source "$HLWM_CONF_DIR/hlwm-keybindings"
+source "$HLWM_CONF_DIR/hlwm-theming"
+source "$HLWM_CONF_DIR/hlwm-rules"
 
 # Unlock, just to be sure
 hc unlock
@@ -44,29 +42,20 @@ hc unlock
 herbstclient set tree_style '╾│ ├└╼─┐'
 
 # Start panel in all monitors
-start_panel() {
-	for monitor in $(herbstclient list_monitors | cut -d: -f1) ; do
-		"$1" $monitor&
-	done
-}
-
-# Find the panel
-panel=$dir/panel.sh
+panel=$HLWM_CONF_DIR/start_panel.sh
 [ -x "$panel" ] || panel=/etc/xdg/herbstluftwm/panel.sh
-if pgrep panel.sh >> /dev/null
-then
-	kill $(pgrep panel.sh)
-	start_panel $panel
-else
-	start_panel $panel
-fi
+for monitor in $(herbstclient list_monitors | cut -d: -f1) ; do
+    $panel $monitor&
+done
 
 pulseaudio --start
 
-$dir/start.sh "xautolock -time 5 -locker $dir/lock.sh"
-$dir/start.sh "feh --bg-fill $wallpaper"
-$dir/start.sh "compton --config $HOME/.compton"
-$dir/start.sh "xrdb -load $HOME/.Xresources"
-$dir/start.sh "xset +fp /usr/share/fonts/local"
-$dir/start.sh "xset fp rehash"
-#$dir/start.sh "$dir/notify.sh $dir/popup.sh"
+$HLWM_CONF_DIR/start.sh "xautolock -time 5 -locker $HLWM_CONF_DIR/lock.sh"
+$HLWM_CONF_DIR/start.sh "feh --bg-fill $wallpaper"
+$HLWM_CONF_DIR/start.sh "compton --config $HOME/.compton"
+$HLWM_CONF_DIR/start.sh "xrdb -load $HOME/.Xresources"
+$HLWM_CONF_DIR/start.sh "xset +fp /usr/share/fonts/local"
+$HLWM_CONF_DIR/start.sh "xset fp rehash"
+#$HLWM_CONF_DIR/start.sh "$HLWM_CONF_DIR/notify.sh $HLWM_CONF_DIR/popup.sh"
+
+# vim: set ts=4 sw=4 tw=0 et :

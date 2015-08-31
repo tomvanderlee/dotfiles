@@ -4,12 +4,12 @@ compton
 dmenu2
 feh
 i3lock
-lemonbar-git
+lemonbar-xft-git
 playerctl
 pulseaudio
 pulseaudio-alsa
 scrot
 sed
-stlarch_font
+ttf-font-awesome
 wireless_tools
 xautolock

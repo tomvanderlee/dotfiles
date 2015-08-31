@@ -1,30 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-dir=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
-
-hc() {
-    "${herbstclient_command[@]:-herbstclient}" "$@"
-}
-
-source "$dir/theme"
-source "$dir/panel_indicators.sh"
-
-monitor=${1:-0}
-
-geometry=($(herbstclient monitor_rect "$monitor"))
-if [ -z "$geometry" ] ;then
-    echo "Invalid monitor $monitor"
-    exit 1
-fi
-
-# Geometry has the format W H X Y
-x=$(echo "${geometry[0]} + $window_p" | bc)
-y=$(echo "${geometry[1]} + $window_p" | bc)
-
-panel_width=$(echo "${geometry[2]} - (2 * $window_p)" | bc)
-bar_opts="-g ${panel_width}x${panel_h}+${x}+${y} -f $font -f $icon_font -u 2 -B $acolor_bg -F $acolor_fg"
-
-hc pad $monitor $(echo "$panel_h + $window_p" | bc)
+source "$HLWM_CONF_DIR/themes/current"
+source "$HLWM_CONF_DIR/panel_indicators.sh"
 
 if awk -Wv 2>/dev/null | head -1 | grep -q '^mawk'; then
     # mawk needs "-W interactive" to line-buffer stdout correctly
@@ -99,7 +76,7 @@ fi
         echo -n "$separator%{F-}%{B-} "
         echo -n "${windowtitle//^/^^}"
 
-        # Right part of panel
+       # Right part of panel
         right="$music$volume$net$battery$date "
         echo -n "%{r}$right"
 
@@ -155,22 +132,6 @@ fi
         esac
     done
 
-} 2> /dev/null | lemonbar $bar_opts | {
+} 2> /dev/null
 
-    #Handle clickable areas
-    while read line; do
-        IFS=',' read -a c <<< $(echo $line)
-        case "${c[0]}" in
-            tag)
-                herbstclient use "${c[1]}"
-                echo "herbstclient use \"${c[1]}\""
-                ;;
-            *)
-                echo "${c[0]}: not valid command"
-                ;;
-        esac
-    done
-
-}
-
-# vim: set ts=4 sw=4 tw=80 et :
+# vim: set ts=4 sw=4 tw=0 et :
