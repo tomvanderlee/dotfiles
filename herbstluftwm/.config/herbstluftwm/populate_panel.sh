@@ -3,6 +3,8 @@
 source "$HLWM_CONF_DIR/themes/current"
 source "$HLWM_CONF_DIR/panel_indicators.sh"
 
+monitor=$1
+
 if awk -Wv 2>/dev/null | head -1 | grep -q '^mawk'; then
     # mawk needs "-W interactive" to line-buffer stdout correctly
     # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=593504

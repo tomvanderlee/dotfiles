@@ -27,7 +27,7 @@ panel_width=$(echo "${geometry[2]} - (2 * $window_p)" | bc)
 hc pad $monitor $(echo "$panel_h + $window_p" | bc)
 
 # Start the panel
-$HLWM_CONF_DIR/populate_panel.sh |
+$HLWM_CONF_DIR/populate_panel.sh $monitor |
 lemonbar -g ${panel_width}x${panel_h}+${x}+${y} -f "$font" -f "$icon_font" -u2 -B$acolor_bg -F$acolor_fg |
 $HLWM_CONF_DIR/panel_handler.sh
 
