@@ -47,7 +47,7 @@ volume()
             vol_status="off"
         elif [ $vol -eq 0 ]; then
             vol_status="%{F$acolor_fg}${volume_icon[0]} $vol%%{F-}"
-        elif [$vol -lt 33]; then
+        elif [ $vol -lt 33 ]; then
             vol_status="%{F$acolor_fg}${volume_icon[1]} $vol%%{F-}"
         else
             vol_status="%{F$acolor_fg}${volume_icon[2]} $vol%%{F-}"
