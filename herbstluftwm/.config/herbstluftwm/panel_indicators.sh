@@ -110,8 +110,8 @@ battery()
         nr="${bat: -1}"
         bat_info=""
 
-        bat_lvl=$(cat /sys/class/power_supply/BAT0/capacity)
-        bat_state=$(cat /sys/class/power_supply/BAT0/status)
+        bat_lvl=$(cat /sys/class/power_supply/BAT$nr/capacity)
+        bat_state=$(cat /sys/class/power_supply/BAT$nr/status)
 
         if [ $bat_state == "Charging" ] ; then
             bat_status="${battery_icon[5]}"
