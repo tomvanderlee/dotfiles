@@ -29,7 +29,7 @@ if test ! $message; then
     help
 else
 
-    bar_opts="-f $font,$font_sec -B $acolor_bg -F $acolor_fg -g ${popup_width}x${height}+${popup_x}+${popup_y} -u 2"
+    bar_opts="-f $HLWM_PANEL_FONT,$font_sec -B $HLWM_BG_ACOLOR -F $HLWM_FG_ACOLOR -g ${popup_width}x${height}+${popup_x}+${popup_y} -u 2"
 
     t=$(date +%T)
 
@@ -40,7 +40,7 @@ else
     fi
 
     {
-        echo "%{F$acolor_accent} $prefix %{F$acolor_fg}$message %{F$acolor_fg}($t)%{F-}"
+        echo "%{F$HLWM_ACCENT_ACOLOR} $prefix %{F$HLWM_FG_ACOLOR}$message %{F$HLWM_FG_ACOLOR}($t)%{F-}"
         sleep $timeout
     } | bar $bar_opts
 fi

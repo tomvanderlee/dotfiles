@@ -46,11 +46,11 @@ volume()
         if [ -z $vol ] ; then
             vol_status="off"
         elif [ $vol -eq 0 ]; then
-            vol_status="%{F$acolor_fg}${volume_icon[0]} $vol%%{F-}"
+            vol_status="%{F$HLWM_FG_ACOLOR}${volume_icon[0]} $vol%%{F-}"
         elif [ $vol -lt 33 ]; then
-            vol_status="%{F$acolor_fg}${volume_icon[1]} $vol%%{F-}"
+            vol_status="%{F$HLWM_FG_ACOLOR}${volume_icon[1]} $vol%%{F-}"
         else
-            vol_status="%{F$acolor_fg}${volume_icon[2]} $vol%%{F-}"
+            vol_status="%{F$HLWM_FG_ACOLOR}${volume_icon[2]} $vol%%{F-}"
         fi
         echo -e "volume\t$vol_status"
     else
@@ -116,7 +116,7 @@ battery()
         if [ $bat_state == "Charging" ] ; then
             bat_status="${battery_icon[5]}"
         elif [ $bat_lvl -lt 10 ] ; then
-            bat_status="${F$acolor_accent}${battery_icon[0]}${F-}"
+            bat_status="${F$HLWM_ACCENT_ACOLOR}${battery_icon[0]}${F-}"
         elif [ $bat_ -lt 25 ] ; then
             bat_status="${battery_icon[1]}"
         elif [ $bat_ -lt 50 ] ; then
@@ -134,7 +134,7 @@ battery()
 
 clock()
 {
-    echo -e $(date +$"date\t%{F$acolor_fg}%H:%M:%S %{F$acolor_fg}(%d-%m-%Y)%{F-}")
+    echo -e $(date +$"date\t%{F$HLWM_FG_ACOLOR}%H:%M:%S %{F$HLWM_FG_ACOLOR}(%d-%m-%Y)%{F-}")
 }
 
 # vim: set ts=4 sw=4 tw=0 et :

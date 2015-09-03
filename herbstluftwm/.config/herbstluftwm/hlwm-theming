@@ -1,6 +1,29 @@
 #!/usr/bin/env bash
 
+# Add alpha channel to a hexadecimal color
+add_alpha_channel(){
+    echo "$1" | \
+    sed "s/.*#\([0-9a-fA-F]*\).*/#ff\1/"
+}
+
+#Include the theming script
+source "$HLWM_CONF_DIR/themes/current"
+
+feh --bg-scale "$HLWM_WALLPAPER"
+
 # Theme
+xrdb -load $HOME/.Xresources
+
+for color in "${!colors[@]}"; do
+    echo "*$color: ${colors[$color]}" | xrdb -override
+done
+
+echo "XTerm*background: $HLWM_BG_COLOR" | xrdb -override
+
+export HLWM_FG_ACOLOR=$(add_alpha_channel $HLWM_FG_COLOR)
+export HLWM_ACCENT_ACOLOR=$(add_alpha_channel $HLWM_ACCENT_COLOR)
+export HLWM_BG_ACOLOR=$(add_alpha_channel $HLWM_BG_COLOR)
+
 hc attr theme.tiling.reset 1
 hc attr theme.floating.reset 1
 hc set frame_border_width 0
@@ -11,21 +34,24 @@ hc set frame_active_opacity 0
 hc set frame_transparent_width 0
 hc set frame_gap 0
 
-hc attr theme.active.color $color_accent
-hc attr theme.normal.color $color_bg
+hc attr theme.active.color $HLWM_ACCENT_COLOR
+hc attr theme.normal.color $HLWM_BG_COLOR
 hc attr theme.urgent.color orange
 hc attr theme.inner_width 1
-hc attr theme.inner_color $color_bg
+hc attr theme.inner_color $HLWM_BG_COLOR
 hc attr theme.border_width 3
 hc attr theme.floating.border_width 4
 hc attr theme.floating.outer_width 1
-hc attr theme.floating.outer_color $color_bg
-hc attr theme.active.inner_color $color_bg
-hc attr theme.active.outer_color $color_bg
-hc attr theme.background_color $color_bg
+hc attr theme.floating.outer_color $HLWM_BG_COLOR
+hc attr theme.active.inner_color $HLWM_BG_COLOR
+hc attr theme.active.outer_color $HLWM_BG_COLOR
+hc attr theme.background_color $HLWM_BG_COLOR
 
-hc set window_gap $window_p
+hc set window_gap $HLWM_WINDOW_PADDING
 hc set frame_padding 0
 hc set smart_window_surroundings 0
 hc set smart_frame_surroundings 1
 hc set mouse_recenter_gap 1
+hc set tree_style '╾│ ├└╼─┐'
+
+# vim: set ts=4 sw=4 tw=0 et :

@@ -9,37 +9,38 @@ export -f hc
 # The current directory
 export HLWM_CONF_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-#Include the theming script
-source "$HLWM_CONF_DIR/themes/current"
+source "$HLWM_CONF_DIR/hlwm-theming"
 
-#Detect monitors
-hc set auto_detect_monitors 1
-hc detect_monitors
-
-#Panel and window_p
+#Panel and HLWM_WINDOW_PADDING
 monitor_w=($(hc list_monitors | sed 's/^[0-9]: \([0-9]*\)x.*$/\1/'))
-panel_w=$(echo "$monitor_w - (2 * $window_p)" | bc)
-dmenu_opts="-h $panel_h -w $panel_w -x $window_p -y $window_p -p Run: -nb $color_bg -nf $color_fg -sb $color_accent -sf $color_bg"
+panel_w=$(echo "$monitor_w - (2 * $HLWM_WINDOW_PADDING)" | bc)
+dmenu_opts="-h $HLWM_PANEL_HEIGHT -w $panel_w -x $HLWM_WINDOW_PADDING -y $HLWM_WINDOW_PADDING -p Run: -nb $HLWM_BG_COLOR -nf $HLWM_FG_COLOR -sb $HLWM_ACCENT_COLOR -sf $HLWM_BG_COLOR"
 
 # Tags
 tag_names=()
 tag_keys=({1..9} 0)
 for key in ${tag_keys[@]}; do
-    if [ $key -eq 0 ]; then key=10; fi
-    key=$(echo "$key - 1" | bc)
+    if [ $key -eq 0 ]; then 
+        key=10
+    else
+        key=$(echo "$key - 1" | bc)
+    fi
+
     name=$(echo "obase=2;$key" | bc | awk '{ printf "%04d", $0 }')
     tag_names+=($name)
 done;
 
 # Source hlwm-config-files
 source "$HLWM_CONF_DIR/hlwm-keybindings"
-source "$HLWM_CONF_DIR/hlwm-theming"
 source "$HLWM_CONF_DIR/hlwm-rules"
 
 # Unlock, just to be sure
 hc unlock
 
-herbstclient set tree_style '╾│ ├└╼─┐'
+
+#Detect monitors
+hc set auto_detect_monitors 1
+hc detect_monitors
 
 # Start panel in all monitors
 panel=$HLWM_CONF_DIR/start_panel.sh
@@ -51,11 +52,16 @@ done
 pulseaudio --start
 
 $HLWM_CONF_DIR/start.sh "xautolock -time 5 -locker $HLWM_CONF_DIR/lock.sh"
-$HLWM_CONF_DIR/start.sh "feh --bg-fill $wallpaper"
-$HLWM_CONF_DIR/start.sh "compton --config $HOME/.compton"
-$HLWM_CONF_DIR/start.sh "xrdb -load $HOME/.Xresources"
-$HLWM_CONF_DIR/start.sh "xset +fp /usr/share/fonts/local"
-$HLWM_CONF_DIR/start.sh "xset fp rehash"
+
+if $HLWM_COMPOSITING; then
+    $HLWM_CONF_DIR/start.sh "compton --config $HOME/.compton"
+else
+    pkill compton
+fi
+
+xset +fp /usr/share/fonts/local
+xset fp rehash
+
 #$HLWM_CONF_DIR/start.sh "$HLWM_CONF_DIR/notify.sh $HLWM_CONF_DIR/popup.sh"
 
 # vim: set ts=4 sw=4 tw=0 et :

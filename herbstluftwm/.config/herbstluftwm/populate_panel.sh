@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-source "$HLWM_CONF_DIR/themes/current"
 source "$HLWM_CONF_DIR/panel_indicators.sh"
-
 monitor=$1
 
 if awk -Wv 2>/dev/null | head -1 | grep -q '^mawk'; then
@@ -50,26 +48,26 @@ fi
     net=""
     windowtitle=""
 
-    separator="%{F$acolor_accent}|%{F-}"
+    separator="%{F$HLWM_ACCENT_ACOLOR}|%{F-}"
 
     while true ; do
 
         for i in "${tags[@]}" ; do
             case ${i:0:1} in
                 '#')
-                    echo -n "%{U$acolor_accent+u}%{F$acolor_fg}"
+                    echo -n "%{U$HLWM_ACCENT_ACOLOR+u}%{F$HLWM_FG_ACOLOR}"
                     ;;
                 '+')
-                    echo -n "%{U$acolor_fg+u}%{F$acolor_fg}"
+                    echo -n "%{U$HLWM_FG_ACOLOR+u}%{F$HLWM_FG_ACOLOR}"
                     ;;
                 ':')
-                    echo -n "%{F$acolor_fg}"
+                    echo -n "%{F$HLWM_FG_ACOLOR}"
                     ;;
                 '!')
-                    echo -n "%{B$acolor_accent}%{U$acolor_accent+u}%{F$acolor_bg}"
+                    echo -n "%{B$HLWM_ACCENT_ACOLOR}%{U$HLWM_ACCENT_ACOLOR+u}%{F$HLWM_BG_ACOLOR}"
                     ;;
                 *)
-                    echo -n "%{F$acolor_fg}"
+                    echo -n "%{F$HLWM_FG_ACOLOR}"
                     ;;
             esac
             echo -n "%{A:tag,${i:1}:} ${i:1} %{A}%{F-}%{U-u}%{B-}"

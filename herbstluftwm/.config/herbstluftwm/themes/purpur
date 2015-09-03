@@ -1,34 +1,30 @@
 #!/usr/bin/env bash
 
-# Get color from ~/.Xresources
-get_x_color() {
-    xresources=$(cat ~/.Xresources)
-    color=$(echo $xresources | sed "s/.*\*color$1: \(\#[0-9A-Fa-f]*\).*/\1/")
-    echo $color
-}
-
-# Add alpha channel to a hexadecimal color
-add_alpha_channel(){
-    echo "$1" | \
-    sed "s/.*#\([0-9a-fA-F]*\).*/#ff\1/"
-}
+declare -A colors
+colors=(["background"]="#2d2d2d" ["foreground"]="#f9f9f9"
+        ["color0"]="#2d2d2d"     ["color8"]="#333333"
+        ["color1"]="#690a03"     ["color9"]="#d64937"
+        ["color2"]="#13a43b"     ["color10"]="#6dfb2d"
+        ["color3"]="#f5a711"     ["color11"]="#ffdc00"
+        ["color4"]="#0f6cc9"     ["color12"]="#32abd8"
+        ["color5"]="#93116b"     ["color13"]="#c61f93"
+        ["color6"]="#3cb691"     ["color14"]="#53b4bd"
+        ["color7"]="#d9d9d9"     ["color15"]="#f9f9f9")
 
 # Wallpaper
-wallpaper="$HOME/.config/herbstluftwm/poligons.png"
+export HLWM_WALLPAPER="$HOME/.config/herbstluftwm/wallpapers/poligons.png"
+
+# Shadow
+export HLWM_COMPOSITING=true
 
 # Padding
-window_p=20
+export HLWM_WINDOW_PADDING=20
 
 # Panel
-panel_h=25
-font="DejaVu Sans Mono-10"
+export HLWM_PANEL_HEIGHT=25
+export HLWM_PANEL_FONT="DejaVu Sans Mono-10"
 
 # Colors
-color_fg=$(get_x_color 15)
-color_accent=$(get_x_color 5)
-color_bg=$(get_x_color 0)
-
-# Alpha Colors for use with bar
-acolor_fg=$(add_alpha_channel $color_fg)
-acolor_accent=$(add_alpha_channel $color_accent)
-acolor_bg=$(add_alpha_channel $color_bg)
+export HLWM_FG_COLOR=${colors["color15"]}
+export HLWM_ACCENT_COLOR=${colors["color5"]}
+export HLWM_BG_COLOR=${colors["color0"]}
