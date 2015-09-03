@@ -25,6 +25,6 @@ export HLWM_PANEL_HEIGHT=25
 export HLWM_PANEL_FONT="DejaVu Sans Mono-10"
 
 # Colors
-export HLWM_FG_COLOR=${colors["color15"]}
+export HLWM_FG_COLOR=${colors["foreground"]}
 export HLWM_ACCENT_COLOR=${colors["color5"]}
-export HLWM_BG_COLOR=${colors["color0"]}
+export HLWM_BG_COLOR=${colors["background"]}
