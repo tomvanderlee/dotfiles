@@ -11,12 +11,12 @@ if [ -z "$geometry" ] ;then
 fi
 
 # Make sure only one instanve per monitor is running
-lockfile="/tmp/start_panel-$monitor.lck"
-if [ -e "$lockfile" ] && kill -0 $(cat $lockfile); then
-    pkill -P $(cat $lockfile)
-fi
-trap "rm -f $lockfile; exit" INT TERM EXIT
-echo "$$" > "$lockfile"
+pids=$(ps x | grep "$0 $monitor" | awk '{print $1}')
+for pid in $pids; do
+    if [ $pid != $$ ]; then
+        pkill -P $pid
+    fi
+done
 
 # Geometry has the format W H X Y
 x=$(echo "${geometry[0]} + $window_p" | bc)
