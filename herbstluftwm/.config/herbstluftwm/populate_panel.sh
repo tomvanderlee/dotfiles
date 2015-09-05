@@ -128,6 +128,9 @@ fi
                 ;;
             focus_changed|window_title_changed)
                 windowtitle="${cmd[@]:2}"
+                if [ ${#windowtitle} -gt 60 ]; then
+                    windowtitle="${windowtitle:0:57}..."
+                fi
                 ;;
         esac
     done
