@@ -23,6 +23,7 @@ export HLWM_WINDOW_PADDING=20
 # Panel
 export HLWM_PANEL_HEIGHT=25
 export HLWM_PANEL_FONT="DejaVu Sans Mono-10"
+export HLWM_PANEL_BOTTOM=false
 
 # Colors
 export HLWM_FG_COLOR=${colors["foreground"]}

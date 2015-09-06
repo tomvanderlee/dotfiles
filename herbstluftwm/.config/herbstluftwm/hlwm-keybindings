@@ -10,7 +10,7 @@ hc keybind $Mod-Shift-q quit
 hc keybind $Mod-Shift-r chain , spawn echo "!! HLWM reload config !!" , reload
 hc keybind $Mod-Shift-c close
 hc keybind $Mod-Return spawn xterm
-hc keybind $Mod-grave spawn dmenu_run $dmenu_opts
+hc keybind $Mod-grave spawn dmenu_run -h $dmenu_height -w $dmenu_width -x $dmenu_x -y $dmenu_y -p $dmenu_title -s $dmenu_screen -l $dmenu_lines -fn "$HLWM_PANEL_FONT" -nb $HLWM_BG_COLOR -nf $HLWM_FG_COLOR -sb $HLWM_ACCENT_COLOR -sf $HLWM_BG_COLOR
 hc keybind XF86AudioLowerVolume spawn amixer set Master 1%-
 hc keybind XF86AudioRaiseVolume spawn amixer set Master 1%+
 

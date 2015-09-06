@@ -10,6 +10,11 @@ if [ -z "$geometry" ] ;then
     exit 1
 fi
 
+monitor_x=${geometry[0]}
+monitor_y=${geometry[1]}
+monitor_w=${geometry[2]}
+monitor_h=${geometry[3]}
+
 # Make sure only one instanve per monitor is running
 pids=$(ps x | grep "$0 $monitor" | awk '{print $1}')
 for pid in $pids; do
@@ -18,13 +23,30 @@ for pid in $pids; do
     fi
 done
 
-# Geometry has the format W H X Y
-x=$(echo "${geometry[0]} + $HLWM_WINDOW_PADDING" | bc)
-y=$(echo "${geometry[1]} + $HLWM_WINDOW_PADDING" | bc)
-panel_width=$(echo "${geometry[2]} - (2 * $HLWM_WINDOW_PADDING)" | bc)
+padding=(0 0 0 0)
+
+if [ -n "$HLWM_PANEL_MARGIN" ]; then
+    margins=($HLWM_PANEL_MARGIN)
+    panel_td_margin=$([ ${margins[0]} -eq -1 ] && echo $HLWM_WINDOW_PADDING || echo ${margins[0]})
+    panel_lr_margin=$([ ${margins[1]} -eq -1 ] && echo $HLWM_WINDOW_PADDING || echo ${margins[1]})
+else
+    panel_td_margin=$HLWM_WINDOW_PADDING
+    panel_lr_margin=$HLWM_WINDOW_PADDING
+fi
+
+x=$(echo "$monitor_x + $panel_lr_margin" | bc)
+panel_width=$(echo "$monitor_w - (2 * $panel_lr_margin)" | bc)
+
+if $HLWM_PANEL_BOTTOM; then
+    y=$(echo "$monitor_h - $HLWM_PANEL_HEIGHT - $panel_td_margin" | bc)
+    padding[2]=$(echo "$HLWM_PANEL_HEIGHT + $panel_td_margin" | bc)
+else
+    y=$(echo "$monitor_y + $panel_td_margin" | bc)
+    padding[0]=$(echo "$HLWM_PANEL_HEIGHT + $panel_td_margin" | bc)
+fi
 
 # Apply padding to make room for the panel
-hc pad $monitor $(echo "$HLWM_PANEL_HEIGHT + $HLWM_WINDOW_PADDING" | bc)
+hc pad $monitor ${padding[@]}
 
 # Start the panel
 $HLWM_CONF_DIR/populate_panel.sh $monitor |

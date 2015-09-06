@@ -11,10 +11,17 @@ export HLWM_CONF_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 source "$HLWM_CONF_DIR/hlwm-theming"
 
-#Panel and HLWM_WINDOW_PADDING
-monitor_w=($(hc list_monitors | sed 's/^[0-9]: \([0-9]*\)x.*$/\1/'))
-panel_w=$(echo "$monitor_w - (2 * $HLWM_WINDOW_PADDING)" | bc)
-dmenu_opts="-h $HLWM_PANEL_HEIGHT -w $panel_w -x $HLWM_WINDOW_PADDING -y $HLWM_WINDOW_PADDING -p Run: -nb $HLWM_BG_COLOR -nf $HLWM_FG_COLOR -sb $HLWM_ACCENT_COLOR -sf $HLWM_BG_COLOR"
+#Dmenu opts
+dmenu_screen=0
+dmenu_width=400
+dmenu_height=30
+dmenu_lines=9
+dmenu_title="Run:"
+
+geometry=($(hc monitor_rect $dmenu_screen))
+
+dmenu_x=$(echo "(${geometry[2]} / 2) - ($dmenu_width / 2)" | bc)
+dmenu_y="${geometry[1]}"
 
 # Tags
 tag_names=()
