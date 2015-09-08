@@ -16,7 +16,6 @@ dmenu_screen=0
 dmenu_width=400
 dmenu_height=30
 dmenu_lines=9
-dmenu_title="Run:"
 
 geometry=($(hc monitor_rect $dmenu_screen))
 
