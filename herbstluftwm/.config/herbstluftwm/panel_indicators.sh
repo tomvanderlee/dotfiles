@@ -117,9 +117,9 @@ battery()
             bat_status="${battery_icon[5]}"
         elif [ $bat_lvl -lt 10 ] ; then
             bat_status="${F$HLWM_ACCENT_ACOLOR}${battery_icon[0]}${F-}"
-        elif [ $bat_ -lt 25 ] ; then
+        elif [ $bat_lvl -lt 25 ] ; then
             bat_status="${battery_icon[1]}"
-        elif [ $bat_ -lt 50 ] ; then
+        elif [ $bat_lvl -lt 50 ] ; then
             bat_status="${battery_icon[2]}"
         elif [ $bat_lvl -lt 75 ] ; then
             bat_status="${battery_icon[3]}"
