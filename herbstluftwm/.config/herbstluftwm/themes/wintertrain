@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+declare -A colors
+colors=(["background"]="#010202" ["foreground"]="#aafaff" # Fore- and Background
+        ["color0"]="#010202"     ["color8"]="#161717"     # Blacks
+        ["color1"]="#0B1415"     ["color9"]="#20292A"     # Reds
+        ["color2"]="#1D2B2C"     ["color10"]="#324041"    # Greens
+        ["color3"]="#324647"     ["color11"]="#475B5C"    # Yellows
+        ["color4"]="#465E62"     ["color12"]="#5B7377"    # Blues
+        ["color5"]="#567579"     ["color13"]="#6B8A8E"    # Magentas
+        ["color6"]="#66A1AA"     ["color14"]="#7BB6BF"    # Cyanes
+        ["color7"]="#83D9E6"     ["color15"]="#98EEFB")   # Whites
+
+# Wallpaper
+export HLWM_WALLPAPER="$HLWM_CONF_DIR/wallpapers/wintertrain.png"
+
+# Shadow
+export HLWM_COMPOSITING=false
+
+# Padding
+export HLWM_WINDOW_PADDING=20
+
+# Panel
+export HLWM_PANEL_HEIGHT=25
+export HLWM_PANEL_FONT="DejaVu Sans Mono-10"
+export HLWM_PANEL_BOTTOM=true
+export HLWM_PANEL_MARGIN="-1 -1" # Up/Down Left/Right (-1 is respects $HLWM_WINDOW_PADDING)
+
+# Colors
+export HLWM_FG_COLOR=${colors["foreground"]}
+export HLWM_BG_COLOR=${colors["background"]}
+export HLWM_ACCENT_COLOR=${colors["color7"]}
