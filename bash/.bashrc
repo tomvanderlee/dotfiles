@@ -89,13 +89,14 @@ elif exists vi; then
 fi
 
 vim() {
+	vim_bin=$(whereis -B $(sed "s/:/ /g" <(echo $PATH)) -b $EDITOR | cut -d' ' -f2-)
 	if [[ -z $@ ]]; then
-		$EDITOR
+		$vim_bin
 	elif [[ -d $@ ]]; then
 		dir=$(pwd)
-		cd $@ && $EDITOR && cd $dir
+		cd $@ && $vim_bin && cd $dir
 	else
-		$EDITOR $@
+		$vim_bin $@
 	fi
 }
 
@@ -166,7 +167,7 @@ fi
 # Start gnome-keyring-daemon
 if exists gnome-keyring-daemon; then
 	if [ -n "$DESKTOP_SESSION" ];then
-		eval $(gnome-keyring-daemon --start)
+		eval $(gnome-keyring-daemon --start 2> /dev/null)
 		export SSH_AUTH_SOCK
 	fi
 fi
