@@ -89,7 +89,7 @@ elif exists vi; then
 fi
 
 vim() {
-	vim_bin=$(whereis -B $(sed "s/:/ /g" <(echo $PATH)) -b $EDITOR | cut -d' ' -f2-)
+	vim_bin=$(whereis -b -B $(sed "s/:/ /g" <(echo $PATH)) -f $EDITOR | cut -d' ' -f2-)
 	if [[ -z $@ ]]; then
 		$vim_bin
 	elif [[ -d $@ ]]; then
