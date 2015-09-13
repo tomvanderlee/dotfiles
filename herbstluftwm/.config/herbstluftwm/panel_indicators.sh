@@ -10,12 +10,24 @@ volume_icon=("\uf026" "\uf027" "\uf028")
 music()
 {
     # Music
-    player_status=$(playerctl status)
-    if [ $player_status = "Playing" ]; then
+    mpd_status=$(mpc | sed -nr "s/^\[(.*)\].*$/\1/p")
+    if [ $mpd_status = "playing" ]; then
+        player_title=$(mpc -f "%title%" current)
+        player_artist=$(mpc -f "%artist%" current)
+        if [ -n "$player_artist" ]; then
+            playing="$player_title - $player_artist"
+        else
+            playing="$player_title"
+        fi
+    elif [ $(playerctl status) = "Playing" ]; then
         player_artist=$(playerctl metadata artist)
         player_title=$(playerctl metadata title)
         playing="$player_title - $player_artist"
+    else
+        playing=""
+    fi
 
+    if [ -n "$playing" ]; then
         if [ "$current" != "$playing" ] ; then
             current=$playing
             scrolling=$current
