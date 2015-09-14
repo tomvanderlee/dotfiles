@@ -2,8 +2,8 @@
 
 declare -A colors
 colors=(["background"]="#030303" ["foreground"]="#DADADA" # Fore- and Background
-        ["color0"]="#030303"     ["color8"]= "#181818"     # Blacks
-        ["color1"]="#202020"     ["color9"]= "#353535"     # Reds
+        ["color0"]="#030303"     ["color8"]="#181818"     # Blacks
+        ["color1"]="#202020"     ["color9"]="#353535"     # Reds
         ["color2"]="#424242"     ["color10"]="#575757"    # Greens
         ["color3"]="#616161"     ["color11"]="#767676"    # Yellows
         ["color4"]="#808080"     ["color12"]="#959595"    # Blues

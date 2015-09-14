@@ -128,7 +128,7 @@ battery()
         if [ $bat_state == "Charging" ] ; then
             bat_status="${battery_icon[5]}"
         elif [ $bat_lvl -lt 10 ] ; then
-            bat_status="${F$HLWM_ACCENT_ACOLOR}${battery_icon[0]}${F-}"
+            bat_status="%{F$HLWM_ACCENT_ACOLOR}${battery_icon[0]}%{F-}"
         elif [ $bat_lvl -lt 25 ] ; then
             bat_status="${battery_icon[1]}"
         elif [ $bat_lvl -lt 50 ] ; then
