@@ -22,7 +22,7 @@
 # Remember that most features come with their corresponding colors,
 # see the README.
 
-LP_PS1="[\d][\t]\u on \h\n\w${LP_VCS} ${LP_MARK}"
+LP_PS1="[\d][\t]\u on \h\n\w${LP_VENV}${LP_VCS} ${LP_MARK}"
 
 LP_TITLE=$(_lp_title $PS1)
 PS1="${LP_TITLE}${PS1}"
