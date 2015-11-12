@@ -43,4 +43,4 @@
 XTerm*termName: xterm-256color
 XTerm*selectToClipboard: true
 XTerm*metaSendsEscape: true
-XTerm*background: #2F343B
+XTerm*background: #2F343F
