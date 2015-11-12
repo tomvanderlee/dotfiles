@@ -44,10 +44,10 @@ nnoremap Q <Nop>
 cnoremap w!! w !sudo tee > /dev/null %
 
 " Switch windows with <C-W>[direction]
-noremap <C-J> <C-W>j
-noremap <C-K> <C-W>k
-noremap <C-H> <C-W>h
-noremap <C-L> <C-W>l
+nnoremap <C-J> <C-W>j
+nnoremap <C-K> <C-W>k
+nnoremap <C-H> <C-W>h
+nnoremap <C-L> <C-W>l
 
 " Never use the arrow keys
 noremap  <Up> ""
