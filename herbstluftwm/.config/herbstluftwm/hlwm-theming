@@ -20,6 +20,12 @@ done
 
 echo "XTerm*background: $HLWM_BG_COLOR" | xrdb -override
 
+#     Mode:              BG,              FG               BG ALT,          HL BG,              HL FG
+echo "rofi.color-normal: $HLWM_BG_COLOR,  $HLWM_FG_COLOR,  $HLWM_BG_COLOR,  $HLWM_ACCENT_COLOR, $HLWM_FG_COLOR" | xrdb -override
+
+#     Windowi            BACKGROUND,     BORDER
+echo "rofi.color-window: $HLWM_BG_COLOR, $HLWM_ACCENT_COLOR" | xrdb -override
+
 export HLWM_FG_ACOLOR=$(add_alpha_channel $HLWM_FG_COLOR)
 export HLWM_ACCENT_ACOLOR=$(add_alpha_channel $HLWM_ACCENT_COLOR)
 export HLWM_BG_ACOLOR=$(add_alpha_channel $HLWM_BG_COLOR)

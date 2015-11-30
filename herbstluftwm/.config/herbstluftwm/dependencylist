@@ -1,7 +1,6 @@
 alsa-utils
 bc
 compton
-dmenu2
 feh
 herbstluftwm-git
 i3lock
@@ -10,6 +9,7 @@ mpc
 playerctl
 pulseaudio
 pulseaudio-alsa
+rofi-git
 scrot
 sed
 ttf-dejavu

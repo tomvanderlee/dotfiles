@@ -11,22 +11,13 @@ export HLWM_CONF_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 source "$HLWM_CONF_DIR/hlwm-theming"
 
-#Dmenu opts
-dmenu_screen=0
-dmenu_width=400
-dmenu_height=30
-dmenu_lines=9
-
 geometry=($(hc monitor_rect $dmenu_screen))
-
-dmenu_x=$(echo "(${geometry[2]} / 2) - ($dmenu_width / 2)" | bc)
-dmenu_y="${geometry[1]}"
 
 # Tags
 tag_names=()
 tag_keys=({1..9} 0)
 for key in ${tag_keys[@]}; do
-    if [ $key -eq 0 ]; then 
+    if [ $key -eq 0 ]; then
         key=10
     else
         key=$(echo "$key - 1" | bc)
