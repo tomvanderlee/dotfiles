@@ -27,7 +27,6 @@ endtry
 " Some vim settings
 set number
 set relativenumber
-set hlsearch
 set list
 set modeline
 set background=dark
@@ -37,11 +36,20 @@ set scrolloff=1
 set backspace=indent,eol,start
 set cursorline
 
+" Search-related things
+set hlsearch "highlight search result
+set incsearch " incremental search
+set ignorecase
+set smartcase " capital letters = case sensitive
+
 " Disable ex mode
 nnoremap Q <Nop>
 
 " Save as sudo
 cnoremap w!! w !sudo tee > /dev/null %
+
+" Remove training spaces on save
+autocmd BufWritePre * :%s/\s\+$//e
 
 " Switch windows with <C-W>[direction]
 nnoremap <C-J> <C-W>j
@@ -50,14 +58,14 @@ nnoremap <C-H> <C-W>h
 nnoremap <C-L> <C-W>l
 
 " Never use the arrow keys
-noremap  <Up> ""
-noremap! <Up> <Esc>
-noremap  <Down> ""
-noremap! <Down> <Esc>
-noremap  <Left> ""
-noremap! <Left> <Esc>
-noremap  <Right> ""
-noremap! <Right> <Esc>
+inoremap  <Up> <Nop>
+inoremap  <Down> <Nop>
+inoremap  <Left> <Nop>
+inoremap  <Right> <Nop>
+noremap  <Up> <Nop>
+noremap  <Down> <Nop>
+noremap  <Left> <Nop>
+noremap  <Right> <Nop>
 
 " Append modeline when pressing <leader> ml
 function! AppendModeline()
@@ -97,4 +105,4 @@ if exists("g:loaded_pathogen")
 
 endif
 
-" vim: set ts=4 sw=4 tw=4 et :
+" vim: set ts=8 sw=4 tw=0 et :
