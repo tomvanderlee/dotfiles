@@ -80,6 +80,7 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 if has('nvim')
     nmap <BS> <C-W>h
     tnoremap <Esc> <C-\><C-n>
+    autocmd TermOpen * setlocal nolist
 endif
 
 """ PLUGIN SPECIFIC SETTINGS
@@ -97,12 +98,14 @@ if exists("g:loaded_pathogen")
     " otf-powerline-symbols-git
     " powerline-fonts-git
     let g:airline_powerline_fonts = 1
+    let g:airline#extensions#tabline#enabled = 1
+
     if !exists('g:airline_symbols')
         let g:airline_symbols = {}
     endif
+
     let g:airline_symbols.space = "\ua0"
     set laststatus=2
-
 endif
 
 " vim: set ts=8 sw=4 tw=0 et :
