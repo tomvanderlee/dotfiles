@@ -13,6 +13,8 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.local/usr/bin"
 export PATH="$PATH:$HOME/.local/usr/local/bin"
 
+export ANDROID_HOME="$HOME/Android/Sdk"
+
 # Quit the shell like in vim
 alias :q="exit"
 
