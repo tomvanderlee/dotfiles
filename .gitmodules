@@ -16,9 +16,6 @@
 [submodule "vim/.vim/bundle/vim-fugitive"]
 	path = vim/.vim/bundle/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
-[submodule "vim/.vim/bundle/Benokai"]
-	path = vim/.vim/bundle/Benokai
-	url = https://github.com/benjaminwhite/Benokai.git
 [submodule "vim/.vim/bundle/vim-airline"]
 	path = vim/.vim/bundle/vim-airline
 	url = https://github.com/bling/vim-airline
@@ -34,3 +31,6 @@
 [submodule "vim/.vim/bundle/quick-scope"]
 	path = vim/.vim/bundle/quick-scope
 	url = https://github.com/unblevable/quick-scope
+[submodule "vim/.vim/bundle/vim-janah"]
+	path = vim/.vim/bundle/vim-janah
+	url = https://github.com/mhinz/vim-janah.git
