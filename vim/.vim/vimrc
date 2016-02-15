@@ -13,18 +13,6 @@ let mapleader=" "
 syntax on
 filetype plugin indent on
 
-" Set colorscheme when the terminal has 256 color support
-try
-    if (&t_Co == 256) && match($TERM, "256color") >= 0
-        autocmd ColorScheme janah highlight Normal ctermbg=235
-        colorscheme janah
-    else
-        throw "nocolor"
-    endif
-catch
-    colorscheme desert
-endtry
-
 " Some vim settings
 set number
 set relativenumber
@@ -36,6 +24,18 @@ set listchars=trail:·,tab:▸\ ,eol:¬
 set scrolloff=1
 set backspace=indent,eol,start
 set cursorline
+
+" Set colorscheme when the terminal has 256 color support
+try
+    if (&t_Co == 256) && match($TERM, "256color") >= 0
+        autocmd ColorScheme janah highlight Normal ctermbg=235
+        colorscheme janah
+    else
+        throw "nocolor"
+    endif
+catch
+    colorscheme desert
+endtry
 
 " Search-related things
 set hlsearch "highlight search result
