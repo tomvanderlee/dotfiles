@@ -1,7 +1,7 @@
 [user]
 	name = Tom van der Lee
 [alias]
-	glog = log --graph --oneline --decorate --all
+	glog = log --graph --decorate --all --pretty=format:%C(yellow)%h%C(bold\\ red)%d%C(reset)\\ %s%n%C(green)%ar\\ %C(reset)by\\ %C(bold\\ blue)%an%n
 	sup = "!f() { git branch --set-upstream-to=$@; }; f"
 	ca = commit -am
 	st = status -s
