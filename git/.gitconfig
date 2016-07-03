@@ -9,4 +9,4 @@
 	ls = ls-files
 	serve = daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/
 [push]
-	default = matching
+	default = simple
