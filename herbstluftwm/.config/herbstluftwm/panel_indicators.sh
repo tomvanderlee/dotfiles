@@ -1,36 +1,17 @@
 #!/usr/bin/env bash
 
-icon_font="FontAwesome-10"
+source "$HLWM_CONF_DIR/system_utils/all.sh"
+
+export icon_font="FontAwesome-10"
 
 battery_icon=("\uf244" "\uf243" "\uf242" "\uf241" "\uf240" "\uf1e6")
 network_icon=("\uf1eb" "\uf109")
 music_icon="\uf001"
 volume_icon=("\uf026" "\uf027" "\uf028")
 
-music()
+hlwm_indicator_music()
 {
-    # Music
-    mpd_status=$(mpc | sed -nr "s/^\[(.*)\].*$/\1/p")
-    if [ $mpd_status = "playing" ]; then
-        player_artist=$(mpc -f "%artist%" current)
-        player_title=$(mpc -f "%title%" current)
-        if [ -n "$player_artist" ]; then
-            playing="$player_artist - $player_title"
-        else
-            playing="$player_title"
-        fi
-    elif [ $(playerctl status) = "Playing" ]; then
-        player_artist=$(playerctl metadata artist)
-        player_title=$(playerctl metadata title)
-        if [ -n "$player_artist" ] && [ -n "$player_title" ]; then
-            playing="$player_artist - $player_title"
-        else
-            now_playing=$(playerctl metadata vlc:nowplaying)
-            playing="$now_playing"
-        fi
-    else
-        playing=""
-    fi
+    playing=$(hlwm_utils_music_playing)
 
     if [ -n "$playing" ]; then
         if [ "$current" != "$playing" ] ; then
@@ -48,70 +29,39 @@ music()
     fi
 }
 
-volume()
+hlwm_indicator_volume()
 {
     # Volume
     if pgrep pulseaudio >> /dev/null ; then
-        volumes=$(\
-            amixer get Master | \
-            grep "Front Right: Playback"\
-            )
-        vol=$(\
-            echo $volumes | \
-            sed "s/.*\[\([0-9]*\)%\].*/\1/"\
-            )
-        if [ -z $vol ] ; then
-            vol_status="off"
-        elif [ $vol -eq 0 ]; then
-            vol_status="%{F$HLWM_FG_ACOLOR}${volume_icon[0]} $vol%%{F-}"
-        elif [ $vol -lt 33 ]; then
-            vol_status="%{F$HLWM_FG_ACOLOR}${volume_icon[1]} $vol%%{F-}"
+        volume=$(hlwm_utils_volume)
+        if [ -z "$volume" ] ; then
+            volume_status="off"
+        elif [ "$volume" -eq 0 ]; then
+            volume_status="%{F$HLWM_FG_ACOLOR}${volume_icon[0]} $volume%%{F-}"
+        elif [ "$volume" -lt 33 ]; then
+            volume_status="%{F$HLWM_FG_ACOLOR}${volume_icon[1]} $volume%%{F-}"
         else
-            vol_status="%{F$HLWM_FG_ACOLOR}${volume_icon[2]} $vol%%{F-}"
+            volume_status="%{F$HLWM_FG_ACOLOR}${volume_icon[2]} $volume%%{F-}"
         fi
-        echo -e "volume\t$vol_status"
+        echo -e "volume\t$volume_status"
     else
         echo -e "volume\toff"
     fi
 }
 
-network()
+hlwm_indicator_network()
 {
     # Network
-    read lo int1 int2 <<< `ip link | sed -n 's/^[0-9]: \(.*\):.*$/\1/p'`
-    if iwconfig $int1 >/dev/null 2>&1; then
-        wifi=$int1
-        eth=$int2
-    else
-        wifi=$int2
-        eth=$int1
-    fi
+    conn=$(hlwm_utils_active_network)
+    conn_type=$(echo "$conn" | cut -d: -f1)
 
-    ip link show $eth | grep 'state UP' >/dev/null && int=$eth || int=$wifi
-
-    if [ $int == $wifi ] ; then
-        iwconfig=$(iwconfig $int)
-        ssid=$(
-        echo $iwconfig | \
-            sed "s/.*ESSID:\(\".*\"\).*/\1/" | \
-            sed "s/.*\(off\/any\).*/\"\1\"/" | \
-            sed "s/.*\"\(.*\)\".*/\1/"
-        )
-
-        quality=$( \
-            echo $iwconfig | \
-            sed "s/^.*Link Quality=\([0-9]*\)\/\([0-9]*\) .*$/(\1*100)\/\2/" | \
-            bc
-        )
-
-        if [ $ssid == "off/any" ] ; then
-            net_status="off"
-        else
-            net_status="${network_icon[0]} $ssid $quality%"
-        fi
-
-    elif [ $int == $eth ] ; then
-        net_status="${network_icon[1]} Ethernet"
+    if [ "$conn_type" = "wifi" ] ; then
+        ssid=$(echo "$conn" | cut -d: -f2)
+        quality=$(echo "$conn" | cut -d: -f3)
+        net_status="${network_icon[0]} $ssid $quality%"
+    elif [ "$conn_type" = "eth" ] ; then
+        name=$(echo "$conn" | cut -d: -f2)
+        net_status="${network_icon[1]} $name"
     else
         net_status="off"
     fi
@@ -119,39 +69,50 @@ network()
     echo -e "net\t$net_status"
 }
 
-battery()
+hlwm_indicator_battery()
 {
     # Batteries
-    bat_info="off"
-    for bat in $(find /sys/class/power_supply | grep BAT); do
-        nr="${bat: -1}"
-        bat_info=""
+    battery_info=""
+    while read -r battery; do
 
-        bat_lvl=$(cat /sys/class/power_supply/BAT$nr/capacity)
-        bat_state=$(cat /sys/class/power_supply/BAT$nr/status)
+        battery=($battery)
+        battery_nr=${battery[0]}
+        battery_status=${battery[1]}
+        battery_level=${battery[2]}
 
-        if [ $bat_state == "Charging" ] ; then
-            bat_status="${battery_icon[5]}"
-        elif [ $bat_lvl -lt 10 ] ; then
-            bat_status="%{F$HLWM_ACCENT_ACOLOR}${battery_icon[0]}%{F-}"
-        elif [ $bat_lvl -lt 25 ] ; then
-            bat_status="${battery_icon[1]}"
-        elif [ $bat_lvl -lt 50 ] ; then
-            bat_status="${battery_icon[2]}"
-        elif [ $bat_lvl -lt 75 ] ; then
-            bat_status="${battery_icon[3]}"
+        if [ "$battery_status" = "Charging" ] ; then
+            battery_status="${battery_icon[5]}"
+        elif [ "$battery_level" -lt 10 ] ; then
+            battery_status="%{F$HLWM_ACCENT_ACOLOR}${battery_icon[0]}%{F-}"
+        elif [ "$battery_level" -lt 25 ] ; then
+            battery_status="${battery_icon[1]}"
+        elif [ "$battery_level" -lt 50 ] ; then
+            battery_status="${battery_icon[2]}"
+        elif [ "$battery_level" -lt 75 ] ; then
+            battery_status="${battery_icon[3]}"
         else
-            bat_status="${battery_icon[4]}"
+            battery_status="${battery_icon[4]}"
         fi
 
-        bat_info+="$nr: $bat_status $bat_lvl%%{F-}"
-    done
-    echo -e "battery\t$bat_info"
+        battery_info+="$battery_nr: $battery_status $battery_level%%{F-}"
+    done < <(hlwm_utils_battery)
+
+    if [ -z "$battery_info" ] ; then
+        echo -e "battery\toff"
+    else
+        echo -e "battery\t$battery_info"
+    fi
 }
 
-clock()
+hlwm_indicator_clock()
 {
-    echo -e $(date +$"date\t%{F$HLWM_FG_ACOLOR}%H:%M:%S %{F$HLWM_FG_ACOLOR}(%d-%m-%Y)%{F-}")
+    datetime=$(hlwm_utils_datetime)
+    datetime=($datetime)
+
+    date=${datetime[0]}
+    time=${datetime[1]}
+
+    echo -e "date\t%{F$HLWM_FG_ACOLOR}$time %{F$HLWM_FG_ACOLOR}($date)%{F-}"
 }
 
 # vim: set ts=4 sw=4 tw=0 et :

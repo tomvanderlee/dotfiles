@@ -24,11 +24,11 @@ fi
     #   date    ^fg(#efefef)18:33^fg(#909090), 2013-10-^fg(#efefef)29
 
     while true ; do
-        music
-        volume &
-        network &
-        battery &
-        clock &
+        hlwm_indicator_music
+        hlwm_indicator_volume &
+        hlwm_indicator_network &
+        hlwm_indicator_battery &
+        hlwm_indicator_clock &
         sleep 1 || break
     done > >(uniq_linebuffered) &
 
