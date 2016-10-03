@@ -24,13 +24,9 @@ case "$(uname)" in
 		alias ls="ls --color=auto"
 		usr="/usr"
 		;;
-	FreeBSD)
+	FreeBSD|Darwin)
 		alias ls="ls -G"
 		usr="/usr/local"
-		;;
-	*)
-		alias ls="ls --color=auto"
-		usr="/usr"
 		;;
 esac
 
@@ -91,10 +87,10 @@ elif exists vi; then
 fi
 
 vim() {
-	vim_bin=$(whereis -b -B $(sed "s/:/ /g" <(echo $PATH)) -f $EDITOR | cut -d' ' -f2-)
-	if [[ -z $@ ]]; then
+	vim_bin=$(which $EDITOR)
+	if [[ -z "$@" ]]; then
 		$vim_bin
-	elif [[ -d $@ ]]; then
+	elif [[ -d "$@" ]]; then
 		dir=$(pwd)
 		cd $@ && $vim_bin && cd $dir
 	else
@@ -109,8 +105,8 @@ if exists go; then
 fi
 
 if exists gem; then
-	export GEM_HOME="$(ruby -e 'print Gem.user_dir')/bin"
-	export PATH="$PATH:$GEM_HOME"
+	export GEM_HOME="$(ruby -e 'print Gem.user_dir')"
+	export PATH="$PATH:$GEM_HOME/bin"
 fi
 
 # Ezjail shortcuts
@@ -122,8 +118,7 @@ fi
 
 # Showbanned ipadresses
 if exists pfctl && exists sudo; then
-	showbanned ()
-	{
+	showbanned () {
 		for table in "fail2ban" "permaban"; do
 			banned=$(sudo pfctl -t $table -T show 2> /dev/null)
 
@@ -151,7 +146,7 @@ fi
 # Set the virtualenv parameters
 if exists virtualenvwrapper.sh; then
 	export WORKON_HOME=$HOME/.virtualenvs
-	source $use/bin/virtualenvwrapper.sh
+	source $(which virtualenvwrapper.sh) 2> /dev/null
 fi
 
 # Start gnome-keyring-daemon
@@ -164,7 +159,7 @@ fi
 
 # Fancy bash prompt
 if exists liquidprompt; then
-	source liquidprompt
+	source $(which liquidprompt) 2> /dev/null
 fi
 
 # Fancy system info
@@ -174,4 +169,4 @@ elif exists screenfetch; then
 	screenfetch
 fi
 
-# vim: set ts=8 sw=8 tw=0 noet :
+# vim: set ts=4 sw=4 tw=0 noet :
