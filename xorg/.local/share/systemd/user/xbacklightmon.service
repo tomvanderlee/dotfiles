@@ -1,0 +1,8 @@
+[Unit]
+Description=Watches /sys/class/backlight/brightness and applies it to xorg-backlight
+After=graphical.target
+Wants=graphical.target
+
+[Service]
+Type=simple
+ExecStart=/home/tom/.local/usr/bin/xbacklightmon

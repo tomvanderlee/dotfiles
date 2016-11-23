@@ -94,6 +94,15 @@ if exists("g:loaded_pathogen")
     autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
     autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
+    " NERDCommenter:
+    " Pretty comments
+    let g:NERDSpaceDelims = 1
+    let g:NERDCompactSexyComs = 1
+    let g:NERDDefaultAlign = 'left'
+    let g:NERDCommentEmptyLines = 1
+    let g:NERDTrimTrailingWhitespace = 1
+
+
     " Airline:
     " On arch linux install the following:
     " otf-powerline-symbols-git

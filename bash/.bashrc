@@ -44,7 +44,7 @@ man() {
 
 # Helpfull functions
 exists() {
-	hash $@ 2> /dev/null
+	type $@ &> /dev/null
 }
 
 is_function() {
@@ -155,6 +155,10 @@ if exists gnome-keyring-daemon; then
 		eval $(gnome-keyring-daemon --start 2> /dev/null)
 		export SSH_AUTH_SOCK
 	fi
+fi
+
+if exists sensible.bash; then
+	source sensible.bash
 fi
 
 # Fancy bash prompt
