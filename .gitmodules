@@ -34,3 +34,9 @@
 [submodule "vim/.vim/bundle/vim-janah"]
 	path = vim/.vim/bundle/vim-janah
 	url = https://github.com/mhinz/vim-janah.git
+[submodule "vim/.vim/bundle/tmuxline.vim"]
+	path = vim/.vim/bundle/tmuxline.vim
+	url = https://github.com/edkolev/tmuxline.vim.git
+[submodule "vim/.vim/bundle/vim-airline-themes"]
+	path = vim/.vim/bundle/vim-airline-themes
+	url = https://github.com/vim-airline/vim-airline-themes
