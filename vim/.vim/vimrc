@@ -1,9 +1,9 @@
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.local/share/vim/plugged')
 
 Plug 'bling/vim-airline'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'edkolev/tmuxline.vim'
-Plug 'ervandew/supertab'
+" Plug 'ervandew/supertab'
 Plug 'mhinz/vim-janah'
 Plug 'mhinz/vim-signify'
 Plug 'scrooloose/nerdcommenter'
@@ -12,6 +12,10 @@ Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-fugitive'
 Plug 'unblevable/quick-scope'
 Plug 'vim-airline/vim-airline-themes'
+
+if has('python') || has('python3')
+    Plug 'Valloric/YouCompleteMe', {'do': './install.py --clang-completer'}
+endif
 
 call plug#end()
 
