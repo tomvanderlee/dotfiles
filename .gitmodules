@@ -1,42 +1,6 @@
-[submodule "vim/.vim/bundle/nerdcommenter"]
-	path = vim/.vim/bundle/nerdcommenter
-	url = https://github.com/scrooloose/nerdcommenter.git
-[submodule "vim/.vim/bundle/nerdtree"]
-	path = vim/.vim/bundle/nerdtree
-	url = https://github.com/scrooloose/nerdtree.git
-[submodule "vim/.vim/bundle/supertab"]
-	path = vim/.vim/bundle/supertab
-	url = https://github.com/ervandew/supertab.git
-[submodule "vim/.vim/bundle/syntastic"]
-	path = vim/.vim/bundle/syntastic
-	url = https://github.com/scrooloose/syntastic.git
-[submodule "vim/.vim/bundle/vim-fugitive"]
-	path = vim/.vim/bundle/vim-fugitive
-	url = https://github.com/tpope/vim-fugitive.git
-[submodule "vim/.vim/bundle/vim-airline"]
-	path = vim/.vim/bundle/vim-airline
-	url = https://github.com/bling/vim-airline
-[submodule "vim/.vim/bundle/ctrlp"]
-	path = vim/.vim/bundle/ctrlp
-	url = https://github.com/ctrlpvim/ctrlp.vim
-[submodule "vim/.vim/bundle/vim-signify"]
-	path = vim/.vim/bundle/vim-signify
-	url = https://github.com/mhinz/vim-signify
 [submodule "weechat/.weechat/downloads/weechat-vimode"]
 	path = weechat/.weechat/downloads/weechat-vimode
 	url = https://github.com/GermainZ/weechat-vimode
-[submodule "vim/.vim/bundle/quick-scope"]
-	path = vim/.vim/bundle/quick-scope
-	url = https://github.com/unblevable/quick-scope
-[submodule "vim/.vim/bundle/vim-janah"]
-	path = vim/.vim/bundle/vim-janah
-	url = https://github.com/mhinz/vim-janah.git
-[submodule "vim/.vim/bundle/tmuxline.vim"]
-	path = vim/.vim/bundle/tmuxline.vim
-	url = https://github.com/edkolev/tmuxline.vim.git
-[submodule "vim/.vim/bundle/vim-airline-themes"]
-	path = vim/.vim/bundle/vim-airline-themes
-	url = https://github.com/vim-airline/vim-airline-themes
 [submodule "vim/.vim/vim-plug"]
 	path = vim/.vim/vim-plug
 	url = https://github.com/junegunn/vim-plug

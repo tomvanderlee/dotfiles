@@ -1,3 +1,20 @@
+call plug#begin('~/.vim/plugged')
+
+Plug 'bling/vim-airline'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'edkolev/tmuxline.vim'
+Plug 'ervandew/supertab'
+Plug 'mhinz/vim-janah'
+Plug 'mhinz/vim-signify'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/syntastic'
+Plug 'tpope/vim-fugitive'
+Plug 'unblevable/quick-scope'
+Plug 'vim-airline/vim-airline-themes'
+
+call plug#end()
+
 """ DEFAULT VIM SETTINGS
 
 " Reload vimrc on save
@@ -83,8 +100,7 @@ if has('nvim')
 endif
 
 """ PLUGIN SPECIFIC SETTINGS
-
-if exists("g:loaded_pathogen")
+if exists("g:plug_home")
 
     " NERDTree:
     " Open NERDTree when no file is specified
