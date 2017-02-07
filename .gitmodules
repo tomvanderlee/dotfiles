@@ -1,6 +1,3 @@
-[submodule "vim/.vim/vim-pathogen"]
-	path = vim/.vim/vim-pathogen
-	url = https://github.com/tpope/vim-pathogen.git
 [submodule "vim/.vim/bundle/nerdcommenter"]
 	path = vim/.vim/bundle/nerdcommenter
 	url = https://github.com/scrooloose/nerdcommenter.git

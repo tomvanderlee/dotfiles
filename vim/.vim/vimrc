@@ -1,5 +1,3 @@
-silent! execute pathogen#infect()
-
 """ DEFAULT VIM SETTINGS
 
 " Reload vimrc on save
