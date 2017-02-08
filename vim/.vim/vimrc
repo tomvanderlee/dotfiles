@@ -14,7 +14,17 @@ Plug 'unblevable/quick-scope'
 Plug 'vim-airline/vim-airline-themes'
 
 if has('python') || has('python3')
-    Plug 'Valloric/YouCompleteMe', {'do': './install.py --clang-completer'}
+    let g:ycm_install_command = './install.py --clang-completer'
+
+    if executable('node') && executable('npm')
+        let g:ycm_install_command .= ' --tern-completer'
+    endif
+
+    if executable('go')
+        let g:ycm_install_command .= ' --gocode-completer'
+    endif
+
+    Plug 'Valloric/YouCompleteMe', {'do': g:ycm_install_command}
 endif
 
 call plug#end()
@@ -134,6 +144,11 @@ if exists("g:plug_home")
 
     let g:airline_symbols.space = "\ua0"
     set laststatus=2
+
+    if exists('g:ycm_install_command')
+        let g:ycm_autoclose_preview_window_after_completion = 1
+        let g:ycm_autoclose_preview_window_after_insertion = 1
+    endif
 endif
 
 " vim: set ts=8 sw=4 tw=0 et :
