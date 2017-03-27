@@ -13,6 +13,19 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.local/usr/bin"
 export PATH="$PATH:$HOME/.local/usr/local/bin"
 
+export C_INCLUDE_PATH="$C_INCLUDE_PATH:$HOME/.local/include"
+export C_INCLUDE_PATH="$C_INCLUDE_PATH:$HOME/.local/usr/include"
+export C_INCLUDE_PATH="$C_INCLUDE_PATH:$HOME/.local/usr/local/include"
+
+export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:$HOME/.local/include"
+export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:$HOME/.local/usr/include"
+export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:$HOME/.local/usr/local/include"
+
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/.local/lib"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/.local/usr/lib"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/.local/usr/local/lib"
+
+
 export ANDROID_HOME="$HOME/Android/Sdk"
 
 # Quit the shell like in vim

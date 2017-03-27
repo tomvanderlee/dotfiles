@@ -13,6 +13,10 @@ Plug 'tpope/vim-fugitive'
 Plug 'unblevable/quick-scope'
 Plug 'vim-airline/vim-airline-themes'
 
+if executable('ansible')
+Plug 'chase/vim-ansible-yaml'
+endif
+
 if has('python') || has('python3')
     let g:ycm_install_command = './install.py --clang-completer'
 

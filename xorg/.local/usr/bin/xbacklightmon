@@ -10,8 +10,8 @@ luminance() {
 
 read -r max < "$path"/max_brightness
 
-xbacklight -set "$(luminance)"
+echo xbacklight -set "$(luminance)"
 
 inotifywait -me modify --format '' "$path"/actual_brightness | while read; do
-    xbacklight -set "$(luminance)"
+    echo xbacklight -set "$(luminance)"
 done
