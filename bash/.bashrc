@@ -5,6 +5,9 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+[ -f "/etc/bashrc" ] && source "/etc/bashrc"
+
+
 # Default PS1
 export PS1='[\d][\t]\u on \h\n\w $ '
 
