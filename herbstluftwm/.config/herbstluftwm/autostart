@@ -6,6 +6,9 @@ hc() {
 }
 export -f hc
 
+# Set resolution if arandr layout exists
+[ -f "$HOME/.screenlayout/arandr.sh" ] && $HOME/.screenlayout/arandr.sh
+
 # The current directory
 export HLWM_CONF_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
@@ -18,7 +21,7 @@ tag_names=()
 tag_keys=({1..9} 0)
 for key in ${tag_keys[@]}; do
     if [ $key -eq 0 ]; then
-        key=10
+        key=9
     else
         key=$(echo "$key - 1" | bc)
     fi

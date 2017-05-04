@@ -6,16 +6,25 @@ hc keyunbind --all
 # Keybindings
 Mod=Mod4   # Use the super key as the main modifier
 
+
 hc keybind $Mod-Shift-q quit
 hc keybind $Mod-Shift-r chain , spawn echo "!! HLWM reload config !!" , reload
 hc keybind $Mod-Shift-c close
 hc keybind $Mod-Return spawn xterm
+hc keybind $Mod-Alt-l spawn xautolock -locknow
 
 hc keybind $Mod-Escape spawn rofi -color-enabled -modi "run,ssh" -show run
+hc keybind $Mod-a spawn rofi -color-enabled -modi "drun" -show drun
 hc keybind $Mod-t spawn env HLWM_CONF_DIR=$HLWM_CONF_DIR $HLWM_CONF_DIR/rofi_theme.sh -color-enabled
 
+hc keybind XF86AudioMute spawn amixer set Master toggle
 hc keybind XF86AudioLowerVolume spawn amixer set Master 1%-
 hc keybind XF86AudioRaiseVolume spawn amixer set Master 1%+
+
+hc keybind XF86MonBrightnessUp spawn xbacklight -inc 5
+hc keybind XF86MonBrightnessDown spawn xbacklight -dec 5
+
+hc keybind XF86AudioPlay spawn playerctl play-pause
 
 # Basic movement
 # Focusing clients

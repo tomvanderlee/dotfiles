@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+declare -A colors
+colors=(["background"]="#262626" ["foreground"]="#f9f9f9" # Fore- and Background TODO
+        ["color0"]="#2e3436"     ["color8"]="#555753"     # Blacks TODO
+        ["color1"]="#a31604"     ["color9"]="#c60001"     # Reds
+        ["color2"]="#447241"     ["color10"]="#27a343"    # Greens
+        ["color3"]="#c1951a"     ["color11"]="#d5a30e"    # Yellows TODO
+        ["color4"]="#425387"     ["color12"]="#4a5a8d"    # Blues TODO
+        ["color5"]="#965d98"     ["color13"]="#893c8c"    # Magentas TODO
+        ["color6"]="#06989a"     ["color14"]="#12bccb"    # Cyanes TODO
+        ["color7"]="#d3d7cf"     ["color15"]="#eeeeec")   # Whites TODO
+
+# Wallpaper
+export HLWM_WALLPAPER="$HLWM_CONF_DIR/wallpapers/yosemite.jpg"
+
+# Shadow
+export HLWM_COMPOSITING=true
+
+# Padding
+export HLWM_WINDOW_PADDING=20
+
+# Panel
+export HLWM_PANEL_HEIGHT=25
+export HLWM_PANEL_FONT="DejaVu Sans Mono-10"
+export HLWM_PANEL_BOTTOM=false
+export HLWM_PANEL_MARGIN="-1 -1" # Up/Down Left/Right (-1 is respects $HLWM_WINDOW_PADDING)
+
+# Colors
+export HLWM_FG_COLOR=${colors["foreground"]}
+export HLWM_ACCENT_COLOR=${colors["color2"]}
+export HLWM_BG_COLOR=${colors["background"]}

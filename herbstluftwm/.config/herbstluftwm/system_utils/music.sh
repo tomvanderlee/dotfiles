@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 hlwm_utils_music_playing() {
-
     playing=""
 
     mpd_status=$(mpc | sed -nr "s/^\[(.*)\].*$/\1/p")

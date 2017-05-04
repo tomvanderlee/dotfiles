@@ -7,7 +7,7 @@ hc rule focus=on # normally focus new clients
 hc rule windowtype='_NET_WM_WINDOW_TYPE_DIALOG' focus=on
 hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK|DESKTOP)' manage=off
 
-hc rule --class~'(.*[Ss]team.*)' --tag=IX --focus=off
-hc rule --class~'(.*[Hh]exchat.*)' --tag=X --focus=off
-hc rule --class~'(.*[Ss]potify.*)' --tag=X --focus=off
-hc rule --class~'(.*[Ss]kype.*)' --tag=VIII --focus=off
+hc rule --class~'(.*[Ss]team.*)' --tag=1000 --focus=off
+hc rule --class~'(.*[Hh]exchat.*)' --tag=1001 --focus=off
+hc rule --class~'(.*[Ss]potify.*)' --tag=1001 --focus=off
+hc rule --class~'(.*[Ss]kype.*)' --tag=0111 --focus=off

@@ -8,6 +8,7 @@ battery_icon=("\uf244" "\uf243" "\uf242" "\uf241" "\uf240" "\uf1e6")
 network_icon=("\uf1eb" "\uf109")
 music_icon="\uf001"
 volume_icon=("\uf026" "\uf027" "\uf028")
+backlight_icon="\uf185"
 
 hlwm_indicator_music()
 {
@@ -34,8 +35,10 @@ hlwm_indicator_volume()
     # Volume
     if pgrep pulseaudio >> /dev/null ; then
         volume=$(hlwm_utils_volume)
-        if [ -z "$volume" ] ; then
+        if [ -z "$volume" ]; then
             volume_status="off"
+        elif [ "$volume" == "mute" ]; then
+            volume_status="%{F$HLWM_FG_ACOLOR}${volume_icon[0]} Mute%{F-}"
         elif [ "$volume" -eq 0 ]; then
             volume_status="%{F$HLWM_FG_ACOLOR}${volume_icon[0]} $volume%%{F-}"
         elif [ "$volume" -lt 33 ]; then
@@ -82,6 +85,8 @@ hlwm_indicator_battery()
 
         if [ "$battery_status" = "Charging" ] ; then
             battery_status="${battery_icon[5]}"
+        elif [ "$battery_level" -lt 5 ]; then
+            systemctl suspend;
         elif [ "$battery_level" -lt 10 ] ; then
             battery_status="%{F$HLWM_ACCENT_ACOLOR}${battery_icon[0]}%{F-}"
         elif [ "$battery_level" -lt 25 ] ; then
@@ -113,6 +118,16 @@ hlwm_indicator_clock()
     time=${datetime[1]}
 
     echo -e "date\t%{F$HLWM_FG_ACOLOR}$time %{F$HLWM_FG_ACOLOR}($date)%{F-}"
+}
+
+hlwm_indicator_backlight() {
+    local level=$(hlwm_utils_backlight)
+
+    if [ -z "$level" ]; then
+        echo -e "backlight\toff"
+    else
+        echo -e "backlight\t$backlight_icon $level%"
+    fi
 }
 
 # vim: set ts=4 sw=4 tw=0 et :

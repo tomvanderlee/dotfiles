@@ -42,5 +42,5 @@ else
     {
         echo "%{F$HLWM_ACCENT_ACOLOR} $prefix %{F$HLWM_FG_ACOLOR}$message %{F$HLWM_FG_ACOLOR}($t)%{F-}"
         sleep $timeout
-    } | bar $bar_opts
+    } | lemonbar $bar_opts
 fi

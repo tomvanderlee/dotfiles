@@ -29,6 +29,7 @@ fi
         hlwm_indicator_network &
         hlwm_indicator_battery &
         hlwm_indicator_clock &
+        hlwm_indicator_backlight &
         sleep 1 || break
     done > >(uniq_linebuffered) &
 
@@ -47,6 +48,7 @@ fi
     battery=""
     net=""
     windowtitle=""
+    backlight=""
 
     separator="%{F$HLWM_ACCENT_ACOLOR}|%{F-}"
 
@@ -70,15 +72,14 @@ fi
                     echo -n "%{F$HLWM_FG_ACOLOR}"
                     ;;
             esac
-            echo -n "%{A:tag,${i:1}:} ${i:1} %{A}%{F-}%{U-u}%{B-}"
+            echo -n "%{A:tag,${i:1}:} ${i:1} %{A}%{F-}%{U$HLWM_BG_ACOLOR+u}%{B-}"
         done
 
-        echo -n "$separator%{F-}%{B-} "
         echo -n "${windowtitle//^/^^}"
 
        # Right part of panel
-        right="$music$volume$net$battery$date "
-        echo -n "%{r}$right"
+        right="$music$volume$backlight$net$battery$date "
+        echo -n "%{r}%{U$HLWM_BG_ACOLOR+u}$right"
 
         #DO NOT REMOVE THIS ECHO
         echo
@@ -106,6 +107,14 @@ fi
                     volume="$volume $separator%{B-} "
                 fi
                 ;;
+            backlight)
+                backlight="${cmd[@]:1}"
+                if [ "$backlight" == "off" ]; then
+                    backlight=""
+                else
+                    backlight="$backlight $separator%{B-} "
+                fi
+                ;;
             net)
                 net="${cmd[@]:1}"
                 if [ $net = "off" ] ; then
@@ -128,8 +137,12 @@ fi
                 ;;
             focus_changed|window_title_changed)
                 windowtitle="${cmd[@]:2}"
-                if [ ${#windowtitle} -gt 60 ]; then
-                    windowtitle="${windowtitle:0:57}..."
+                if [ -n "$windowtitle" ]; then
+                    if [ ${#windowtitle} -gt 60 ]; then
+                        windowtitle="${windowtitle:0:57}..."
+                    fi
+
+                    windowtitle="$separator%{F-}%{B-} $windowtitle"
                 fi
                 ;;
         esac
