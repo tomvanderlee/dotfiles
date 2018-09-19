@@ -77,7 +77,7 @@ set ignorecase
 set smartcase " capital letters = case sensitive
 
 " Disable ex mode
-nnoremap Q <Nop>
+" nnoremap Q <Nop>
 
 " Save as sudo
 cnoremap w!! w !sudo tee > /dev/null %
