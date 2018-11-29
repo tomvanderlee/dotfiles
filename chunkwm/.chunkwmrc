@@ -22,7 +22,7 @@ chunkc core::log_file stdout
 #       - none, debug, profile, warn, error
 #
 
-chunkc core::log_level warn
+chunkc core::log_level debug
 
 #
 # NOTE: specify the absolutepath to the directory to use when loading a plugin.

@@ -203,4 +203,17 @@ if exists pyenv; then
     export PATH="$PATH:$(pyenv root)/shims"
 fi
 
+if exists xcrun; then
+    SDK_PATH="$(xcrun --show-sdk-path)"
+    export C_INCLUDE_PATH="$C_INCLUDE_PATH:$SDK_PATH/usr/include"
+    export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:$SDK_PATH/usr/include"
+fi
+
 # vim: set ts=4 sw=4 tw=0 et :
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.bash ] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.bash
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash ] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash

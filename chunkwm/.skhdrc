@@ -82,27 +82,20 @@
 #     "qutebrowser" : echo "hello qutebrowser"
 #     "finder"      : false
 # ]
+#
+shift + cmd - r : brew services restart chunkwm
 
 # open terminal, blazingly fast compared to iTerm/Hyper
 cmd - return : /Applications/Kitty.app/Contents/MacOS/kitty --single-instance -d ~
 
-# open qutebrowser
-cmd + shift - return : ~/Scripts/qtb.sh
-
-# open mpv
-cmd - m : open -na /Applications/mpv.app $(pbpaste)
-
 # close focused window
-alt - w : chunkc tiling::window --close
+shift + cmd - c : chunkc tiling::window --close
 
 # focus window
-alt - h : chunkc tiling::window --focus west
-alt - j : chunkc tiling::window --focus south
-alt - k : chunkc tiling::window --focus north
-alt - l : chunkc tiling::window --focus east
-
-cmd - j : chunkc tiling::window --focus prev
-cmd - k : chunkc tiling::window --focus next
+cmd - h : chunkc tiling::window --focus west
+cmd - j : chunkc tiling::window --focus south
+cmd - k : chunkc tiling::window --focus north
+cmd - l : chunkc tiling::window --focus east
 
 # equalize size of windows
 shift + alt - 0 : chunkc tiling::desktop --equalize
@@ -191,17 +184,11 @@ ctrl + cmd - 1  : chunkc tiling::window --send-to-monitor 1; chunkc tiling::moni
 ctrl + cmd - 2  : chunkc tiling::window --send-to-monitor 2; chunkc tiling::monitor -f 2
 ctrl + cmd - 3  : chunkc tiling::window --send-to-monitor 3; chunkc tiling::monitor -f 3
 
-# increase region size
-shift + alt - a : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge west
-shift + alt - s : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge south
-shift + alt - w : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge north
-shift + alt - d : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge east
-
-# decrease region size
-shift + cmd - a : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge west
-shift + cmd - s : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge south
-shift + cmd - w : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge north
-shift + cmd - d : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge east
+# Resize region
+ctrl + cmd - h : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge west; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge east
+ctrl + cmd - j : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge south; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge north
+ctrl + cmd - k : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge north; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge south
+ctrl + cmd - l : chunkc tiling::window --use-temporary-ratio 0.05 --adjust-window-edge east; chunkc tiling::window --use-temporary-ratio -0.05 --adjust-window-edge west
 
 # set insertion point for focused container
 ctrl + alt - f : chunkc tiling::window --use-insertion-point cancel
@@ -223,13 +210,13 @@ alt - x : chunkc tiling::desktop --mirror horizontal
 alt - a : chunkc tiling::desktop --toggle offset
 
 # toggle window fullscreen
-alt - f : chunkc tiling::window --toggle fullscreen
+cmd - f : chunkc tiling::window --toggle fullscreen
 
 # toggle window native fullscreen
-shift + alt - f : chunkc tiling::window --toggle native-fullscreen
+shift + cmd - f : chunkc tiling::window --toggle native-fullscreen
 
 # toggle window parent zoom
-alt - d : chunkc tiling::window --toggle parent
+cmd - d : chunkc tiling::window --toggle parent
 
 # toggle window split type
 alt - e : chunkc tiling::window --toggle split
