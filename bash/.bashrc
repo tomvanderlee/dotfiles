@@ -205,6 +205,7 @@ fi
 
 if exists xcrun; then
     SDK_PATH="$(xcrun --show-sdk-path)"
+    PATH="$PATH:$(xcrun --show-sdk-path)/usr/bin"
     export C_INCLUDE_PATH="$C_INCLUDE_PATH:$SDK_PATH/usr/include"
     export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:$SDK_PATH/usr/include"
 fi
