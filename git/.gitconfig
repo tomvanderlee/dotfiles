@@ -9,5 +9,6 @@
 	ls = ls-files
 	serve = daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/
 	deploy = "!f() { read -p \"Do you want to push branch $1 to $1/master? [Y/n] \" yn; [ "$yn" == "Y" ] && git push $1{,:master}; }; f"
+	cm = commit -m
 [push]
 	default = simple
