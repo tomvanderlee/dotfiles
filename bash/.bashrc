@@ -76,6 +76,10 @@ is_alias() {
     fi
 }
 
+tunnel() {
+    ssh -R ${1}:80:127.0.0.1:${2} serveo.net
+}
+
 # Set autocomplete for sudo
 if exists complete && exists sudo; then
     complete -cf sudo
@@ -184,8 +188,9 @@ elif exists screenfetch; then
     screenfetch
 fi
 
-if exists brew && [ -f "$(brew --prefix)/etc/bash_completion" ]; then
-    source "$(brew --prefix)/etc/bash_completion"
+BASH_COMPLETION="$(brew --prefix)/etc/bash_completion"
+if exists brew && [ -f "${BASH_COMPLETION}" ]; then
+    source "${BASH_COMPLETION}"
 fi
 
 # heroku autocomplete setup
