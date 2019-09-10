@@ -216,6 +216,10 @@ if exists xcrun; then
     export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:$SDK_PATH/usr/include"
 fi
 
+if exists python3; then
+    alias pyhttpd="python3 -m http.server"
+fi
+
 if [ -s "/usr/local/opt/nvm/nvm.sh" ]; then
     export NVM_DIR="$HOME/.nvm"
     source "/usr/local/opt/nvm/nvm.sh"
