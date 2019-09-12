@@ -158,6 +158,10 @@ if exists less; then
     export PAGER="less"
 fi
 
+if exists virtualenv; then
+    export VIRTUALENV_ALWAYS_COPY=1
+fi
+
 # Set the virtualenv parameters
 if exists virtualenvwrapper.sh; then
     export WORKON_HOME=$HOME/.virtualenvs
