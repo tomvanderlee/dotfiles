@@ -25,6 +25,7 @@ export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/.local/usr/lib"
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/.local/usr/local/lib"
 
 export ANDROID_HOME="$HOME/Android/Sdk"
+export PATH="$PATH:$ANDROID_HOME/platform-tools"
 
 # Quit the shell like in vim
 alias :q="exit"
@@ -35,10 +36,17 @@ case "$(uname)" in
         alias ls="ls --color=auto"
         usr="/usr"
         ;;
-    FreeBSD|Darwin)
+    Darwin)
+
+        alias flushdns="sudo killall -HUP mDNSResponder;sudo killall mDNSResponderHelper;sudo dscacheutil -flushcache"
         alias ls="ls -G"
         usr="/usr/local"
         ;;
+    FreeBSD)
+        alias ls="ls -G"
+        usr="/usr/local"
+        ;;
+
 esac
 
 # Colorfull manpages
@@ -192,9 +200,44 @@ elif exists screenfetch; then
     screenfetch
 fi
 
-BASH_COMPLETION="$(brew --prefix)/etc/bash_completion"
-if exists brew && [ -f "${BASH_COMPLETION}" ]; then
-    source "${BASH_COMPLETION}"
+if exists brew; then
+    BASH_COMPLETION="$(brew --prefix)/etc/bash_completion"
+    if [ -f "${BASH_COMPLETION}" ]; then
+        source "${BASH_COMPLETION}"
+    fi
+fi
+
+if exists lpass; then
+    if exists complete; then
+        _complete_lpass_accounts() {
+            local search items item cmp newline
+
+            newline='
+            '
+
+            cmp=${COMP_WORDS[COMP_CWORD]}
+            search="$(sed 's/\\\ /___/g' <<< $cmp)"
+            items=$(lpass ls --format "%an$newline%aN" | sed "s/\ /___/g")
+
+            for item in $items; do
+                if [[ $item =~ ^$search ]]; then
+                    COMPREPLY+=( "$(sed 's/___/\\\ /g' <<< $item)" )
+                fi
+            done
+        }
+
+        complete -F _complete_lpass_accounts lpcp
+    fi
+
+    lps() {
+        lpass ls --format "%aN" | grep $1
+    }
+
+    lpcp() {
+        lpass show --password "$1" | pbcopy
+        sleep 1
+        lpass show --username "$1" | pbcopy
+    }
 fi
 
 # heroku autocomplete setup
