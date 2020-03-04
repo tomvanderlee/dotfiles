@@ -217,6 +217,11 @@ if exists lpass; then
 
             cmp=${COMP_WORDS[COMP_CWORD]}
             search="$(sed 's/\\\ /___/g' <<< $cmp)"
+
+            if [ -z "$search" ]; then
+                return
+            fi
+
             items=$(lpass ls --format "%an$newline%aN" | sed "s/\ /___/g")
 
             for item in $items; do
@@ -254,13 +259,6 @@ fi
 
 if exists pyenv; then
     export PATH="$PATH:$(pyenv root)/shims"
-fi
-
-if exists xcrun; then
-    SDK_PATH="$(xcrun --show-sdk-path)"
-    PATH="$PATH:$(xcrun --show-sdk-path)/usr/bin"
-    export C_INCLUDE_PATH="$C_INCLUDE_PATH:$SDK_PATH/usr/include"
-    export CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:$SDK_PATH/usr/include"
 fi
 
 if exists python3; then
