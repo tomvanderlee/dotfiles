@@ -191,6 +191,8 @@ fi
 # Fancy bash prompt
 if exists liquidprompt; then
     source $(which liquidprompt) 2> /dev/null
+elif [ -f "/usr/share/liquidprompt/liquidprompt" ]; then
+    source /usr/share/liquidprompt/liquidprompt 2> /dev/null
 fi
 
 # Fancy system info
