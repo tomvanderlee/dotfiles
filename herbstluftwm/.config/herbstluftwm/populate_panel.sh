@@ -117,7 +117,7 @@ fi
                 ;;
             net)
                 net="${cmd[@]:1}"
-                if [ $net = "off" ] ; then
+                if [ $net == "off" ] ; then
                     net=""
                 else
                     net="$net $separator%{B-} "

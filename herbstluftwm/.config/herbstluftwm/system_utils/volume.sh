@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 hlwm_utils_volume() {
-    local status=($(amixer get Master | sed -rn 's/\s*Front Right.*\[([0-9]+)%\]\s+\[(on|off)\]/\1 \2/p'))
+    local status=($(amixer -D pulse get Master | sed -rn 's/\s*Front Right.*\[([0-9]+)%\]\s+\[(on|off)\]/\1 \2/p'))
     if [ "${status[1]}" == "off" ]; then
         echo "mute"
     else

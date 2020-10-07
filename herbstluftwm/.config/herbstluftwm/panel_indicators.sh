@@ -40,11 +40,11 @@ hlwm_indicator_volume()
         elif [ "$volume" == "mute" ]; then
             volume_status="%{F$HLWM_FG_ACOLOR}${volume_icon[0]} Mute%{F-}"
         elif [ "$volume" -eq 0 ]; then
-            volume_status="%{F$HLWM_FG_ACOLOR}${volume_icon[0]} $volume%%{F-}"
+            volume_status="%{F$HLWM_FG_ACOLOR}${volume_icon[0]} $volume% %{F-}"
         elif [ "$volume" -lt 33 ]; then
-            volume_status="%{F$HLWM_FG_ACOLOR}${volume_icon[1]} $volume%%{F-}"
+            volume_status="%{F$HLWM_FG_ACOLOR}${volume_icon[1]} $volume% %{F-}"
         else
-            volume_status="%{F$HLWM_FG_ACOLOR}${volume_icon[2]} $volume%%{F-}"
+            volume_status="%{F$HLWM_FG_ACOLOR}${volume_icon[2]} $volume% %{F-}"
         fi
         echo -e "volume\t$volume_status"
     else
