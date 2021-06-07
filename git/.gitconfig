@@ -13,3 +13,5 @@
 	ra = "!f() { read -p \"Author email: \" email; [ -n \"${email}\" ] && git config user.email ${email} && git commit --amend --reset-author; }; f"
 [push]
 	default = simple
+[pull]
+	ff = only
