@@ -260,6 +260,8 @@ if exists heroku; then
 fi
 
 if exists pyenv; then
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
     export PATH="$PATH:$(pyenv root)/shims"
 fi
 
