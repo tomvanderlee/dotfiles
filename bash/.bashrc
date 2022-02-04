@@ -7,6 +7,7 @@
 export PS1='[\d][\t]\u on \h\n\w $ '
 
 # Additional local paths
+export PATH="$PATH:/opt/homebrew/bin"
 export PATH="$PATH:$HOME/.cargo/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.local/usr/bin"
@@ -193,6 +194,8 @@ if exists liquidprompt; then
     source $(which liquidprompt) 2> /dev/null
 elif [ -f "/usr/share/liquidprompt/liquidprompt" ]; then
     source /usr/share/liquidprompt/liquidprompt 2> /dev/null
+elif [ -f "/opt/homebrew/share/liquidprompt" ]; then
+    source /opt/homebrew/share/liquidprompt 2> /dev/null
 elif [ -f "/usr/local/share/liquidprompt" ]; then
     source /usr/local/share/liquidprompt 2> /dev/null
 fi
