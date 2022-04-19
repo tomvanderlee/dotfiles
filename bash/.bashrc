@@ -283,4 +283,9 @@ if [ -s "/usr/local/opt/nvm/nvm.sh" ]; then
     source "/usr/local/opt/nvm/nvm.sh"
 fi
 
+if exists direnv; then
+    eval "$(direnv hook bash)"
+fi
+
+
 # vim: set ts=4 sw=4 tw=0 et :

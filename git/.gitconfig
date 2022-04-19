@@ -11,6 +11,7 @@
 	deploy = "!f() { read -p \"Do you want to push branch $1 to $1/master? [Y/n] \" yn; [ "$yn" == "Y" ] && git push $1{,:master}; }; f"
 	cm = commit -m
 	ra = "!f() { read -p \"Author email: \" email; [ -n \"${email}\" ] && git config user.email ${email} && git commit --amend --reset-author; }; f"
+	merge-to = "!f() { git checkout $1; git merge -; git checkout -; }; f"
 [push]
 	default = simple
 [pull]
