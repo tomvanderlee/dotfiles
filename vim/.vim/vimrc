@@ -17,6 +17,14 @@ if executable('ansible')
     Plug 'chase/vim-ansible-yaml'
 endif
 
+if executable('terraform')
+    Plug 'hashivim/vim-terraform'
+endif
+
+if executable('python') || executable('python3')
+    Plug 'davidhalter/jedi-vim'
+endif
+
 if has('python') || has('python3')
     let g:ycm_install_command = './install.py --clang-completer'
 

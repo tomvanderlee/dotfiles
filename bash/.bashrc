@@ -7,7 +7,7 @@
 export PS1='[\d][\t]\u on \h\n\w $ '
 
 # Additional local paths
-export PATH="$PATH:/opt/homebrew/bin"
+export PATH="/opt/homebrew/bin:$PATH"
 export PATH="$PATH:$HOME/.cargo/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.local/usr/bin"
