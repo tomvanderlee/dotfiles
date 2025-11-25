@@ -287,5 +287,9 @@ if exists direnv; then
     eval "$(direnv hook bash)"
 fi
 
+if exists uv; then
+    eval "$(uv generate-shell-completion bash)"
+fi
+
 
 # vim: set ts=4 sw=4 tw=0 et :
