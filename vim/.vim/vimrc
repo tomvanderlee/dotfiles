@@ -43,6 +43,11 @@ if has('python') || has('python3')
     Plug 'Valloric/YouCompleteMe', {'do': g:ycm_install_command}
 endif
 
+if has('nvim')
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'greggh/claude-code.nvim'
+endif
+
 call plug#end()
 
 """ DEFAULT VIM SETTINGS
@@ -125,8 +130,9 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 " NeoVIM specifics
 if has('nvim')
     nmap <BS> <C-W>h
-    tnoremap <Esc> <C-\><C-n>
+    " tnoremap <Esc> <C-\><C-n>
     autocmd TermOpen * setlocal nolist
+    lua require('claude-code').setup({ window = { position = 'vertical botright' } })
 endif
 
 """ PLUGIN SPECIFIC SETTINGS
