@@ -6,9 +6,9 @@ Plug 'edkolev/tmuxline.vim'
 " Plug 'ervandew/supertab'
 Plug 'mhinz/vim-janah'
 Plug 'mhinz/vim-signify'
-Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic'
+Plug 'preservim/nerdcommenter'
+Plug 'preservim/nerdtree'
+Plug 'dense-analysis/ale'
 Plug 'tpope/vim-fugitive'
 Plug 'unblevable/quick-scope'
 Plug 'vim-airline/vim-airline-themes'
@@ -23,24 +23,26 @@ endif
 
 if executable('python') || executable('python3')
     Plug 'davidhalter/jedi-vim'
+    " YCM handles completion (async); keep jedi-vim for goto/rename only
+    let g:jedi#completions_enabled = 0
 endif
 
 if has('python') || has('python3')
     let g:ycm_install_command = './install.py --clang-completer'
 
     if executable('node') && executable('npm')
-        let g:ycm_install_command .= ' --tern-completer'
+        let g:ycm_install_command .= ' --ts-completer'
     endif
 
     if executable('go')
-        let g:ycm_install_command .= ' --gocode-completer'
+        let g:ycm_install_command .= ' --go-completer'
     endif
 
     if executable('rustc')
         let g:ycm_install_command .= ' --rust-completer'
     endif
 
-    Plug 'Valloric/YouCompleteMe', {'do': g:ycm_install_command}
+    Plug 'ycm-core/YouCompleteMe', {'do': g:ycm_install_command}
 endif
 
 if has('nvim')
@@ -63,7 +65,8 @@ let mapleader=" "
 syntax on
 filetype plugin indent on
 
-cnoreabbrev git Git
+" Expand :git to fugitive's :Git, but only as a whole command
+cnoreabbrev <expr> git (getcmdtype() ==# ':' && getcmdline() ==# 'git') ? 'Git' : 'git'
 
 " Some vim settings
 set number
@@ -76,6 +79,19 @@ set listchars=trail:·,tab:▸\ ,eol:¬
 set scrolloff=1
 set backspace=indent,eol,start
 set cursorline
+set hidden
+set wildmenu
+
+" Faster gutter updates (signify) and snappier <Esc> in terminal vim
+set updatetime=100
+set ttimeoutlen=10
+
+" Persistent undo across sessions
+if !isdirectory(expand('~/.local/share/vim/undo'))
+    call mkdir(expand('~/.local/share/vim/undo'), 'p', 0700)
+endif
+set undofile
+set undodir=~/.local/share/vim/undo
 
 " Set colorscheme when the terminal has 256 color support
 try
@@ -98,13 +114,28 @@ set smartcase " capital letters = case sensitive
 " Disable ex mode
 nnoremap Q <Nop>
 
-" Save as sudo
-cnoremap w!! w !sudo tee > /dev/null %
+" Save as sudo (abbreviation, so a plain :w never stalls on timeoutlen)
+" Note: doesn't work in neovim (sudo can't prompt for a password there);
+" use a suda.vim-style plugin if needed.
+cnoreabbrev <expr> w!! (getcmdtype() ==# ':' && getcmdline() ==# 'w!!')
+    \ ? 'w !sudo tee > /dev/null %' : 'w!!'
 
-" Remove training spaces on save
-autocmd BufWritePre * :%s/\s\+$//e
+" Remove trailing spaces on save, preserving cursor and search pattern
+function! StripTrailingWhitespace()
+    if index(['markdown', 'diff'], &filetype) >= 0
+        return
+    endif
+    let l:view = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:view)
+endfunction
 
-" Switch windows with <C-W>[direction]
+augroup strip_whitespace
+    autocmd!
+    autocmd BufWritePre * call StripTrailingWhitespace()
+augroup END
+
+" Switch windows with <C-[direction]>
 nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
 nnoremap <C-H> <C-W>h
@@ -131,9 +162,12 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
 " NeoVIM specifics
 if has('nvim')
-    nmap <BS> <C-W>h
+    nnoremap <BS> <C-W>h
     " tnoremap <Esc> <C-\><C-n>
-    autocmd TermOpen * setlocal nolist
+    augroup nvim_term
+        autocmd!
+        autocmd TermOpen * setlocal nolist
+    augroup END
     lua require('claude-code').setup({ window = { position = 'vertical botright' } })
 endif
 
@@ -141,10 +175,20 @@ endif
 if exists("g:plug_home")
 
     " NERDTree:
-    " Open NERDTree when no file is specified
-    autocmd StdinReadPre * let s:std_in=1
-    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+    " Open NERDTree when no file is specified; quit when it's the last window
+    augroup nerdtree_auto
+        autocmd!
+        autocmd StdinReadPre * let s:std_in=1
+        autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+        autocmd BufEnter * if winnr('$') == 1 && &filetype ==# 'nerdtree' | quit | endif
+    augroup END
+
+    " CtrlP:
+    " Use ripgrep for listing files (fast, respects .gitignore)
+    if executable('rg')
+        let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+        let g:ctrlp_use_caching = 0
+    endif
 
     " NERDCommenter:
     " Pretty comments
