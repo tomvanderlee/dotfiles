@@ -48,6 +48,8 @@ endif
 if has('nvim')
     Plug 'nvim-lua/plenary.nvim'
     Plug 'greggh/claude-code.nvim'
+else
+    Plug 'rishi-opensource/vim-claude-code'
 endif
 
 call plug#end()
@@ -169,6 +171,10 @@ if has('nvim')
         autocmd TermOpen * setlocal nolist
     augroup END
     lua require('claude-code').setup({ window = { position = 'vertical botright' } })
+else
+    let g:claude_code_map_toggle = '<C-,>'
+    let g:claude_code_position   = 'right'
+    let g:claude_code_split_ratio = 0.3
 endif
 
 """ PLUGIN SPECIFIC SETTINGS
