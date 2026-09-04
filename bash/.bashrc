@@ -110,17 +110,17 @@ elif exists vi; then
     export EDITOR="vi"
 fi
 
-vim() {
-    vim_bin=$(which $EDITOR)
-    if [[ -z "$@" ]]; then
-        $vim_bin
-    elif [[ -d "$@" ]]; then
-        dir=$(pwd)
-        cd $@ && $vim_bin && cd $dir
-    else
-        $vim_bin $@
-    fi
-}
+# vim() {
+#     vim_bin=$(which $EDITOR)
+#     if [[ -z "$@" ]]; then
+#         $vim_bin
+#     elif [[ -d "$@" ]]; then
+#         dir=$(pwd)
+#         cd $@ && $vim_bin && cd $dir
+#     else
+#         $vim_bin $@
+#     fi
+# }
 
 # Programming language specifics
 if exists go; then
