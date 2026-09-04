@@ -1,3 +1,0 @@
-shadow = true;
-clear-shadow = true;
-#shadow-exclude = ["g:si:dmenu"];
