@@ -191,7 +191,7 @@ fi
 
 # Fancy bash prompt
 if exists liquidprompt; then
-    source $(which liquidprompt) 2> /dev/null
+    source liquidprompt 2> /dev/null
 elif [ -f "/usr/share/liquidprompt/liquidprompt" ]; then
     source /usr/share/liquidprompt/liquidprompt 2> /dev/null
 elif [ -f "/opt/homebrew/share/liquidprompt" ]; then
@@ -266,7 +266,9 @@ fi
 
 if exists pyenv; then
     eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
+    if pyenv commands | grep -qx virtualenv-init; then
+        eval "$(pyenv virtualenv-init -)"
+    fi
     export PATH="$PATH:$(pyenv root)/shims"
 fi
 
